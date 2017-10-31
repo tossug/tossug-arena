@@ -1,12 +1,18 @@
 TOSSUG Arena
 ============
-Gamelets Arena for AI Players
+Gamelets Arena for AI Players <https://github.com/tossug/tossug-arena>
+
+Testing
+=======
+	./tossug-arena
+	./tossug-arena XiangHalf RandomFast RandomFast
+	mkdir players/XiangHalf/YourName
+	cp players/XiangHalf/RandomFast/main players/XiangHalf/YourName/main
+	$EDITOR players/XiangHalf/YourName/main
+	./tossug-arena XiangHalf RandomFast YourName
 
 Install & Usage
 ===============
-	./tossug-arena
-	./tossug-arena XiangHalf RandomFast RandomFast
-	#or
 	make install
 	tossug-arena XiangHalf Human Human
 	tossug-arena XiangHalf-Log RandomFast RandomSlow

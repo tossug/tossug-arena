@@ -5,7 +5,7 @@
 BOARD=${1:0:32} # get living board
 if [ "$BOARD" = "${BOARD/@/}" ] ; then
   if [ "$BOARD" = "${BOARD^^}" -o "$BOARD" = "${BOARD,,}" ] ; then
-    echo "EAT-UP WINS !"
+    echo "ELIMINATION WINS !"
     exit 0
   fi
 fi
@@ -16,7 +16,7 @@ MOVENO=$(($2+1)) # get next move no.
 if [ -x "$DATADIR/uis/$ARENA_GAME/get_valid_moves" ] ; then
   MOVES=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves" "$BOARD" "$MOVENO"`
   if [ -z "$MOVES" ] ; then
-    echo "BLOCK WINS !"
+    echo "STALEMATE WINS !"
     exit 0
   fi
 fi
