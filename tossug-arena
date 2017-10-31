@@ -1,22 +1,22 @@
 #!/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
-export ARENA_CONFIG=$1 # name of config file
+export ARENA_ROUND=$1 # name of round file
 export ARENA_PLAYER1=$2 # name of player1
 export ARENA_PLAYER2=$3 # name of player2
 export ARENA_BLACKER=0 # who uses black pieces 1 or 2
-export ARENA_GAME="" # game type from config
-export ARENA_UI="" # game ui from config
-export ARENA_THEME="" # ui theme from config
+export ARENA_GAME="" # game type from round
+export ARENA_UI="" # game ui from round
+export ARENA_THEME="" # ui theme from round
 [ "$0" = "./tossug-arena" ] && export DATADIR="$PWD" || export DATADIR=/usr/share/tossug-arena
 RANDOM=`date +%s` # set random seed
 
 if [ $# -eq 0 ] ; then
   echo "TOSSUG Arena: Gamelets Arena for AI Players"
   echo "Usage:"
-  echo -e "\ttossug-arena CONFIG [ PLAYER1 [ PLAYER2 ]]"
+  echo -e "\ttossug-arena ROUND [ PLAYER1 [ PLAYER2 ]]"
   echo
-  echo -e "available CONFIGs:"
-  cd "$DATADIR/configs"
+  echo -e "available ROUNDs:"
+  cd "$DATADIR/rounds"
   echo -e "\t"`ls`
   echo -e "available PLAYERs: (Human as default)"
   cd "$DATADIR/players"
@@ -31,11 +31,11 @@ if [ $# -eq 0 ] ; then
   exit 1
 fi
 
-if ! [ -f "$DATADIR/configs/$ARENA_CONFIG" ] ; then
-  echo "config file: $DATADIR/configs/$ARENA_CONFIG not found."
+if ! [ -f "$DATADIR/rounds/$ARENA_ROUND" ] ; then
+  echo "round file: $DATADIR/rounds/$ARENA_ROUND not found."
   exit 1
 fi
-source "$DATADIR/configs/$ARENA_CONFIG"
+source "$DATADIR/rounds/$ARENA_ROUND"
 if ! [ -x "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/main" ] ; then
   echo "ui path: $DATADIR/uis/$ARENA_GAME/$ARENA_UI/main not found."
   exit 1

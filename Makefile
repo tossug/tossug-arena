@@ -6,7 +6,7 @@ PACKAGE = tossug-arena
 install:
 	install -Dm755 $(PACKAGE) $(DESTDIR)$(PREFIX)/bin/$(PACKAGE)
 	install -d $(DESTDIR)$(PREFIX)/share/$(PACKAGE)
-	cp -a configs players uis $(DESTDIR)$(PREFIX)/share/$(PACKAGE)
+	cp -a rounds players uis $(DESTDIR)$(PREFIX)/share/$(PACKAGE)
 
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/$(PACKAGE)
