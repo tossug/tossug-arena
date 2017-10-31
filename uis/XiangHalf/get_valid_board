@@ -1,0 +1,117 @@
+#!/bin/bash
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+function pos2seq {
+  POSX="ABCDEFGH"
+  POSx=${POSX%%${1:0:1}*}
+  SEQX=${#POSx}
+  SEQY="${1:1:1}"
+  [ "$SEQX" -eq 8 -o "$SEQY" -lt 1 -o "$SEQY" -gt 4 ] && SEQ=-1 || let SEQ=(SEQY-1)*${#POSX}+SEQX
+  echo "$SEQ" # -1, 0..31
+}
+
+function randompiece {
+  BOARD="$1"
+  PIECES="KAAEERRHHCCPPPPPkaaeerrhhccppppp"
+  i=0
+  while [ "$i" -lt ${#BOARD} ] ; do
+    PIECE="${BOARD:$i:1}"
+    PIECES="${PIECES/$PIECE/}"
+    let i++
+  done
+  i=${#PIECES}
+  i=$((RANDOM%i))
+  echo "${PIECES:$i:1}"
+}
+
+if [ $# -eq 0 ] ; then
+  echo '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|'
+  exit 0
+fi
+
+BOARD="$1"
+MOVENO="$2"
+MOVE="${3^^}"
+SEQ1=`pos2seq ${MOVE:0:2}`
+[ "${SEQ1}" -lt 0 -o "${SEQ1}" -gt 31 ] && exit 1
+PIECE1="${BOARD:$SEQ1:1}"
+if [ ${#MOVE} -eq 2 ] ; then
+  SEQ2="$SEQ1"
+  PIECE2="$PIECE1"
+elif [ ${#MOVE} -eq 4 ] ; then
+  SEQ2=`pos2seq ${MOVE:2:2}`
+  [ "${SEQ2}" -lt 0 -o "${SEQ2}" -gt 31 ] && exit 1
+  PIECE2="${BOARD:$SEQ2:1}"
+else
+  exit 1
+fi
+
+[ "${PIECE1}" = "_" ] && exit 1
+if [ "$SEQ1" -eq "$SEQ2" ] ; then
+  [ "${PIECE1}" != "@" ] && exit 1
+  BOARD="${BOARD:0:$SEQ1}"`randompiece ${BOARD}`"${BOARD:$SEQ1+1}"
+else
+  [ "$PIECE1" = "@" -o "$PIECE2" = "@" ] && exit 1
+  if [ $((ARENA_BLACKER-MOVENO%2)) -eq 1 ] ; then # check red turn
+    [ "$PIECE1" != "${PIECE1^}" ] && exit 1
+    if [ "$PIECE2" != "_" ] ; then
+      [ "$PIECE2" = "${PIECE2^}" ] && exit 1
+    fi
+  else
+    [ "$PIECE1" = "${PIECE1^}" ] && exit 1
+    if [ "$PIECE2" != "_" ] ; then
+      [ "$PIECE2" != "${PIECE2^}" ] && exit 1
+    fi
+  fi
+
+  if [ "$PIECE2" = "_" -o "${PIECE1^}" != C ] ; then # check position
+    if [ "${MOVE:0:1}" = "${MOVE:2:1}" ] ; then
+      [ "${MOVE:1:1}" = 1 -a "${MOVE:3:1}" != 2 ] && exit 1
+      [ "${MOVE:1:1}" = 2 -a "${MOVE:3:1}" = 4 ] && exit 1
+      [ "${MOVE:1:1}" = 3 -a "${MOVE:3:1}" = 1 ] && exit 1
+      [ "${MOVE:1:1}" = 4 -a "${MOVE:3:1}" != 3 ] && exit 1
+    elif [ "${MOVE:1:1}" = "${MOVE:3:1}" ] ; then
+      [ "$SEQ1" -gt "$SEQ2" ] && let MIDDLE=SEQ1-SEQ2 || let MIDDLE=SEQ2-SEQ1
+      [ "$MIDDLE" -ne 1 ] && exit 1
+    else
+      exit 1
+    fi
+  else
+    if [ "${MOVE:0:1}" = "${MOVE:2:1}" ] ; then
+      [ "${MOVE:1:1}" = 1 -a "${MOVE:3:1}" = 2 ] && exit 1
+      [ "${MOVE:1:1}" = 1 -a "${MOVE:3:1}" = 3 -a "${BOARD:SEQ1+8:1}" = "_" ] && exit 1
+      [ "${MOVE:1:1}" = 1 -a "${MOVE:3:1}" = 4 -a "${BOARD:SEQ1+8:1}" != "_" -a "${BOARD:SEQ1+16:1}" != "_" ] && exit 1
+      [ "${MOVE:1:1}" = 1 -a "${MOVE:3:1}" = 4 -a "${BOARD:SEQ1+8:1}" = "_" -a "${BOARD:SEQ1+16:1}" = "_" ] && exit 1
+      [ "${MOVE:1:1}" = 2 -a "${MOVE:3:1}" != 4 ] && exit 1
+      [ "${MOVE:1:1}" = 2 -a "${MOVE:3:1}" = 4 -a "${BOARD:SEQ1+8:1}" = "_" ] && exit 1
+      [ "${MOVE:1:1}" = 3 -a "${MOVE:3:1}" != 1 ] && exit 1
+      [ "${MOVE:1:1}" = 3 -a "${MOVE:3:1}" = 1 -a "${BOARD:SEQ1-8:1}" = "_" ] && exit 1
+      [ "${MOVE:1:1}" = 4 -a "${MOVE:3:1}" = 3 ] && exit 1
+      [ "${MOVE:1:1}" = 4 -a "${MOVE:3:1}" = 2 -a "${BOARD:SEQ1-8:1}" = "_" ] && exit 1
+      [ "${MOVE:1:1}" = 4 -a "${MOVE:3:1}" = 1 -a "${BOARD:SEQ1-16:1}" != "_" -a "${BOARD:SEQ1-8:1}" != "_" ] && exit 1
+      [ "${MOVE:1:1}" = 4 -a "${MOVE:3:1}" = 1 -a "${BOARD:SEQ1-16:1}" = "_" -a "${BOARD:SEQ1-8:1}" = "_" ] && exit 1
+    elif [ "${MOVE:1:1}" = "${MOVE:3:1}" ] ; then
+      [ "$SEQ1" -gt "$SEQ2" ] && MIDDLE="${BOARD:SEQ2:SEQ1-SEQ2}" || MIDDLE="${BOARD:SEQ1:SEQ2-SEQ1}"
+      MIDDLE="${MIDDLE//_/}"
+      [ ${#MIDDLE} -ne 2 ] && exit 1
+    else
+      exit 1
+    fi
+  fi
+  if [ "$PIECE2" != "_" ] ; then # check rank
+    RANKS="KAERHCPkaerhcp"
+    RANK1="${RANKS%%${PIECE1}*}"
+    RANK1=$((${#RANK1}%7))
+    RANK2="${RANKS%%${PIECE2}*}"
+    RANK2=$((${#RANK2}%7))
+    case "$RANK1" in
+      0) [ "$RANK2" -eq 6 ] && exit 1 ;;
+      [1-4]) [ "$RANK2" -lt "$RANK1" ] && exit 1 ;;    
+      6) [ "$RANK2" -gt 0 -a "$RANK2" -lt 6 ] && exit 1 ;;
+    esac
+  fi
+
+  BOARD="${BOARD:0:$SEQ1}""_""${BOARD:$SEQ1+1}"
+  [ "$PIECE2" != "_" ] && BOARD="${BOARD:0:$SEQ2}${PIECE1}${BOARD:$SEQ2+1}${PIECE2}" || BOARD="${BOARD:0:$SEQ2}${PIECE1}${BOARD:$SEQ2+1}"
+fi
+
+echo "$BOARD"

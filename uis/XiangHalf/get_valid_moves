@@ -1,0 +1,88 @@
+#!/bin/bash
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+BOARD="$1"
+MOVENO="$2"
+POSX="ABCDEFGH"
+RANKS="KAERHCPkaerhcp"
+[ $((ARENA_BLACKER-MOVENO%2)) -eq 1 ] && TURN=Red || TURN=Black # get color turn
+
+MOVES=""
+for y in {1..4} ; do
+  for x in {0..7} ; do
+    let SEQ=(y-1)*8+x
+    POS1=${POSX:x:1}$y
+    PIECE1=${BOARD:SEQ:1}
+    if [ ${PIECE1} = "_" ] ; then
+      continue
+    elif [ ${PIECE1} = "@" ] ; then
+      MOVES="${MOVES}${POS1}${POS1} "
+      continue
+    else
+      [ "$TURN" = Red -a "$PIECE1" != "${PIECE1^}" ] && continue
+      [ "$TURN" = Black -a "$PIECE1" = "${PIECE1^}" ] && continue
+    fi
+    
+    for z in "1 0" "0 1" "-1 0" "0 -1" ; do
+      let NEWX=x+${z% *} NEWY=y+${z#* }
+      [ $NEWX -lt 0 -o $NEWX -gt 7 -o $NEWY -lt 1 -o $NEWY -gt 4 ] && continue
+      POS2=${POSX:NEWX:1}$NEWY
+      PIECE2=${BOARD:(NEWY-1)*8+NEWX:1}
+      if [ ${PIECE2} = "_" ] ; then
+        MOVES="${MOVES}${POS1}${POS2} "
+      elif [ ${PIECE2} = "@" ] ; then
+        continue
+      else
+        [ "$TURN" = Red -a "$PIECE2" = "${PIECE2^}" ] && continue
+        [ "$TURN" = Black -a "$PIECE2" != "${PIECE2^}" ] && continue
+        RANK1=${RANKS%%${PIECE1}*}
+        RANK1=$((${#RANK1}%7))
+        RANK2=${RANKS%%${PIECE2}*}
+        RANK2=$((${#RANK2}%7))
+        case $RANK1 in
+          0) [ $RANK2 -ne 6 ] && MOVES="${MOVES}${POS1}${POS2} " ;;
+          [1-4]) [ $RANK2 -ge $RANK1 ] && MOVES="${MOVES}${POS1}${POS2} " ;;
+          6) [ $RANK2 -eq 0 -o $RANK2 -eq 6 ] && MOVES="${MOVES}${POS1}${POS2} " ;;
+        esac
+      fi      
+    done
+    for z in "2 0" "3 0" "4 0" "5 0" "6 0" "7 0" "0 2" "0 3" "-2 0" "-3 0" "-4 0" "-5 0" "-6 0" "-7 0" "0 -2" "0 -3" ; do
+      let NEWX=x+${z% *} NEWY=y+${z#* }
+      [ $NEWX -lt 0 -o $NEWX -gt 7 -o $NEWY -lt 1 -o $NEWY -gt 4 ] && continue
+      POS2=${POSX:NEWX:1}$NEWY
+      PIECE2=${BOARD:(NEWY-1)*8+NEWX:1}
+      if [ ${PIECE1^} = "C" -a ${PIECE2} != "_" -a ${PIECE2} != "@" ] ; then
+        [ "$TURN" = Red -a "$PIECE2" = "${PIECE2^}" ] && continue
+        [ "$TURN" = Black -a "$PIECE2" != "${PIECE2^}" ] && continue
+        MIDDLE=0
+        if [ $NEWX -eq $x -a $NEWY -gt $y ] ; then
+          let NEWY--
+          while [ $NEWY -gt $y ] ; do
+            [ ${BOARD:(NEWY-1)*8+NEWX:1} != "_" ] && let MIDDLE++
+            let NEWY--
+          done
+        elif [ $NEWX -eq $x -a $NEWY -lt $y ] ; then
+          let NEWY++
+          while [ $NEWY -lt $y ] ; do
+            [ ${BOARD:(NEWY-1)*8+NEWX:1} != "_" ] && let MIDDLE++
+            let NEWY++
+          done
+        elif [ $NEWX -gt $x -a $NEWY -eq $y ] ; then
+          let NEWX--
+          while [ $NEWX -gt $x ] ; do
+            [ ${BOARD:(NEWY-1)*8+NEWX:1} != "_" ] && let MIDDLE++
+            let NEWX--
+          done
+        elif [ $NEWX -lt $x -a $NEWY -eq $y ] ; then
+          let NEWX++
+          while [ $NEWX -lt $x ] ; do
+            [ ${BOARD:(NEWY-1)*8+NEWX:1} != "_" ] && let MIDDLE++
+            let NEWX++
+          done
+        fi
+        [ $MIDDLE -eq 1 ] && MOVES="${MOVES}${POS1}${POS2} "
+      fi
+    done
+  done
+done
+
+echo "$MOVES" # need quote

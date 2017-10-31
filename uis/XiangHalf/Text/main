@@ -1,0 +1,40 @@
+#!/bin/bash
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+ARENA_BOARD=`"$DATADIR/uis/$ARENA_GAME/get_valid_board"`
+ARENA_MOVENO=0
+ARENA_STATUS=""
+
+until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end" "$ARENA_BOARD" "$ARENA_MOVENO" "$ARENA_STATUS"` ; do
+  let ARENA_MOVENO++
+  "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/show_the_game" "$ARENA_BOARD" "$ARENA_MOVENO" "$ARENA_STATUS"
+  [ $((ARENA_MOVENO%2)) -eq 1 ] && ARENA_PLAYER="$ARENA_PLAYER1" || ARENA_PLAYER="$ARENA_PLAYER2"
+  if [ "$ARENA_PLAYER" = Human ] ; then
+    read ARENA_MOVE
+    ARENA_MOVE=${ARENA_MOVE^^}
+  else
+    ARENA_MOVE=`"$DATADIR/players/$ARENA_GAME/$ARENA_PLAYER/main" "$ARENA_BOARD" "$ARENA_MOVENO"`
+    [ "$ARENA_THEME" != Log ] && echo "$ARENA_MOVE"
+  fi
+  if [ -n "$ARENA_MOVE" ] ; then
+    ARENA_BOARD_NEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_board" "$ARENA_BOARD" "$ARENA_MOVENO" "$ARENA_MOVE"`
+    if [ -z "$ARENA_BOARD_NEXT" ] ; then
+      ARENA_STATUS="INVALID MOVE: $ARENA_MOVE"
+      if [ "$ARENA_PLAYER" = "Human" ] ; then
+        let ARENA_MOVENO--
+        continue
+      else
+        break
+      fi
+    else
+      ARENA_BOARD="$ARENA_BOARD_NEXT"
+      ARENA_STATUS=""
+      if [ ${ARENA_MOVENO} -eq 1 ] ; then
+        [ "$ARENA_BOARD" = "${ARENA_BOARD^^}" ] && ARENA_BLACKER=2 || ARENA_BLACKER=1
+      fi
+    fi
+  else
+    ARENA_STATUS="PASS !"
+  fi
+done
+"$DATADIR/uis/$ARENA_GAME/$ARENA_UI/show_the_game" "$ARENA_BOARD" "$ARENA_MOVENO" "$ARENA_STATUS"
+[ "$ARENA_THEME" != Log ] && echo "THE END"

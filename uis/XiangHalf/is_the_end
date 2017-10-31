@@ -1,0 +1,66 @@
+#!/bin/bash
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+
+# check if one player has no piece
+BOARD=${1:0:32} # get living board
+if [ "$BOARD" = "${BOARD/@/}" ] ; then
+  if [ "$BOARD" = "${BOARD^^}" -o "$BOARD" = "${BOARD,,}" ] ; then
+    echo "EAT-UP WINS !"
+    exit 0
+  fi
+fi
+
+# check if no valid move
+BOARD=$1 # get whole board
+MOVENO=$(($2+1)) # get next move no.
+if [ -x "$DATADIR/uis/$ARENA_GAME/get_valid_moves" ] ; then
+  MOVES=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves" "$BOARD" "$MOVENO"`
+  if [ -z "$MOVES" ] ; then
+    echo "BLOCK WINS !"
+    exit 0
+  fi
+fi
+
+# check if the game is draw
+BOARD=${1:0:32} # get living board
+MOVENO=$(($2+1)) # get next move no.
+[ $((ARENA_BLACKER-MOVENO%2)) -eq 1 ] && TURN=Red || TURN=Black # get color turn
+LIVE=${BOARD//_/}
+if [ ${#LIVE} -eq 2 ] ; then
+  PIECE1=${LIVE:0:1}
+  [ ${PIECE1^} = ${PIECE1} ] && COLOR1=Red || COLOR1=Black
+  PIECE2=${LIVE:1:1}
+  [ ${PIECE2^} = ${PIECE2} ] && COLOR2=Red || COLOR2=Black
+  RANKS="KAERHCPkaerhcp"
+  RANK1=${RANKS%%${PIECE1}*}
+  RANK1=$((${#RANK1}%7))
+  RANK2=${RANKS%%${PIECE2}*}
+  RANK2=$((${#RANK2}%7))
+  if [ $RANK1 -eq 5 -a $RANK2 -eq 5 ] ; then
+    echo "DRAW GAME !"
+    exit 0
+  elif [ "${LIVE}" = Pc -o "${LIVE}" = cP -o "${LIVE}" = pC -o "${LIVE}" = Cp ] ; then
+    echo "DRAW GAME !"
+    exit 0
+  elif [ $RANK1 -ne $RANK2 ] ; then
+    POS1=${BOARD%%${PIECE1}*}
+    POS1=${#POS1}
+    POS2=${BOARD%%${PIECE2}*}
+    POS2=${#POS2}
+    DISTX=$((POS2/8-POS1/8))
+    DISTY=$((POS2%8-POS1%8))
+    let DIST=${DISTX#-}+${DISTY#-} # get distance between pieces
+    [ $RANK1 -lt $RANK2 ] && STRONGER=$COLOR1 || STRONGER=$COLOR2 # smaller is stronger
+    if [ "$TURN" = "$STRONGER" -a $((DIST%2)) -eq 0 ] ; then
+      echo "DRAW GAME !"
+      exit 0
+    elif [ "$TURN" != "$STRONGER" -a $((DIST%2)) -eq 1 ] ; then
+      echo "DRAW GAME !"
+      exit 0
+    fi
+  fi
+fi
+
+# not the end of game
+echo "$3" # still return last status
+exit 1

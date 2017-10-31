@@ -1,0 +1,104 @@
+#!/bin/bash
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+function colorString {
+  case $1 in
+    red) color='\e[0;31m' ;;
+    RED) color='\e[1;31m' ;;
+    green) color='\e[0;32m' ;;
+    GREEN) color='\e[1;32m' ;;
+    blue) color='\e[0;34m' ;;
+    BLUE) color='\e[1;34m' ;;
+    cyan) color='\e[0;36m' ;;
+    CYAN) color='\e[1;36m' ;;
+  esac
+  shift
+  echo -n "${color}$@"'\e[0m'
+}
+
+BOARD="$1"
+MOVENO="$2"
+STATUS="$3"
+ENAMES="KAERHCPkaerhcp_@"
+CNAMES="帥仕相俥傌炮兵將士象車馬包卒　＠"
+for i in {0..15} ; do
+  ENAME="${ENAMES:$i:1}"
+  CNAME="${CNAMES:$i:1}"
+  BOARD=${BOARD//$ENAME/$CNAME}
+done
+
+if [ $MOVENO -eq 1 ] ; then
+  PLAYER1="(?)"
+  PLAYER2="(?)"
+else
+  if [ $ARENA_BLACKER -eq 1 ] ; then
+    PLAYER1="(Black)"
+    PLAYER2="(Red)"
+  else
+    PLAYER1="(Red)"
+    PLAYER2="(Black)"
+  fi
+fi
+if [ $((MOVENO%2)) -eq 1 ] ; then # check if player1's turn
+  if [ -z "$STATUS" ] ; then
+    MESSAGE=""
+    PLAYER1=$PLAYER1"*"
+  elif  [ "$STATUS" = "DRAW GAME !" ] ; then
+    MESSAGE="${STATUS}"
+    PLAYER1=$PLAYER1" "
+  elif  [ "${STATUS}" = "PASS !" ] ; then
+    MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${STATUS}"
+    PLAYER1=$PLAYER1"*"
+  elif [ "${STATUS:0:7}" = "INVALID" ] ; then
+    MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${STATUS}"
+    PLAYER1=$PLAYER1"*"
+  else
+    MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${STATUS}"
+    PLAYER1=$PLAYER1" "
+  fi
+  PLAYER2=$PLAYER2" "
+else
+  if [ -z "$STATUS" ] ; then
+    MESSAGE=""
+    PLAYER2=$PLAYER2"*"
+  elif  [ "$STATUS" = "DRAW GAME !" ] ; then
+    MESSAGE="${STATUS}"
+    PLAYER2=$PLAYER2" "
+  elif  [ "${STATUS}" = "PASS !" ] ; then
+    MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${STATUS}"
+    PLAYER2=$PLAYER2"*"
+  elif [ "${STATUS:0:7}" = "INVALID" ] ; then
+    MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${STATUS}"
+    PLAYER2=$PLAYER2"*"
+  else
+    MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${STATUS}"
+    PLAYER2=$PLAYER2" "
+  fi
+  PLAYER1=$PLAYER1" "
+fi
+
+DEADS="${BOARD:33}"
+REDDEAD=""
+BLACKDEAD=""
+i=0
+while [ $i -lt ${#DEADS} ] ; do
+  DEAD=${DEADS:i:1}
+  CNAMEX=${CNAMES%%${DEAD}*}
+  [ ${#CNAMEX} -lt 7 ] && REDDEAD=${REDDEAD}${DEAD} || BLACKDEAD=${BLACKDEAD}${DEAD}
+  let i++
+done
+
+if [ "$ARENA_THEME" = "RollLines" ] ; then
+  echo
+  echo -e "   ╔ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╗ \t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}"
+  echo -e "４ ║ "${BOARD:24:1}"│ "${BOARD:25:1}"│ "${BOARD:26:1}"│ "${BOARD:27:1}"│ "${BOARD:28:1}"│ "${BOARD:29:1}"│ "${BOARD:30:1}"│ "${BOARD:31:1}"║ "
+  echo -e "   ╟ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ╢ "
+  echo -e "３ ║ "${BOARD:16:1}"│ "${BOARD:17:1}"│ "${BOARD:18:1}"│ "${BOARD:19:1}"│ "${BOARD:20:1}"│ "${BOARD:21:1}"│ "${BOARD:22:1}"│ "${BOARD:23:1}"║ "
+  echo -e "   ╟ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ╢ \t${MESSAGE}"
+  echo -e "２ ║ "${BOARD:8:1}"│ "${BOARD:9:1}"│ "${BOARD:10:1}"│ "${BOARD:11:1}"│ "${BOARD:12:1}"│ "${BOARD:13:1}"│ "${BOARD:14:1}"│ "${BOARD:15:1}"║ "
+  echo -e "   ╟ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ╢ \t☠ : ${REDDEAD}"
+  echo -e "１ ║ "${BOARD:0:1}"│ "${BOARD:1:1}"│ "${BOARD:2:1}"│ "${BOARD:3:1}"│ "${BOARD:4:1}"│ "${BOARD:5:1}"│ "${BOARD:6:1}"│ "${BOARD:7:1}"║ \t    ${BLACKDEAD}"
+  echo -e "   ╚ ═ ╧ ═ ╧ ═ ╧ ═ ╧ ═ ╧ ═ ╧ ═ ╧ ═ ╝ "  
+  echo -en "     Ａ  Ｂ  Ｃ  Ｄ  Ｅ  Ｆ  Ｇ  Ｈ  \tMove No. ${MOVENO}: "
+elif [ "$ARENA_THEME" = Log ] ; then
+  [ -n "$STATUS" ] && echo "${MESSAGE} ${MOVENO} Moves."
+fi

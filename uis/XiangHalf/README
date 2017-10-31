@@ -1,0 +1,18 @@
+XiangHalf
+=========
+Xiang Qi with Half board (Blind/Dark elephant-chess)
+
+Data and Variables
+==================
+"KAERHCPkaerhcp" for "帥仕相俥傌炮兵將士象車馬包卒"
+
+Procedure examples
+==================
+        players/*/*/main '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@' 1
+                => A1A1
+        uis/*/*/main '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@' A1A1
+		=> 'K@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
+	players/*/*/main 'KAAEERRHHCCPPPPPkaaeerrhhccppppp' 33
+		=> A3A2
+        uis/*/*/main 'KAAEERRHHCCPPPPPkaaeerrhhccppppp' A3A2
+                => KAAEERRkHCCPPPPP_aaeerrhhccppppp

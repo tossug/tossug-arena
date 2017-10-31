@@ -1,0 +1,57 @@
+#!/bin/bash
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+export ARENA_CONFIG=$1 # name of config file
+export ARENA_PLAYER1=$2 # name of player1
+export ARENA_PLAYER2=$3 # name of player2
+export ARENA_BLACKER=0 # who uses black pieces 1 or 2
+export ARENA_GAME="" # game type from config
+export ARENA_UI="" # game ui from config
+export ARENA_THEME="" # ui theme from config
+[ "$0" = "./tossug-arena" ] && export DATADIR="$PWD" || export DATADIR=/usr/share/tossug-arena
+RANDOM=`date +%s` # set random seed
+
+if [ $# -eq 0 ] ; then
+  echo "TOSSUG Arena: Gamelets Arena for AI Players"
+  echo "Usage:"
+  echo -e "\ttossug-arena CONFIG [ PLAYER1 [ PLAYER2 ]]"
+  echo
+  echo -e "available CONFIGs:"
+  cd "$DATADIR/configs"
+  echo -e "\t"`ls`
+  echo -e "available PLAYERs: (Human as default)"
+  cd "$DATADIR/players"
+  for i in * ; do
+    echo -en "\tfor $i: "
+    cd "$DATADIR/players/$i"
+    for j in * ; do
+      echo -n "$j "
+    done
+  done
+  echo
+  exit 1
+fi
+
+if ! [ -f "$DATADIR/configs/$ARENA_CONFIG" ] ; then
+  echo "config file: $DATADIR/configs/$ARENA_CONFIG not found."
+  exit 1
+fi
+source "$DATADIR/configs/$ARENA_CONFIG"
+if ! [ -x "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/main" ] ; then
+  echo "ui path: $DATADIR/uis/$ARENA_GAME/$ARENA_UI/main not found."
+  exit 1
+fi
+
+if [ -z "$ARENA_PLAYER1" -o "$ARENA_PLAYER1" = Human ] ; then
+  ARENA_PLAYER1=Human
+elif ! [ -x "$DATADIR/players/$ARENA_GAME/$ARENA_PLAYER1/main" ] ; then
+  echo "player path: $DATADIR/players/$ARENA_GAME/$ARENA_PLAYER1/main not found."
+  exit 1
+fi
+if [ -z "$ARENA_PLAYER2" -o "$ARENA_PLAYER2" = Human ] ; then
+  ARENA_PLAYER2=Human
+elif ! [ -x "$DATADIR/players/$ARENA_GAME/$ARENA_PLAYER2/main" ] ; then
+  echo "player path: $DATADIR/players/$ARENA_GAME/$ARENA_PLAYER2/main not found."
+  exit 1
+fi
+
+"$DATADIR/uis/$ARENA_GAME/$ARENA_UI/main"

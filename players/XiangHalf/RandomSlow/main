@@ -1,0 +1,11 @@
+#!/bin/bash
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+BOARD=$1 # current game board
+MOVENO=$2 # current move no.
+BOARDNEXT="" # next game board
+POSX="ABCDEFGH" # X positions of board
+while [ -z "$BOARDNEXT" ] ; do
+  MOVE=${POSX:RANDOM%8:1}$((RANDOM%4+1))${POSX:RANDOM%8:1}$((RANDOM%4+1))
+  BOARDNEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_board" "$BOARD" "$MOVENO" "$MOVE"`
+done
+echo ${MOVE}
