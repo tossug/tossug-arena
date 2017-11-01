@@ -12,7 +12,7 @@ fi
 
 # check if no valid move
 BOARD=$1 # get whole board
-MOVENO=$(($2+1)) # get next move no.
+MOVENO=$2 # get the move no.
 if [ -x "$DATADIR/uis/$ARENA_GAME/get_valid_moves" ] ; then
   MOVES=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves" "$BOARD" "$MOVENO"`
   if [ -z "$MOVES" ] ; then
@@ -23,7 +23,7 @@ fi
 
 # check if the game is draw
 BOARD=${1:0:32} # get living board
-MOVENO=$(($2+1)) # get next move no.
+MOVENO=$2 # get the move no.
 [ $((ARENA_BLACKER-MOVENO%2)) -eq 1 ] && TURN=Red || TURN=Black # get color turn
 LIVE=${BOARD//_/}
 if [ ${#LIVE} -eq 2 ] ; then

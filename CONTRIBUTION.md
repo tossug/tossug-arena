@@ -5,7 +5,7 @@ Wei-Lun Chao <bluebat@member.fsf.org>, 2017
 Development Guide
 =================
 * Programming based on goodwill
-* Using any script language
+* Using any common script language
 
 Todos
 =====

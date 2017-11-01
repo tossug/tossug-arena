@@ -1,6 +1,8 @@
 TOSSUG Arena
 ============
-Gamelets Arena for AI Players <https://github.com/tossug/tossug-arena>
+Gamelets Arena for AI Players
+
+<https://github.com/tossug/tossug-arena>
 
 Testing
 =======
