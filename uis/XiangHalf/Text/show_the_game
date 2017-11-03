@@ -43,9 +43,9 @@ if [ $((MOVENO%2)) -eq 1 ] ; then # check if player1's turn
   elif  [ "$STATUS" = "DRAW GAME !" ] ; then
     MESSAGE="${STATUS}"
     PLAYER1=$PLAYER1" "
-  elif  [ "${STATUS}" = "PASS !" ] ; then
+  elif  [ "${STATUS}" = "MIDDLE WINS !" ] ; then
     MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${STATUS}"
-    PLAYER1=$PLAYER1"*"
+    PLAYER1=$PLAYER1" "
   elif [ "${STATUS:0:7}" = "INVALID" ] ; then
     MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${STATUS}"
     PLAYER1=$PLAYER1"*"
@@ -61,9 +61,9 @@ else
   elif  [ "$STATUS" = "DRAW GAME !" ] ; then
     MESSAGE="${STATUS}"
     PLAYER2=$PLAYER2" "
-  elif  [ "${STATUS}" = "PASS !" ] ; then
+  elif  [ "${STATUS}" = "MIDDLE WINS !" ] ; then
     MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${STATUS}"
-    PLAYER2=$PLAYER2"*"
+    PLAYER2=$PLAYER2" "
   elif [ "${STATUS:0:7}" = "INVALID" ] ; then
     MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${STATUS}"
     PLAYER2=$PLAYER2"*"

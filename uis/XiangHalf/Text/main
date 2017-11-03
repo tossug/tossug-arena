@@ -32,7 +32,8 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end" "$ARENA_BOARD" "$ARENA
       fi
     fi
   else
-    ARENA_STATUS="PASS !"
+    ARENA_STATUS="MIDDLE WINS !"
+    break
   fi
   let ARENA_MOVENO++
 done
