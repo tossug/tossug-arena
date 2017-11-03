@@ -3,7 +3,7 @@
 export ARENA_ROUND=$1 # name of round file
 export ARENA_PLAYER1=$2 # name of player1
 export ARENA_PLAYER2=$3 # name of player2
-export ARENA_BLACKER=0 # who uses black pieces 1 or 2
+export ARENA_BLACKER=0 # who uses black pieces
 export ARENA_GAME="" # game type from round
 export ARENA_UI="" # game ui from round
 export ARENA_THEME="" # ui theme from round
@@ -15,10 +15,10 @@ if [ $# -eq 0 ] ; then
   echo "Usage:"
   echo -e "\ttossug-arena ROUND [ PLAYER1 [ PLAYER2 ]]"
   echo
-  echo -e "available ROUNDs:"
+  echo "available ROUNDs:"
   cd "$DATADIR/rounds"
   echo -e "\t"`ls`
-  echo -e "available PLAYERs: (Human as default)"
+  echo "available PLAYERs: (Human as default)"
   cd "$DATADIR/players"
   for i in * ; do
     echo -en "\tfor $i: "
@@ -54,4 +54,4 @@ elif ! [ -x "$DATADIR/players/$ARENA_GAME/$ARENA_PLAYER2/main" ] ; then
   exit 1
 fi
 
-"$DATADIR/uis/$ARENA_GAME/$ARENA_UI/main"
+exec "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/main"

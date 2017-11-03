@@ -26,17 +26,15 @@ for i in {0..15} ; do
   BOARD=${BOARD//$ENAME/$CNAME}
 done
 
-if [ $MOVENO -eq 1 ] ; then
+if [ $ARENA_BLACKER -eq 0 ] ; then
   PLAYER1="(?)"
   PLAYER2="(?)"
+elif [ $ARENA_BLACKER -eq 1 ] ; then
+  PLAYER1="(Black)"
+  PLAYER2="(Red)"
 else
-  if [ $ARENA_BLACKER -eq 1 ] ; then
-    PLAYER1="(Black)"
-    PLAYER2="(Red)"
-  else
-    PLAYER1="(Red)"
-    PLAYER2="(Black)"
-  fi
+  PLAYER1="(Red)"
+  PLAYER2="(Black)"
 fi
 if [ $((MOVENO%2)) -eq 1 ] ; then # check if player1's turn
   if [ -z "$STATUS" ] ; then
