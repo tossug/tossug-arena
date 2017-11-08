@@ -1,17 +1,15 @@
 #!/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
-BOARD="$1"
-MOVENO="$2"
 POSX="ABCDEFGH"
 RANKS="KAERHCPkaerhcp"
-[ $((ARENA_BLACKER-MOVENO%2)) -eq 1 ] && TURN=Red || TURN=Black # get color turn
+[ $((ARENA_BLACKER-ARENA_MOVENO%2)) -eq 1 ] && TURN=Red || TURN=Black # get color turn
 
 MOVES=""
 for y in {1..4} ; do
   for x in {0..7} ; do
     let SEQ=(y-1)*8+x
     POS1=${POSX:x:1}$y
-    PIECE1=${BOARD:SEQ:1}
+    PIECE1=${ARENA_BOARD:SEQ:1}
     if [ ${PIECE1} = "_" ] ; then
       continue
     elif [ ${PIECE1} = "@" ] ; then
@@ -26,7 +24,7 @@ for y in {1..4} ; do
       let NEWX=x+${z% *} NEWY=y+${z#* }
       [ $NEWX -lt 0 -o $NEWX -gt 7 -o $NEWY -lt 1 -o $NEWY -gt 4 ] && continue
       POS2=${POSX:NEWX:1}$NEWY
-      PIECE2=${BOARD:(NEWY-1)*8+NEWX:1}
+      PIECE2=${ARENA_BOARD:(NEWY-1)*8+NEWX:1}
       if [ ${PIECE2} = "_" ] ; then
         MOVES="${MOVES}${POS1}${POS2} "
       elif [ ${PIECE2} = "@" ] ; then
@@ -49,7 +47,7 @@ for y in {1..4} ; do
       let NEWX=x+${z% *} NEWY=y+${z#* }
       [ $NEWX -lt 0 -o $NEWX -gt 7 -o $NEWY -lt 1 -o $NEWY -gt 4 ] && continue
       POS2=${POSX:NEWX:1}$NEWY
-      PIECE2=${BOARD:(NEWY-1)*8+NEWX:1}
+      PIECE2=${ARENA_BOARD:(NEWY-1)*8+NEWX:1}
       if [ ${PIECE1^} = "C" -a ${PIECE2} != "_" -a ${PIECE2} != "@" ] ; then
         [ "$TURN" = Red -a "$PIECE2" = "${PIECE2^}" ] && continue
         [ "$TURN" = Black -a "$PIECE2" != "${PIECE2^}" ] && continue
@@ -57,25 +55,25 @@ for y in {1..4} ; do
         if [ $NEWX -eq $x -a $NEWY -gt $y ] ; then
           let NEWY--
           while [ $NEWY -gt $y ] ; do
-            [ ${BOARD:(NEWY-1)*8+NEWX:1} != "_" ] && let MIDDLE++
+            [ ${ARENA_BOARD:(NEWY-1)*8+NEWX:1} != "_" ] && let MIDDLE++
             let NEWY--
           done
         elif [ $NEWX -eq $x -a $NEWY -lt $y ] ; then
           let NEWY++
           while [ $NEWY -lt $y ] ; do
-            [ ${BOARD:(NEWY-1)*8+NEWX:1} != "_" ] && let MIDDLE++
+            [ ${ARENA_BOARD:(NEWY-1)*8+NEWX:1} != "_" ] && let MIDDLE++
             let NEWY++
           done
         elif [ $NEWX -gt $x -a $NEWY -eq $y ] ; then
           let NEWX--
           while [ $NEWX -gt $x ] ; do
-            [ ${BOARD:(NEWY-1)*8+NEWX:1} != "_" ] && let MIDDLE++
+            [ ${ARENA_BOARD:(NEWY-1)*8+NEWX:1} != "_" ] && let MIDDLE++
             let NEWX--
           done
         elif [ $NEWX -lt $x -a $NEWY -eq $y ] ; then
           let NEWX++
           while [ $NEWX -lt $x ] ; do
-            [ ${BOARD:(NEWY-1)*8+NEWX:1} != "_" ] && let MIDDLE++
+            [ ${ARENA_BOARD:(NEWY-1)*8+NEWX:1} != "_" ] && let MIDDLE++
             let NEWX++
           done
         fi

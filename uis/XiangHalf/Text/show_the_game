@@ -22,15 +22,12 @@ function colorString {
   echo -n "${color}$@"'\e[0m'
 }
 
-BOARD="$1"
-MOVENO="$2"
-STATUS="$3"
 ENAMES="KAERHCPkaerhcp_@"
 CNAMES="帥仕相俥傌炮兵將士象車馬包卒　＠"
 for i in {0..15} ; do
   ENAME="${ENAMES:$i:1}"
   CNAME="${CNAMES:$i:1}"
-  BOARD=${BOARD//$ENAME/$CNAME}
+  ARENA_BOARD=${ARENA_BOARD//$ENAME/$CNAME}
 done
 
 if [ $ARENA_BLACKER -eq 0 ] ; then
@@ -43,45 +40,45 @@ else
   PLAYER1="(Red)"
   PLAYER2="(Black)"
 fi
-if [ $((MOVENO%2)) -eq 1 ] ; then # check if player1's turn
-  if [ -z "$STATUS" ] ; then
+if [ $((ARENA_MOVENO%2)) -eq 1 ] ; then # check if player1's turn
+  if [ -z "$ARENA_STATUS" ] ; then
     MESSAGE=""
     PLAYER1=$PLAYER1"*"
-  elif  [ "$STATUS" = "DRAW GAME !" ] ; then
-    MESSAGE="${STATUS}"
+  elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
+    MESSAGE="${ARENA_STATUS}"
     PLAYER1=$PLAYER1" "
-  elif  [ "${STATUS}" = "MIDDLE WINS !" ] ; then
-    MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${STATUS}"
+  elif  [ "${ARENA_STATUS}" = "MIDDLE WINS !" ] ; then
+    MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${ARENA_STATUS}"
     PLAYER1=$PLAYER1" "
-  elif [ "${STATUS:0:7}" = "INVALID" ] ; then
-    MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${STATUS}"
+  elif [ "${ARENA_STATUS:0:7}" = "INVALID" ] ; then
+    MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${ARENA_STATUS}"
     PLAYER1=$PLAYER1"*"
   else
-    MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${STATUS}"
+    MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${ARENA_STATUS}"
     PLAYER1=$PLAYER1" "
   fi
   PLAYER2=$PLAYER2" "
 else
-  if [ -z "$STATUS" ] ; then
+  if [ -z "$ARENA_STATUS" ] ; then
     MESSAGE=""
     PLAYER2=$PLAYER2"*"
-  elif  [ "$STATUS" = "DRAW GAME !" ] ; then
-    MESSAGE="${STATUS}"
+  elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
+    MESSAGE="${ARENA_STATUS}"
     PLAYER2=$PLAYER2" "
-  elif  [ "${STATUS}" = "MIDDLE WINS !" ] ; then
-    MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${STATUS}"
+  elif  [ "${ARENA_STATUS}" = "MIDDLE WINS !" ] ; then
+    MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${ARENA_STATUS}"
     PLAYER2=$PLAYER2" "
-  elif [ "${STATUS:0:7}" = "INVALID" ] ; then
-    MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${STATUS}"
+  elif [ "${ARENA_STATUS:0:7}" = "INVALID" ] ; then
+    MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${ARENA_STATUS}"
     PLAYER2=$PLAYER2"*"
   else
-    MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${STATUS}"
+    MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${ARENA_STATUS}"
     PLAYER2=$PLAYER2" "
   fi
   PLAYER1=$PLAYER1" "
 fi
 
-DEADS="${BOARD:33}"
+DEADS="${ARENA_BOARD:33}"
 REDDEAD=""
 BLACKDEAD=""
 i=0
@@ -95,15 +92,15 @@ done
 if [ "$ARENA_THEME" = "Roll" ] ; then
   echo
   echo -e "   ╔ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╗ \t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}"
-  echo -e "４ ║ "${BOARD:24:1}"│ "${BOARD:25:1}"│ "${BOARD:26:1}"│ "${BOARD:27:1}"│ "${BOARD:28:1}"│ "${BOARD:29:1}"│ "${BOARD:30:1}"│ "${BOARD:31:1}"║ "
+  echo -e "４ ║ "${ARENA_BOARD:24:1}"│ "${ARENA_BOARD:25:1}"│ "${ARENA_BOARD:26:1}"│ "${ARENA_BOARD:27:1}"│ "${ARENA_BOARD:28:1}"│ "${ARENA_BOARD:29:1}"│ "${ARENA_BOARD:30:1}"│ "${ARENA_BOARD:31:1}"║ "
   echo -e "   ╟ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ╢ "
-  echo -e "３ ║ "${BOARD:16:1}"│ "${BOARD:17:1}"│ "${BOARD:18:1}"│ "${BOARD:19:1}"│ "${BOARD:20:1}"│ "${BOARD:21:1}"│ "${BOARD:22:1}"│ "${BOARD:23:1}"║ "
+  echo -e "３ ║ "${ARENA_BOARD:16:1}"│ "${ARENA_BOARD:17:1}"│ "${ARENA_BOARD:18:1}"│ "${ARENA_BOARD:19:1}"│ "${ARENA_BOARD:20:1}"│ "${ARENA_BOARD:21:1}"│ "${ARENA_BOARD:22:1}"│ "${ARENA_BOARD:23:1}"║ "
   echo -e "   ╟ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ╢ \t${MESSAGE}"
-  echo -e "２ ║ "${BOARD:8:1}"│ "${BOARD:9:1}"│ "${BOARD:10:1}"│ "${BOARD:11:1}"│ "${BOARD:12:1}"│ "${BOARD:13:1}"│ "${BOARD:14:1}"│ "${BOARD:15:1}"║ "
+  echo -e "２ ║ "${ARENA_BOARD:8:1}"│ "${ARENA_BOARD:9:1}"│ "${ARENA_BOARD:10:1}"│ "${ARENA_BOARD:11:1}"│ "${ARENA_BOARD:12:1}"│ "${ARENA_BOARD:13:1}"│ "${ARENA_BOARD:14:1}"│ "${ARENA_BOARD:15:1}"║ "
   echo -e "   ╟ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ╢ \t☠ : ${REDDEAD}"
-  echo -e "１ ║ "${BOARD:0:1}"│ "${BOARD:1:1}"│ "${BOARD:2:1}"│ "${BOARD:3:1}"│ "${BOARD:4:1}"│ "${BOARD:5:1}"│ "${BOARD:6:1}"│ "${BOARD:7:1}"║ \t    ${BLACKDEAD}"
+  echo -e "１ ║ "${ARENA_BOARD:0:1}"│ "${ARENA_BOARD:1:1}"│ "${ARENA_BOARD:2:1}"│ "${ARENA_BOARD:3:1}"│ "${ARENA_BOARD:4:1}"│ "${ARENA_BOARD:5:1}"│ "${ARENA_BOARD:6:1}"│ "${ARENA_BOARD:7:1}"║ \t    ${BLACKDEAD}"
   echo -e "   ╚ ═ ╧ ═ ╧ ═ ╧ ═ ╧ ═ ╧ ═ ╧ ═ ╧ ═ ╝ "  
-  echo -en "     Ａ  Ｂ  Ｃ  Ｄ  Ｅ  Ｆ  Ｇ  Ｈ  \tMove No. ${MOVENO}: "
+  echo -en "     Ａ  Ｂ  Ｃ  Ｄ  Ｅ  Ｆ  Ｇ  Ｈ  \tMove No. ${ARENA_MOVENO}: "
 elif [ "$ARENA_THEME" = Log ] ; then
-  [ -n "$STATUS" ] && echo "${MESSAGE} ${MOVENO} Moves."
+  [ -n "$ARENA_STATUS" ] && echo "${MESSAGE} ${ARENA_MOVENO} Moves."
 fi

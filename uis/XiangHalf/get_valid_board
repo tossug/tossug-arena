@@ -23,19 +23,16 @@ function randompiece {
   echo "${PIECES:$i:1}"
 }
 
-BOARD="$1"
-MOVENO="$2"
-MOVE="${3^^}"
-SEQ1=`pos2seq ${MOVE:0:2}`
+SEQ1=`pos2seq ${ARENA_MOVE:0:2}`
 [ "${SEQ1}" -lt 0 -o "${SEQ1}" -gt 31 ] && exit 1
-PIECE1="${BOARD:$SEQ1:1}"
-if [ ${#MOVE} -eq 2 ] ; then
+PIECE1="${ARENA_BOARD:$SEQ1:1}"
+if [ ${#ARENA_MOVE} -eq 2 ] ; then
   SEQ2="$SEQ1"
   PIECE2="$PIECE1"
-elif [ ${#MOVE} -eq 4 ] ; then
-  SEQ2=`pos2seq ${MOVE:2:2}`
+elif [ ${#ARENA_MOVE} -eq 4 ] ; then
+  SEQ2=`pos2seq ${ARENA_MOVE:2:2}`
   [ "${SEQ2}" -lt 0 -o "${SEQ2}" -gt 31 ] && exit 1
-  PIECE2="${BOARD:$SEQ2:1}"
+  PIECE2="${ARENA_BOARD:$SEQ2:1}"
 else
   exit 1
 fi
@@ -43,10 +40,10 @@ fi
 [ "${PIECE1}" = "_" ] && exit 1
 if [ "$SEQ1" -eq "$SEQ2" ] ; then
   [ "${PIECE1}" != "@" ] && exit 1
-  BOARD="${BOARD:0:$SEQ1}"`randompiece ${BOARD}`"${BOARD:$SEQ1+1}"
+  ARENA_BOARD="${ARENA_BOARD:0:$SEQ1}"`randompiece ${ARENA_BOARD}`"${ARENA_BOARD:$SEQ1+1}"
 else
   [ "$PIECE1" = "@" -o "$PIECE2" = "@" ] && exit 1
-  if [ $((ARENA_BLACKER-MOVENO%2)) -eq 1 ] ; then # check red turn
+  if [ $((ARENA_BLACKER-ARENA_MOVENO%2)) -eq 1 ] ; then # check red turn
     [ "$PIECE1" != "${PIECE1^}" ] && exit 1
     if [ "$PIECE2" != "_" ] ; then
       [ "$PIECE2" = "${PIECE2^}" ] && exit 1
@@ -59,33 +56,33 @@ else
   fi
 
   if [ "$PIECE2" = "_" -o "${PIECE1^}" != C ] ; then # check position
-    if [ "${MOVE:0:1}" = "${MOVE:2:1}" ] ; then
-      [ "${MOVE:1:1}" = 1 -a "${MOVE:3:1}" != 2 ] && exit 1
-      [ "${MOVE:1:1}" = 2 -a "${MOVE:3:1}" = 4 ] && exit 1
-      [ "${MOVE:1:1}" = 3 -a "${MOVE:3:1}" = 1 ] && exit 1
-      [ "${MOVE:1:1}" = 4 -a "${MOVE:3:1}" != 3 ] && exit 1
-    elif [ "${MOVE:1:1}" = "${MOVE:3:1}" ] ; then
+    if [ "${ARENA_MOVE:0:1}" = "${ARENA_MOVE:2:1}" ] ; then
+      [ "${ARENA_MOVE:1:1}" = 1 -a "${ARENA_MOVE:3:1}" != 2 ] && exit 1
+      [ "${ARENA_MOVE:1:1}" = 2 -a "${ARENA_MOVE:3:1}" = 4 ] && exit 1
+      [ "${ARENA_MOVE:1:1}" = 3 -a "${ARENA_MOVE:3:1}" = 1 ] && exit 1
+      [ "${ARENA_MOVE:1:1}" = 4 -a "${ARENA_MOVE:3:1}" != 3 ] && exit 1
+    elif [ "${ARENA_MOVE:1:1}" = "${ARENA_MOVE:3:1}" ] ; then
       [ "$SEQ1" -gt "$SEQ2" ] && let MIDDLE=SEQ1-SEQ2 || let MIDDLE=SEQ2-SEQ1
       [ "$MIDDLE" -ne 1 ] && exit 1
     else
       exit 1
     fi
   else
-    if [ "${MOVE:0:1}" = "${MOVE:2:1}" ] ; then
-      [ "${MOVE:1:1}" = 1 -a "${MOVE:3:1}" = 2 ] && exit 1
-      [ "${MOVE:1:1}" = 1 -a "${MOVE:3:1}" = 3 -a "${BOARD:SEQ1+8:1}" = "_" ] && exit 1
-      [ "${MOVE:1:1}" = 1 -a "${MOVE:3:1}" = 4 -a "${BOARD:SEQ1+8:1}" != "_" -a "${BOARD:SEQ1+16:1}" != "_" ] && exit 1
-      [ "${MOVE:1:1}" = 1 -a "${MOVE:3:1}" = 4 -a "${BOARD:SEQ1+8:1}" = "_" -a "${BOARD:SEQ1+16:1}" = "_" ] && exit 1
-      [ "${MOVE:1:1}" = 2 -a "${MOVE:3:1}" != 4 ] && exit 1
-      [ "${MOVE:1:1}" = 2 -a "${MOVE:3:1}" = 4 -a "${BOARD:SEQ1+8:1}" = "_" ] && exit 1
-      [ "${MOVE:1:1}" = 3 -a "${MOVE:3:1}" != 1 ] && exit 1
-      [ "${MOVE:1:1}" = 3 -a "${MOVE:3:1}" = 1 -a "${BOARD:SEQ1-8:1}" = "_" ] && exit 1
-      [ "${MOVE:1:1}" = 4 -a "${MOVE:3:1}" = 3 ] && exit 1
-      [ "${MOVE:1:1}" = 4 -a "${MOVE:3:1}" = 2 -a "${BOARD:SEQ1-8:1}" = "_" ] && exit 1
-      [ "${MOVE:1:1}" = 4 -a "${MOVE:3:1}" = 1 -a "${BOARD:SEQ1-16:1}" != "_" -a "${BOARD:SEQ1-8:1}" != "_" ] && exit 1
-      [ "${MOVE:1:1}" = 4 -a "${MOVE:3:1}" = 1 -a "${BOARD:SEQ1-16:1}" = "_" -a "${BOARD:SEQ1-8:1}" = "_" ] && exit 1
-    elif [ "${MOVE:1:1}" = "${MOVE:3:1}" ] ; then
-      [ "$SEQ1" -gt "$SEQ2" ] && MIDDLE="${BOARD:SEQ2:SEQ1-SEQ2}" || MIDDLE="${BOARD:SEQ1:SEQ2-SEQ1}"
+    if [ "${ARENA_MOVE:0:1}" = "${ARENA_MOVE:2:1}" ] ; then
+      [ "${ARENA_MOVE:1:1}" = 1 -a "${ARENA_MOVE:3:1}" = 2 ] && exit 1
+      [ "${ARENA_MOVE:1:1}" = 1 -a "${ARENA_MOVE:3:1}" = 3 -a "${ARENA_BOARD:SEQ1+8:1}" = "_" ] && exit 1
+      [ "${ARENA_MOVE:1:1}" = 1 -a "${ARENA_MOVE:3:1}" = 4 -a "${ARENA_BOARD:SEQ1+8:1}" != "_" -a "${ARENA_BOARD:SEQ1+16:1}" != "_" ] && exit 1
+      [ "${ARENA_MOVE:1:1}" = 1 -a "${ARENA_MOVE:3:1}" = 4 -a "${ARENA_BOARD:SEQ1+8:1}" = "_" -a "${ARENA_BOARD:SEQ1+16:1}" = "_" ] && exit 1
+      [ "${ARENA_MOVE:1:1}" = 2 -a "${ARENA_MOVE:3:1}" != 4 ] && exit 1
+      [ "${ARENA_MOVE:1:1}" = 2 -a "${ARENA_MOVE:3:1}" = 4 -a "${ARENA_BOARD:SEQ1+8:1}" = "_" ] && exit 1
+      [ "${ARENA_MOVE:1:1}" = 3 -a "${ARENA_MOVE:3:1}" != 1 ] && exit 1
+      [ "${ARENA_MOVE:1:1}" = 3 -a "${ARENA_MOVE:3:1}" = 1 -a "${ARENA_BOARD:SEQ1-8:1}" = "_" ] && exit 1
+      [ "${ARENA_MOVE:1:1}" = 4 -a "${ARENA_MOVE:3:1}" = 3 ] && exit 1
+      [ "${ARENA_MOVE:1:1}" = 4 -a "${ARENA_MOVE:3:1}" = 2 -a "${ARENA_BOARD:SEQ1-8:1}" = "_" ] && exit 1
+      [ "${ARENA_MOVE:1:1}" = 4 -a "${ARENA_MOVE:3:1}" = 1 -a "${ARENA_BOARD:SEQ1-16:1}" != "_" -a "${ARENA_BOARD:SEQ1-8:1}" != "_" ] && exit 1
+      [ "${ARENA_MOVE:1:1}" = 4 -a "${ARENA_MOVE:3:1}" = 1 -a "${ARENA_BOARD:SEQ1-16:1}" = "_" -a "${ARENA_BOARD:SEQ1-8:1}" = "_" ] && exit 1
+    elif [ "${ARENA_MOVE:1:1}" = "${ARENA_MOVE:3:1}" ] ; then
+      [ "$SEQ1" -gt "$SEQ2" ] && MIDDLE="${ARENA_BOARD:SEQ2:SEQ1-SEQ2}" || MIDDLE="${ARENA_BOARD:SEQ1:SEQ2-SEQ1}"
       MIDDLE="${MIDDLE//_/}"
       [ ${#MIDDLE} -ne 2 ] && exit 1
     else
@@ -105,8 +102,8 @@ else
     esac
   fi
 
-  BOARD="${BOARD:0:$SEQ1}""_""${BOARD:$SEQ1+1}"
-  [ "$PIECE2" != "_" ] && BOARD="${BOARD:0:$SEQ2}${PIECE1}${BOARD:$SEQ2+1}${PIECE2}" || BOARD="${BOARD:0:$SEQ2}${PIECE1}${BOARD:$SEQ2+1}"
+  ARENA_BOARD="${ARENA_BOARD:0:$SEQ1}""_""${ARENA_BOARD:$SEQ1+1}"
+  [ "$PIECE2" != "_" ] && ARENA_BOARD="${ARENA_BOARD:0:$SEQ2}${PIECE1}${ARENA_BOARD:$SEQ2+1}${PIECE2}" || ARENA_BOARD="${ARENA_BOARD:0:$SEQ2}${PIECE1}${ARENA_BOARD:$SEQ2+1}"
 fi
 
-echo "$BOARD"
+echo "$ARENA_BOARD"
