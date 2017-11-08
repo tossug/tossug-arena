@@ -7,15 +7,19 @@ Pieces Code
 "KAERHCPkaerhcp" for "帥仕相俥傌炮兵將士象車馬包卒"
 
 Variables Example
-=====================
+=================
 	ARENA_PLAYER1="RandomFast"
-	ARENA_PLAYER1="Human"
+	ARENA_PLAYER2="Human"
+	ARENA_THEME="Roll"
+	ARENA_THEME="Log"
 	ARENA_BOARD="@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|"
 	ARENA_BOARD="k_______________________________|KAAEERRHHCCPPPPPaaeerrhhccppppp"
-	ARENA_MOVE="A1A1"
-	ARENA_MOVE="A1B1"
+	ARENA_BLACKER=1
+	ARENA_BLACKER=2
 	ARENA_MOVENO=1
 	ARENA_MOVENO=42
+	ARENA_MOVE="A1A1"
+	ARENA_MOVE="A1B1"
 	ARENA_STATUS="ELIMINATION WINS !"
 	ARENA_STATUS="STALEMATE WINS !"
 
