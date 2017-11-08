@@ -1,13 +1,12 @@
 #!/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
-export ARENA_ROUND=$1 # name of round file
-export ARENA_PLAYER1=$2 # name of player1
-export ARENA_PLAYER2=$3 # name of player2
-export ARENA_BLACKER=0 # who uses black pieces
-export ARENA_GAME="" # game type from round
-export ARENA_UI="" # game ui from round
-export ARENA_THEME="" # ui theme from round
-[ "$0" = "./tossug-arena" ] && export DATADIR="$PWD" || export DATADIR=/usr/share/tossug-arena
+ARENA_ROUND=$1 # name of round file
+ARENA_PLAYER1=$2 # name of player1
+ARENA_PLAYER2=$3 # name of player2
+ARENA_GAME="" # game type from round file
+ARENA_UI="" # game ui from round file
+ARENA_THEME="" # ui theme from round file
+[ "$0" = "./tossug-arena" ] && DATADIR="$PWD" || DATADIR=/usr/share/tossug-arena
 RANDOM=`date +%s` # set random seed
 
 if [ $# -eq 0 ] ; then
@@ -54,4 +53,4 @@ elif ! [ -x "$DATADIR/players/$ARENA_GAME/$ARENA_PLAYER2/main" ] ; then
   exit 1
 fi
 
-exec "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/main"
+exec "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/main" "$ARENA_PLAYER1" "$ARENA_PLAYER2" "$ARENA_THEME"

@@ -8,7 +8,7 @@ Data and Variables
 
 Routine examples
 ==================
-	uis/XiangHalf/Text/main
+	uis/XiangHalf/Text/main RandomFast Human Roll
 	players/XiangHalf/RandomFast/main '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|' 1
 		=> 'A1A1'
 	uis/XiangHalf/get_valid_board '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|' 1 'A1A1'

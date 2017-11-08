@@ -1,8 +1,20 @@
 #!/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
-ARENA_BOARD=`"$DATADIR/uis/$ARENA_GAME/get_valid_board"`
-ARENA_MOVENO=1
-ARENA_STATUS=""
+DATADIR=`dirname "$0"`
+export ARENA_UI=`basename "$DATADIR"`
+DATADIR=`dirname "$DATADIR"`
+export ARENA_GAME=`basename "$DATADIR"`
+DATADIR=`dirname "$DATADIR"`
+export DATADIR=`dirname "$DATADIR"`
+
+export ARENA_PLAYER1="$1"
+export ARENA_PLAYER2="$2"
+export ARENA_THEME="$3"
+export ARENA_BOARD="@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|"
+export ARENA_BLACKER=0
+export ARENA_MOVENO=1
+export ARENA_MOVE=""
+export ARENA_STATUS=""
 
 until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end" "$ARENA_BOARD" "$ARENA_MOVENO" "$ARENA_STATUS"` ; do
   "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/show_the_game" "$ARENA_BOARD" "$ARENA_MOVENO" "$ARENA_STATUS"

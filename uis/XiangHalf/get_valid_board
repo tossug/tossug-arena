@@ -23,11 +23,6 @@ function randompiece {
   echo "${PIECES:$i:1}"
 }
 
-if [ $# -eq 0 ] ; then
-  echo '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|'
-  exit 0
-fi
-
 BOARD="$1"
 MOVENO="$2"
 MOVE="${3^^}"
