@@ -1,6 +1,6 @@
 XiangHalf
 =========
-Xiang Qi with Half board (Blind/Dark Elephant-Chess)
+Xiang Qi with half board (Blind/Dark Elephant-Chess)
 
 Pieces Code
 ===========

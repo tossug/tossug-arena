@@ -1,6 +1,6 @@
 #!/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
-MOVESNEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves" "$ARENA_BOARD" "$ARENA_MOVENO"` # next valid moves
+MOVESNEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"` # next valid moves
 MOVEINDEX=$((${#MOVESNEXT}/5))
 ARENA_MOVE=${MOVESNEXT:(RANDOM%MOVEINDEX)*5:4}
 echo ${ARENA_MOVE}

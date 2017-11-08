@@ -1,6 +1,5 @@
 #!/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
-BOARDNEXT="" # next game board
 POSX="ABCDEFGH" # X positions of board
 while [ -z "$BOARDNEXT" ] ; do
   ARENA_MOVE=${POSX:RANDOM%8:1}$((RANDOM%4+1))${POSX:RANDOM%8:1}$((RANDOM%4+1))
