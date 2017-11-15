@@ -10,9 +10,9 @@ export DATADIR=`dirname "$DATADIR"`
 export ARENA_THEME="$1"
 export ARENA_PLAYER1="$2"
 export ARENA_PLAYER2="$3"
-export ARENA_COLOR1=""
-export ARENA_COLOR2=""
-export ARENA_BOARD="@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|"
+export ARENA_COLOR1="Red"
+export ARENA_COLOR2="Black"
+export ARENA_BOARD="R__P__p__rH_C____c_hE__P__p__eA________aK__P__p__kA________aE__P__p__eH_C____c_hR__P__p__r|"
 export ARENA_MOVENO=1
 export ARENA_MOVE=""
 export ARENA_STATUS=""
@@ -40,15 +40,6 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
     else
       ARENA_BOARD="$ARENA_BOARD_NEXT"
       ARENA_STATUS=""
-      if [ -z "$ARENA_COLOR1" ] ; then
-        if [ "$ARENA_BOARD" = "${ARENA_BOARD^^}" ] ; then
-          ARENA_COLOR1="Red"
-          ARENA_COLOR2="Black"
-        else
-          ARENA_COLOR1="Black"
-          ARENA_COLOR2="Red"
-        fi
-      fi
     fi
   else
     ARENA_STATUS="MIDDLE WINS !"

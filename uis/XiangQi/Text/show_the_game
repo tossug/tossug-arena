@@ -1,21 +1,36 @@
 #!/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
-BOARD="$ARENA_BOARD"
-ENAMES="KAERHCPkaerhcp_@"
-CNAMES="帥仕相俥傌炮兵將士象車馬包卒　＠"
-for i in {0..15} ; do
+ENAMES="KAERHCPkaerhcp"
+CNAMES="帥仕相俥傌炮兵將士象車馬包卒"
+for i in {0..13} ; do
   ENAME="${ENAMES:$i:1}"
   CNAME="${CNAMES:$i:1}"
-  BOARD=${BOARD//$ENAME/$CNAME}
+  ARENA_BOARD=${ARENA_BOARD//$ENAME/$CNAME}
 done
+BOARD=""
+for i in {0..89} ; do
+  CNAME="${ARENA_BOARD:$i:1}"
+  if [ "$CNAME" = _ ] ; then
+    case $i in
+      0) CNAME="╚" ;;
+      [1-8]) CNAME="╧" ;;
+      9) CNAME="╝" ;;
+      [1-7]0) CNAME="╟" ;;
+      [1-7][123678]) CNAME="┼" ;;
+      [1-7]4) CNAME="┤" ;;
+      [1-7]5) CNAME="├" ;;
+      [1-7]9) CNAME="╢" ;;
+      80) CNAME="╔" ;;
+      8[1-8]) CNAME="╤" ;;
+      89) CNAME="╗" ;;
+    esac
+  fi
+  BOARD="$BOARD$CNAME"
+done
+BOARD="$BOARD"${ARENA_BOARD:90}
 
-if [ -z "$ARENA_COLOR1" ] ; then
-  PLAYER1="(?)"
-  PLAYER2="(?)"
-else
-  PLAYER1="($ARENA_COLOR1)"
-  PLAYER2="($ARENA_COLOR2)"
-fi
+PLAYER1="(Red)"
+PLAYER2="(Black)"
 if [ $((ARENA_MOVENO%2)) -eq 1 ] ; then # check if player1's turn
   if [ -z "$ARENA_STATUS" ] ; then
     MESSAGE=""
@@ -54,7 +69,7 @@ else
   PLAYER1=$PLAYER1" "
 fi
 
-DEADS="${BOARD:33}"
+DEADS="${BOARD:91}"
 REDDEAD=""
 BLACKDEAD=""
 i=0
@@ -68,16 +83,32 @@ done
 if [ "${ARENA_THEME,,}" = log ] ; then
   [ -n "$ARENA_STATUS" ] && echo "${MESSAGE} ${ARENA_MOVENO} Moves."
 else # default
+  POSY="１２３４５６７８９"
   clear
   echo
-  echo -e "   ╔ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╗ \t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}"
-  echo -e "４ ║ "${BOARD:24:1}"│ "${BOARD:25:1}"│ "${BOARD:26:1}"│ "${BOARD:27:1}"│ "${BOARD:28:1}"│ "${BOARD:29:1}"│ "${BOARD:30:1}"│ "${BOARD:31:1}"║ "
-  echo -e "   ╟ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ╢ "
-  echo -e "３ ║ "${BOARD:16:1}"│ "${BOARD:17:1}"│ "${BOARD:18:1}"│ "${BOARD:19:1}"│ "${BOARD:20:1}"│ "${BOARD:21:1}"│ "${BOARD:22:1}"│ "${BOARD:23:1}"║ "
-  echo -e "   ╟ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ╢ \t${MESSAGE}"
-  echo -e "２ ║ "${BOARD:8:1}"│ "${BOARD:9:1}"│ "${BOARD:10:1}"│ "${BOARD:11:1}"│ "${BOARD:12:1}"│ "${BOARD:13:1}"│ "${BOARD:14:1}"│ "${BOARD:15:1}"║ "
-  echo -e "   ╟ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ╢ \t☠ : ${REDDEAD}"
-  echo -e "１ ║ "${BOARD:0:1}"│ "${BOARD:1:1}"│ "${BOARD:2:1}"│ "${BOARD:3:1}"│ "${BOARD:4:1}"│ "${BOARD:5:1}"│ "${BOARD:6:1}"│ "${BOARD:7:1}"║ \t    ${BLACKDEAD}"
-  echo -e "   ╚ ═ ╧ ═ ╧ ═ ╧ ═ ╧ ═ ╧ ═ ╧ ═ ╧ ═ ╝ "  
-  echo -en "     Ａ  Ｂ  Ｃ  Ｄ  Ｅ  Ｆ  Ｇ  Ｈ  \tMove No. ${ARENA_MOVENO}: "
+  for y in {8..0} ; do
+    echo -n ${POSY:y:1}" "
+    for x in {0..9} ; do
+      POS=$((y*10+x))
+      echo -n ${BOARD:POS:1}
+      if [ ${ARENA_BOARD:POS:1} = _ ] ; then
+        echo -n " "
+      fi
+      if [ $x -ne 9 ] ; then
+        if [ $y -eq 8 -o $y -eq 0 ] ; then
+          echo -n "═"
+        else
+          [ $x -eq 4 ] && echo -n " " || echo -n "─"
+        fi
+      fi
+    done
+    case $y in
+      8) echo -e "\t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}" ;;
+      5) echo -e "\t${MESSAGE}" ;;
+      2) echo -e "\t☠ : ${REDDEAD}" ;;
+      1) echo -e "\t    ${BLACKDEAD}" ;;
+      *) echo ;;
+    esac
+  done
+  echo -en "   Ａ Ｂ Ｃ Ｄ Ｅ Ｆ Ｇ Ｈ Ｊ Ｋ\tMove No. ${ARENA_MOVENO}: "
 fi

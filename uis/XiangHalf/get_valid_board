@@ -1,11 +1,11 @@
 #!/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
 function pos2seq {
-  POSX="ABCDEFGH"
-  POSx=${POSX%%${1:0:1}*}
-  SEQX=${#POSx}
-  SEQY="${1:1:1}"
-  [ "$SEQX" -eq 8 -o "$SEQY" -lt 1 -o "$SEQY" -gt 4 ] && SEQ=-1 || let SEQ=(SEQY-1)*${#POSX}+SEQX
+  POSXS="ABCDEFGH"
+  POSx=${POSXS%%${1:0:1}*}
+  POSX=${#POSx} # x position of piece 0..7
+  POSY=$((${1:1:1}-1)) # y position of piece 0..3
+  [ "$POSX" -eq 8 -o "$POSY" -lt 0 -o "$POSY" -gt 3 ] && SEQ=-1 || let SEQ=POSY*${#POSXS}+POSX
   echo "$SEQ" # -1, 0..31
 }
 
@@ -43,16 +43,12 @@ if [ "$SEQ1" -eq "$SEQ2" ] ; then
   ARENA_BOARD="${ARENA_BOARD:0:$SEQ1}"`randompiece ${ARENA_BOARD}`"${ARENA_BOARD:$SEQ1+1}"
 else
   [ "$PIECE1" = "@" -o "$PIECE2" = "@" ] && exit 1
-  if [ $((ARENA_BLACKER-ARENA_MOVENO%2)) -eq 1 ] ; then # check red turn
+  if [ $((ARENA_MOVENO%2)) -eq 1 -a "$ARENA_COLOR1" = Red -o $((ARENA_MOVENO%2)) -eq 0 -a "$ARENA_COLOR2" = Red ] ; then # check if red turn
     [ "$PIECE1" != "${PIECE1^}" ] && exit 1
-    if [ "$PIECE2" != "_" ] ; then
-      [ "$PIECE2" = "${PIECE2^}" ] && exit 1
-    fi
+    [ "$PIECE2" != "_" -a "$PIECE2" = "${PIECE2^}" ] && exit 1
   else
     [ "$PIECE1" = "${PIECE1^}" ] && exit 1
-    if [ "$PIECE2" != "_" ] ; then
-      [ "$PIECE2" != "${PIECE2^}" ] && exit 1
-    fi
+    [ "$PIECE2" != "_" -a "$PIECE2" != "${PIECE2^}" ] && exit 1
   fi
 
   if [ "$PIECE2" = "_" -o "${PIECE1^}" != C ] ; then # check position

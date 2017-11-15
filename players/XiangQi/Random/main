@@ -1,8 +1,9 @@
 #!/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
-POSX="ABCDEFGH" # X positions of board
+POSXS="ABCDEFGHJK" # X positions of board
+BOARDNEXT=""
 while [ -z "$BOARDNEXT" ] ; do
-  ARENA_MOVE=${POSX:RANDOM%8:1}$((RANDOM%4+1))${POSX:RANDOM%8:1}$((RANDOM%4+1))
+  ARENA_MOVE=${POSXS:RANDOM%10:1}$((RANDOM%9+1))${POSXS:RANDOM%10:1}$((RANDOM%9+1))
   BOARDNEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_board"`
 done
 echo ${ARENA_MOVE}

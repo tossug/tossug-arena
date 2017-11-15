@@ -2,7 +2,7 @@
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
 
 # check if one player has no piece
-BOARD=${ARENA_BOARD:0:32} # get living board
+BOARD=${ARENA_BOARD:0:32} # get living pieces
 if [ "$BOARD" = "${BOARD/@/}" ] ; then
   if [ "$BOARD" = "${BOARD^^}" -o "$BOARD" = "${BOARD,,}" ] ; then
     echo "ELIMINATION WINS !"
@@ -21,7 +21,7 @@ fi
 
 # check if the game is draw
 BOARD=${ARENA_BOARD:0:32} # get living board
-[ $((ARENA_BLACKER-ARENA_MOVENO%2)) -eq 1 ] && TURN=Red || TURN=Black # get color turn
+[ $((ARENA_MOVENO%2)) -eq 1 ] && TURN="$ARENA_COLOR1" || TURN="$ARENA_COLOR2" # get color turn
 LIVE=${BOARD//_/}
 if [ ${#LIVE} -eq 2 ] ; then
   PIECE1=${LIVE:0:1}

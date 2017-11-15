@@ -25,8 +25,8 @@ if [ $# -eq 0 ] ; then
     for j in * ; do
       echo -n "$j "
     done
+    echo
   done
-  echo
   exit 1
 fi
 
@@ -40,17 +40,17 @@ if ! [ -x "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/main" ] ; then
   exit 1
 fi
 
-if [ -z "$ARENA_PLAYER1" -o "$ARENA_PLAYER1" = Human ] ; then
+if [ -z "$ARENA_PLAYER1" -o "${ARENA_PLAYER1,,}" = human ] ; then
   ARENA_PLAYER1=Human
 elif ! [ -x "$DATADIR/players/$ARENA_GAME/$ARENA_PLAYER1/main" ] ; then
   echo "player path: $DATADIR/players/$ARENA_GAME/$ARENA_PLAYER1/main not found."
   exit 1
 fi
-if [ -z "$ARENA_PLAYER2" -o "$ARENA_PLAYER2" = Human ] ; then
+if [ -z "$ARENA_PLAYER2" -o "${ARENA_PLAYER2,,}" = human ] ; then
   ARENA_PLAYER2=Human
 elif ! [ -x "$DATADIR/players/$ARENA_GAME/$ARENA_PLAYER2/main" ] ; then
   echo "player path: $DATADIR/players/$ARENA_GAME/$ARENA_PLAYER2/main not found."
   exit 1
 fi
 
-exec "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/main" "$ARENA_PLAYER1" "$ARENA_PLAYER2" "$ARENA_THEME"
+exec "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/main" "$ARENA_THEME" "$ARENA_PLAYER1" "$ARENA_PLAYER2"

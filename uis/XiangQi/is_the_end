@@ -1,0 +1,22 @@
+#!/bin/bash
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+
+# check if one king is dead
+BOARD=${ARENA_BOARD:91} # get dead pieces
+if [ "$BOARD" != "${BOARD/K/}" -o "$BOARD" != "${BOARD/k/}" ] ; then
+  echo "CHECKMATE WINS !"
+  exit 0
+fi
+
+# check if no valid move
+if [ -x "$DATADIR/uis/$ARENA_GAME/get_valid_moves" ] ; then
+  MOVES=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"`
+  if [ -z "$MOVES" ] ; then
+    echo "STALEMATE WINS !"
+    exit 0
+  fi
+fi
+
+# not the end of game
+echo "$ARENA_STATUS" # still return last status
+exit 1

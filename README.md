@@ -16,4 +16,4 @@ Install & Usage
 ===============
 	make install
 	tossug-arena XiangHalf Human Human
-	tossug-arena XiangHalf-Log RandomFast RandomSlow
+	tossug-arena XiangHalf-log Random RandomFast

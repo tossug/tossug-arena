@@ -11,15 +11,13 @@ Todos
 =====
 * players/*/YourName/main
 * uis/XiangHalf/Window/main
-* rounds/XiangFull
-** uis/XiangFull/Text/main
-** uis/XiangFull/Window/main
+* uis/XiangQi/Window/main
 * rounds/Go9
-** uis/Go9/Text/main
-** uis/Go9/Window/main
+	* uis/Go9/Text/main
+	* uis/Go9/Window/main
 * rounds/Connect6
-** uis/Connect6/Text/main
-** uis/Connect6/Window/main
+	* uis/Connect6/Text/main
+	* uis/Connect6/Window/main
 * rounds/Chess
-** uis/Chess/Text/main
-** uis/Chess/Window/main
+	* uis/Chess/Text/main
+	* uis/Chess/Window/main
