@@ -10,6 +10,9 @@ Development Guide
 Todos
 =====
 * players/*/YourName/main
+* rounds/XiangThree
+	* uis/XiangThree/Text/main
+	* uis/XiangThree/Window/main
 * uis/XiangHalf/Window/main
 * uis/XiangQi/Window/main
 * rounds/Go9

@@ -1,0 +1,194 @@
+#!/bin/bash
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+POSXS="ABCDEFGHJK"
+[ $((ARENA_MOVENO%2)) -eq 1 ] && TURN=$ARENA_COLOR1 || TURN=$ARENA_COLOR2 # get color turn
+
+MOVES=""
+for y in {0..8} ; do
+  for x in {0..9} ; do
+    let SEQ1=y*10+x
+    POS1=${POSXS:x:1}$((y+1))
+    PIECE1=${ARENA_BOARD:SEQ1:1}
+    if [ $PIECE1 = _ ] ; then
+      continue
+    else
+      [ $TURN = Red -a $PIECE1 != ${PIECE1^} ] && continue
+      [ $TURN = Black -a $PIECE1 = ${PIECE1^} ] && continue
+    fi
+
+    case $PIECE1 in
+      K|k)
+        if [ $PIECE1 = K ] ; then
+          z=$((x+1))
+          while [ $z -lt 10 ] ; do
+            PIECE2=${ARENA_BOARD:y*10+z:1}
+            if [ $PIECE2 != _ ] ; then
+              if [ $PIECE2 = k ] ; then
+                POS2=${POSXS:z:1}$((y+1))
+                MOVES="${MOVES}${POS1}${POS2} "
+              fi
+              break
+            fi
+            let z++
+          done
+        else
+          z=$((x-1))
+          while [ $z -ge 0 ] ; do
+            PIECE2=${ARENA_BOARD:y*10+z:1}
+            if [ $PIECE2 != _ ] ; then
+              if [ $PIECE2 = K ] ; then
+                POS2=${POSXS:z:1}$((y+1))
+                MOVES="${MOVES}${POS1}${POS2} "
+              fi
+              break
+            fi
+            let z--
+          done
+        fi
+        for z in 1,0 0,1 -1,0 0,-1 ; do
+          let NEWX=x+${z%,*} NEWY=y+${z#*,}
+          [ $NEWX -lt 0 -o $NEWX -gt 9 ] && continue
+          [ $NEWX -gt 2 -a $NEWX -lt 7 -o $NEWY -lt 3 -o $NEWY -gt 5 ] && continue
+          PIECE2=${ARENA_BOARD:NEWY*10+NEWX:1}
+          if [ $PIECE2 != _ ] ; then
+            [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && continue
+            [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && continue
+          fi
+          POS2=${POSXS:NEWX:1}$((NEWY+1))
+          MOVES="${MOVES}${POS1}${POS2} "
+        done
+        ;;
+      A|a)
+        for z in 1,1 -1,1 -1,-1 1,-1 ; do
+          let NEWX=x+${z%,*} NEWY=y+${z#*,}
+          [ $NEWX -lt 0 -o $NEWX -gt 9 ] && continue
+          [ $NEWX -gt 2 -a $NEWX -lt 7 -o $NEWY -lt 3 -o $NEWY -gt 5 ] && continue
+          PIECE2=${ARENA_BOARD:NEWY*10+NEWX:1}
+          if [ $PIECE2 != _ ] ; then
+            [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && continue
+            [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && continue
+          fi
+          POS2=${POSXS:NEWX:1}$((NEWY+1))
+          MOVES="${MOVES}${POS1}${POS2} "
+        done
+        ;;
+      E|e)
+        for z in 2,2 -2,2 -2,-2 2,-2 ; do
+          let NEWX=x+${z%,*} NEWY=y+${z#*,}
+          [ $NEWX -lt 0 -o $NEWX -gt 9 -o $NEWY -lt 0 -o $NEWY -gt 8 ] && continue
+          [ $NEWX -eq 3 -o $NEWX -eq 6 ] && continue
+          PIECE2=${ARENA_BOARD:NEWY*10+NEWX:1}
+          if [ $PIECE2 != _ ] ; then
+            [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && continue
+            [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && continue
+          fi
+          SEQ2=$(((NEWY+y)/2*10+(NEWX+x)/2))
+          [ ${ARENA_BOARD:SEQ2:1} != _ ] && continue
+          POS2=${POSXS:NEWX:1}$((NEWY+1))
+          MOVES="${MOVES}${POS1}${POS2} "
+        done
+        ;;
+      R|r)
+        for z in 1,0 0,1 -1,0 0,-1 ; do
+          let DELTAX=${z%,*} DELTAY=${z#*,}
+          let NEWX=x+DELTAX NEWY=y+DELTAY
+          while [ $NEWX -ge 0 -a $NEWX -lt 10 -a $NEWY -ge 0 -a $NEWY -lt 9 ] ; do
+            PIECE2=${ARENA_BOARD:NEWY*10+NEWX:1}
+            if [ $PIECE2 = _ ] ; then
+              POS2=${POSXS:NEWX:1}$((NEWY+1))
+              MOVES="${MOVES}${POS1}${POS2} "
+              let NEWX+=DELTAX NEWY+=DELTAY            
+            else
+              [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && break
+              [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && break
+              POS2=${POSXS:NEWX:1}$((NEWY+1))
+              MOVES="${MOVES}${POS1}${POS2} "
+              break
+            fi
+          done
+        done
+        ;;
+      H|h)
+        for z in 2,1 1,2 -1,2 -2,1 -2,-1 -1,-2 1,-2 2,-1 ; do
+          let NEWX=x+${z%,*} NEWY=y+${z#*,}
+          [ $NEWX -lt 0 -o $NEWX -gt 9 -o $NEWY -lt 0 -o $NEWY -gt 8 ] && continue
+          PIECE2=${ARENA_BOARD:NEWY*10+NEWX:1}
+          if [ $PIECE2 != _ ] ; then
+            [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && continue
+            [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && continue
+          fi
+          if [ $z = 2,1 -o $z = 2,-1 ] ; then
+            let BLOCKX=x+1 BLOCKY=y
+          elif [ $z = 1,2 -o $z = -1,2 ] ; then
+            let BLOCKX=x BLOCKY=y+1
+          elif [ $z = -2,1 -o $z = -2,-1 ] ; then
+            let BLOCKX=x-1 BLOCKY=y
+          elif [ $z = -1,-2 -o $z = 1,-2 ] ; then
+            let BLOCKX=x BLOCKY=y-1
+          fi
+          [ ${ARENA_BOARD:BLOCKY*10+BLOCKX:1} != _ ] && continue
+          POS2=${POSXS:NEWX:1}$((NEWY+1))
+          MOVES="${MOVES}${POS1}${POS2} "
+        done
+        ;;
+      C|c)
+        for z in 1,0 0,1 -1,0 0,-1 ; do
+          let DELTAX=${z%,*} DELTAY=${z#*,}
+          let NEWX=x+DELTAX NEWY=y+DELTAY
+          MIDDLE=0
+          while [ $NEWX -ge 0 -a $NEWX -lt 10 -a $NEWY -ge 0 -a $NEWY -lt 9 ] ; do
+            PIECE2=${ARENA_BOARD:NEWY*10+NEWX:1}
+            if [ $PIECE2 = _ ] ; then
+              if [ $MIDDLE -eq 0 ] ; then
+                POS2=${POSXS:NEWX:1}$((NEWY+1))
+                MOVES="${MOVES}${POS1}${POS2} "
+              fi
+              let NEWX+=DELTAX NEWY+=DELTAY
+            else
+              if [ $MIDDLE -eq 0 ] ; then
+                MIDDLE=1
+                let NEWX+=DELTAX NEWY+=DELTAY
+              else
+                [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && break
+                [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && break
+                POS2=${POSXS:NEWX:1}$((NEWY+1))
+                MOVES="${MOVES}${POS1}${POS2} "
+                break
+              fi
+            fi
+          done
+        done
+        ;;
+      P)
+        for z in 1,0 0,1 0,-1 ; do
+          let NEWX=x+${z%,*} NEWY=y+${z#*,}
+          [ $NEWX -lt 0 -o $NEWX -gt 9 -o $NEWY -lt 0 -o $NEWY -gt 8 ] && continue
+          [ $NEWX -eq $x -a $x -lt 5 ] && continue
+          PIECE2=${ARENA_BOARD:NEWY*10+NEWX:1}
+          if [ $PIECE2 != _ ] ; then
+            [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && continue
+            [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && continue
+          fi
+          POS2=${POSXS:NEWX:1}$((NEWY+1))
+          MOVES="${MOVES}${POS1}${POS2} "
+        done
+        ;;
+      p)
+        for z in -1,0 0,1 0,-1 ; do
+          let NEWX=x+${z%,*} NEWY=y+${z#*,}
+          [ $NEWX -lt 0 -o $NEWX -gt 9 -o $NEWY -lt 0 -o $NEWY -gt 8 ] && continue
+          [ $NEWX -eq $x -a $x -gt 4 ] && continue
+          PIECE2=${ARENA_BOARD:NEWY*10+NEWX:1}
+          if [ $PIECE2 != _ ] ; then
+            [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && continue
+            [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && continue
+          fi
+          POS2=${POSXS:NEWX:1}$((NEWY+1))
+          MOVES="${MOVES}${POS1}${POS2} "
+        done
+        ;;
+    esac
+  done
+done
+
+echo "$MOVES" # need quote

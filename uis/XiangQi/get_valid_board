@@ -5,192 +5,184 @@ POSx=${POSXS%%${ARENA_MOVE:0:1}*}
 POSX1=${#POSx} # x position of piece1 0..9
 POSx=${POSXS%%${ARENA_MOVE:2:1}*}
 POSX2=${#POSx} # x position of piece2 0..9
-[ "$POSX1" -eq ${#POSXS} -o "$POSX2" -eq ${#POSXS} ] && exit 1
+[ $POSX1 -eq 10 -o $POSX2 -eq 10 ] && exit 1
 POSY1=$((${ARENA_MOVE:1:1}-1)) # y position of piece1 0..8
 POSY2=$((${ARENA_MOVE:3:1}-1)) # y position of piece2 0..8
-[ "$POSY1" -gt 8 -o "$POSY2" -gt 8 ] && exit 1
+[ $POSY1 -gt 8 -o $POSY2 -gt 8 ] && exit 1
 DIST=$(((POSX1-POSX2)*(POSX1-POSX2)+(POSY1-POSY2)*(POSY1-POSY2)))
 
 if [ ${#ARENA_MOVE} -eq 4 ] ; then
-  SEQ1=$((POSY1*${#POSXS}+POSX1))
-  [ "${SEQ1}" -lt 0 -o "${SEQ1}" -gt 89 ] && exit 1
-  PIECE1="${ARENA_BOARD:SEQ1:1}"
-  SEQ2=$((POSY2*${#POSXS}+POSX2))
-  [ "${SEQ2}" -lt 0 -o "${SEQ2}" -gt 89 ] && exit 1
-  PIECE2="${ARENA_BOARD:SEQ2:1}"
+  SEQ1=$((POSY1*10+POSX1))
+  [ $SEQ1 -lt 0 -o $SEQ1 -gt 89 ] && exit 1
+  PIECE1=${ARENA_BOARD:SEQ1:1}
+  SEQ2=$((POSY2*10+POSX2))
+  [ $SEQ2 -lt 0 -o $SEQ2 -gt 89 ] && exit 1
+  PIECE2=${ARENA_BOARD:SEQ2:1}
 else
   exit 1
 fi
 
-[ "${PIECE1}" = "_" ] && exit 1
-[ "$SEQ1" -eq "$SEQ2" ] && exit 1
+[ $PIECE1 = _ ] && exit 1
+[ $SEQ1 -eq $SEQ2 ] && exit 1
 
 if [ $((ARENA_MOVENO%2)) -eq 1 ] ; then # check if red turn
-  [ "$PIECE1" != "${PIECE1^}" ] && exit 1
-  [ "$PIECE2" != "_" -a "$PIECE2" = "${PIECE2^}" ] && exit 1
+  [ $PIECE1 != ${PIECE1^} ] && exit 1
+  [ $PIECE2 != _ -a $PIECE2 = ${PIECE2^} ] && exit 1
 else
-  [ "$PIECE1" = "${PIECE1^}" ] && exit 1
-  [ "$PIECE2" != "_" -a "$PIECE2" != "${PIECE2^}" ] && exit 1
+  [ $PIECE1 = ${PIECE1^} ] && exit 1
+  [ $PIECE2 != _ -a $PIECE2 != ${PIECE2^} ] && exit 1
 fi
 
-case ${PIECE1} in
+case $PIECE1 in
   K|k)
-     if [ ${PIECE2^} = K ] ; then
-       [ $POSY1 -ne $POSY2 ] && exit 1
-       if [ $POSX1 -lt $POSX2 ] ; then
-         POS=$((POSX1+1))
-         while [ $POS -lt $POSX2 ] ; do
-           SEQ=$((POSY1*${#POSXS}+POS))
-           [ ${ARENA_BOARD:SEQ:1} != _ ] && exit 1
-           let POS++
-         done
-       else
-         POS=$((POSX1-1))
-         while [ $POS -gt $POSX2 ] ; do
-           SEQ=$((POSY1*${#POSXS}+POS))
-           [ ${ARENA_BOARD:SEQ:1} != _ ] && exit 1
-           let POS--
-         done
-       fi     
-     else
-       [ "$DIST" -ne 1 ] && exit 1
-       [ $POSX2 -gt 2 -a $POSX2 -lt 7 ] && exit 1
-       [ $POSY2 -lt 3 -o $POSY2 -gt 5 ] && exit 1
-     fi
-     ;;
+    if [ ${PIECE2^} = K ] ; then
+      [ $POSY1 -ne $POSY2 ] && exit 1
+      if [ $POSX1 -lt $POSX2 ] ; then
+        POS=$((POSX1+1))
+        while [ $POS -lt $POSX2 ] ; do
+          SEQ=$((POSY1*10+POS))
+          [ ${ARENA_BOARD:SEQ:1} != _ ] && exit 1
+          let POS++
+        done
+      else
+        POS=$((POSX1-1))
+        while [ $POS -gt $POSX2 ] ; do
+          SEQ=$((POSY1*10+POS))
+          [ ${ARENA_BOARD:SEQ:1} != _ ] && exit 1
+          let POS--
+        done
+      fi     
+    else
+      [ $DIST -ne 1 ] && exit 1
+      [ $POSX2 -gt 2 -a $POSX2 -lt 7 ] && exit 1
+      [ $POSY2 -lt 3 -o $POSY2 -gt 5 ] && exit 1
+    fi
+    ;;
   A|a)
-     [ "$DIST" -ne 2 ] && exit 1
-     [ $POSX2 -gt 2 -a $POSX2 -lt 7 ] && exit 1
-     [ $POSY2 -lt 3 -o $POSY2 -gt 5 ] && exit 1
-     ;;
+    [ $DIST -ne 2 ] && exit 1
+    [ $POSX2 -gt 2 -a $POSX2 -lt 7 ] && exit 1
+    [ $POSY2 -lt 3 -o $POSY2 -gt 5 ] && exit 1
+    ;;
   E|e) 
-     [ "$DIST" -ne 8 ] && exit 1
-     [ $POSX2 -eq 3 -o $POSX2 -eq 6 ] && exit 1
-     if [ $((POSX2-POSX1)) -eq 2 -a $((POSY2-POSY1)) -eq 2 ] ; then
-       SEQ=$(((POSY1+1)*${#POSXS}+POSX1+1))
-     elif [ $((POSX2-POSX1)) -eq -2 -a $((POSY2-POSY1)) -eq -2 ] ; then
-       SEQ=$(((POSY1+1)*${#POSXS}+POSX1-1))
-     elif [ $((POSX2-POSX1)) -eq -2 -a $((POSY2-POSY1)) -eq -2 ] ; then
-       SEQ=$(((POSY1-1)*${#POSXS}+POSX1-1))
-     elif [ $((POSX2-POSX1)) -eq 2 -a $((POSY2-POSY1)) -eq -2 ] ; then
-       SEQ=$(((POSY1-1)*${#POSXS}+POSX1+1))
-     fi
-     [ ${ARENA_BOARD:SEQ:1} != _ ] && exit 1
-     ;;
+    [ $DIST -ne 8 ] && exit 1
+    [ $POSX2 -eq 3 -o $POSX2 -eq 6 ] && exit 1
+    SEQ=$(((POSY1+POSY2)/2*10+(POSX1+POSX2)/2))
+    [ ${ARENA_BOARD:SEQ:1} != _ ] && exit 1
+    ;;
   R|r) 
-     if [ $POSX1 = $POSX2 ] ; then
-       if [ $POSY1 -lt $POSY2 ] ; then
-         POS=$((POSY1+1))
-         while [ $POS -lt $POSY2 ] ; do
-           SEQ=$((POS*${#POSXS}+POSX1))
-           [ ${ARENA_BOARD:SEQ:1} != _ ] && exit 1
-           let POS++
-         done
-       else
-         POS=$((POSY1-1))
-         while [ $POS -gt $POSY2 ] ; do
-           SEQ=$((POS*${#POSXS}+POSX1))
-           [ ${ARENA_BOARD:SEQ:1} != _ ] && exit 1
-           let POS--
-         done       
-       fi
-     elif [ $POSY1 = $POSY2 ] ; then
-       if [ $POSX1 -lt $POSX2 ] ; then
-         POS=$((POSX1+1))
-         while [ $POS -lt $POSX2 ] ; do
-           SEQ=$((POSY1*${#POSXS}+POS))
-           [ ${ARENA_BOARD:SEQ:1} != _ ] && exit 1
-           let POS++
-         done
-       else
-         POS=$((POSX1-1))
-         while [ $POS -gt $POSX2 ] ; do
-           SEQ=$((POSY1*${#POSXS}+POS))
-           [ ${ARENA_BOARD:SEQ:1} != _ ] && exit 1
-           let POS--
-         done
-       fi     
-     else
-       exit 1
-     fi
-     ;;
+    if [ $POSX1 = $POSX2 ] ; then
+      if [ $POSY1 -lt $POSY2 ] ; then
+        POS=$((POSY1+1))
+        while [ $POS -lt $POSY2 ] ; do
+          SEQ=$((POS*10+POSX1))
+          [ ${ARENA_BOARD:SEQ:1} != _ ] && exit 1
+          let POS++
+        done
+      else
+        POS=$((POSY1-1))
+        while [ $POS -gt $POSY2 ] ; do
+          SEQ=$((POS*10+POSX1))
+          [ ${ARENA_BOARD:SEQ:1} != _ ] && exit 1
+          let POS--
+        done       
+      fi
+    elif [ $POSY1 = $POSY2 ] ; then
+      if [ $POSX1 -lt $POSX2 ] ; then
+        POS=$((POSX1+1))
+        while [ $POS -lt $POSX2 ] ; do
+          SEQ=$((POSY1*10+POS))
+          [ ${ARENA_BOARD:SEQ:1} != _ ] && exit 1
+          let POS++
+        done
+      else
+        POS=$((POSX1-1))
+        while [ $POS -gt $POSX2 ] ; do
+          SEQ=$((POSY1*10+POS))
+          [ ${ARENA_BOARD:SEQ:1} != _ ] && exit 1
+          let POS--
+        done
+      fi     
+    else
+      exit 1
+    fi
+    ;;
   H|h) 
-     [ "$DIST" -ne 5 ] && exit 1
-     if [ $((POSX2-POSX1)) -eq 2 -a $((POSY2-POSY1)) -eq 1 ] ; then
-       SEQ=$((POSY1*${#POSXS}+POSX1+1))
-     elif [ $((POSX2-POSX1)) -eq 1 -a $((POSY2-POSY1)) -eq 2 ] ; then
-       SEQ=$(((POSY1+1)*${#POSXS}+POSX1))
-     elif [ $((POSX2-POSX1)) -eq -1 -a $((POSY2-POSY1)) -eq 2 ] ; then
-       SEQ=$(((POSY1+1)*${#POSXS}+POSX1))
-     elif [ $((POSX2-POSX1)) -eq -2 -a $((POSY2-POSY1)) -eq 1 ] ; then
-       SEQ=$((POSY1*${#POSXS}+POSX1-1))
-     elif [ $((POSX2-POSX1)) -eq -2 -a $((POSY2-POSY1)) -eq -1 ] ; then
-       SEQ=$((POSY1*${#POSXS}+POSX1-1))
-     elif [ $((POSX2-POSX1)) -eq -1 -a $((POSY2-POSY1)) -eq -2 ] ; then
-       SEQ=$(((POSY1-1)*${#POSXS}+POSX1))
-     elif [ $((POSX2-POSX1)) -eq 1 -a $((POSY2-POSY1)) -eq -2 ] ; then
-       SEQ=$(((POSY1-1)*${#POSXS}+POSX1))
-     elif [ $((POSX2-POSX1)) -eq 2 -a $((POSY2-POSY1)) -eq -1 ] ; then
-       SEQ=$((POSY1*${#POSXS}+POSX1+1))
-     fi
-     [ ${ARENA_BOARD:SEQ:1} != _ ] && exit 1
-     ;;
+    [ $DIST -ne 5 ] && exit 1
+    if [ $((POSX2-POSX1)) -eq 2 -a $((POSY2-POSY1)) -eq 1 ] ; then
+      SEQ=$((POSY1*10+POSX1+1))
+    elif [ $((POSX2-POSX1)) -eq 1 -a $((POSY2-POSY1)) -eq 2 ] ; then
+      SEQ=$(((POSY1+1)*10+POSX1))
+    elif [ $((POSX2-POSX1)) -eq -1 -a $((POSY2-POSY1)) -eq 2 ] ; then
+      SEQ=$(((POSY1+1)*10+POSX1))
+    elif [ $((POSX2-POSX1)) -eq -2 -a $((POSY2-POSY1)) -eq 1 ] ; then
+      SEQ=$((POSY1*10+POSX1-1))
+    elif [ $((POSX2-POSX1)) -eq -2 -a $((POSY2-POSY1)) -eq -1 ] ; then
+      SEQ=$((POSY1*10+POSX1-1))
+    elif [ $((POSX2-POSX1)) -eq -1 -a $((POSY2-POSY1)) -eq -2 ] ; then
+      SEQ=$(((POSY1-1)*10+POSX1))
+    elif [ $((POSX2-POSX1)) -eq 1 -a $((POSY2-POSY1)) -eq -2 ] ; then
+      SEQ=$(((POSY1-1)*10+POSX1))
+    elif [ $((POSX2-POSX1)) -eq 2 -a $((POSY2-POSY1)) -eq -1 ] ; then
+      SEQ=$((POSY1*10+POSX1+1))
+    fi
+    [ ${ARENA_BOARD:SEQ:1} != _ ] && exit 1
+    ;;
   C|c) 
-     MIDDLE=0
-     if [ $POSX1 = $POSX2 ] ; then
-       if [ $POSY1 -lt $POSY2 ] ; then
-         POS=$((POSY1+1))
-         while [ $POS -lt $POSY2 ] ; do
-           SEQ=$((POS*${#POSXS}+POSX1))
-           [ ${ARENA_BOARD:SEQ:1} != _ ] && let MIDDLE++
-           let POS++
-         done
-       else
-         POS=$((POSY1-1))
-         while [ $POS -gt $POSY2 ] ; do
-           SEQ=$((POS*${#POSXS}+POSX1))
-           [ ${ARENA_BOARD:SEQ:1} != _ ] && let MIDDLE++
-           let POS--
-         done       
-       fi
-     elif [ $POSY1 = $POSY2 ] ; then
-       if [ $POSX1 -lt $POSX2 ] ; then
-         POS=$((POSX1+1))
-         while [ $POS -lt $POSX2 ] ; do
-           SEQ=$((POSY1*${#POSXS}+POS))
-           [ ${ARENA_BOARD:SEQ:1} != _ ] && let MIDDLE++
-           let POS++
-         done
-       else
-         POS=$((POSX1-1))
-         while [ $POS -gt $POSX2 ] ; do
-           SEQ=$((POSY1*${#POSXS}+POS))
-           [ ${ARENA_BOARD:SEQ:1} != _ ] && let MIDDLE++
-           let POS--
-         done
-       fi     
-     else
-       exit 1
-     fi
-     if [ $PIECE2 = _ ] ; then
-       [ $MIDDLE -ne 0 ] && exit 1
-     else
-       [ $MIDDLE -ne 1 ] && exit 1
-     fi
-     ;;
+    MIDDLE=0
+    if [ $POSX1 = $POSX2 ] ; then
+      if [ $POSY1 -lt $POSY2 ] ; then
+        POS=$((POSY1+1))
+        while [ $POS -lt $POSY2 ] ; do
+          SEQ=$((POS*10+POSX1))
+          [ ${ARENA_BOARD:SEQ:1} != _ ] && let MIDDLE++
+          let POS++
+        done
+      else
+        POS=$((POSY1-1))
+        while [ $POS -gt $POSY2 ] ; do
+          SEQ=$((POS*10+POSX1))
+          [ ${ARENA_BOARD:SEQ:1} != _ ] && let MIDDLE++
+          let POS--
+        done       
+      fi
+    elif [ $POSY1 = $POSY2 ] ; then
+      if [ $POSX1 -lt $POSX2 ] ; then
+        POS=$((POSX1+1))
+        while [ $POS -lt $POSX2 ] ; do
+          SEQ=$((POSY1*10+POS))
+          [ ${ARENA_BOARD:SEQ:1} != _ ] && let MIDDLE++
+          let POS++
+        done
+      else
+        POS=$((POSX1-1))
+        while [ $POS -gt $POSX2 ] ; do
+          SEQ=$((POSY1*10+POS))
+          [ ${ARENA_BOARD:SEQ:1} != _ ] && let MIDDLE++
+          let POS--
+        done
+      fi     
+    else
+      exit 1
+    fi
+    if [ $PIECE2 = _ ] ; then
+      [ $MIDDLE -ne 0 ] && exit 1
+    else
+      [ $MIDDLE -ne 1 ] && exit 1
+    fi
+    ;;
   P) 
-     [ "$DIST" -ne 1 ] && exit 1
-     [ $POSX2 -lt $POSX1 ] && exit 1
-     [ $POSX2 -eq $POSX1 -a $POSX1 -lt 6 ] && exit 1
-     ;;
+    [ $DIST -ne 1 ] && exit 1
+    [ $POSX2 -lt $POSX1 ] && exit 1
+    [ $POSX2 -eq $POSX1 -a $POSX1 -lt 5 ] && exit 1
+    ;;
   p) 
-     [ "$DIST" -ne 1 ] && exit 1
-     [ $POSX2 -gt $POSX1 ] && exit 1
-     [ $POSX2 -eq $POSX1 -a $POSX1 -gt 4 ] && exit 1
-     ;;
+    [ $DIST -ne 1 ] && exit 1
+    [ $POSX2 -gt $POSX1 ] && exit 1
+    [ $POSX2 -eq $POSX1 -a $POSX1 -gt 4 ] && exit 1
+    ;;
 esac
 
-ARENA_BOARD="${ARENA_BOARD:0:$SEQ1}""_""${ARENA_BOARD:$SEQ1+1}"
-[ "$PIECE2" != "_" ] && ARENA_BOARD="${ARENA_BOARD:0:$SEQ2}${PIECE1}${ARENA_BOARD:$SEQ2+1}${PIECE2}" || ARENA_BOARD="${ARENA_BOARD:0:$SEQ2}${PIECE1}${ARENA_BOARD:$SEQ2+1}"
+ARENA_BOARD="${ARENA_BOARD:0:SEQ1}_${ARENA_BOARD:SEQ1+1}"
+[ $PIECE2 != _ ] && ARENA_BOARD="${ARENA_BOARD:0:SEQ2}${PIECE1}${ARENA_BOARD:SEQ2+1}${PIECE2}" || ARENA_BOARD="${ARENA_BOARD:0:SEQ2}${PIECE1}${ARENA_BOARD:SEQ2+1}"
 
 echo "$ARENA_BOARD"

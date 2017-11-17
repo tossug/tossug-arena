@@ -1,7 +1,7 @@
 #!/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
 
-# check if one player has no piece
+# if one player has no piece
 BOARD=${ARENA_BOARD:0:32} # get living pieces
 if [ "$BOARD" = "${BOARD/@/}" ] ; then
   if [ "$BOARD" = "${BOARD^^}" -o "$BOARD" = "${BOARD,,}" ] ; then
@@ -10,16 +10,14 @@ if [ "$BOARD" = "${BOARD/@/}" ] ; then
   fi
 fi
 
-# check if no valid move
-if [ -x "$DATADIR/uis/$ARENA_GAME/get_valid_moves" ] ; then
-  MOVES=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"`
-  if [ -z "$MOVES" ] ; then
-    echo "STALEMATE WINS !"
-    exit 0
-  fi
+# if no valid move
+MOVES=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"`
+if [ -z "$MOVES" ] ; then
+  echo "STALEMATE WINS !"
+  exit 0
 fi
 
-# check if the game is draw
+# if the game is draw
 BOARD=${ARENA_BOARD:0:32} # get living board
 [ $((ARENA_MOVENO%2)) -eq 1 ] && TURN="$ARENA_COLOR1" || TURN="$ARENA_COLOR2" # get color turn
 LIVE=${BOARD//_/}
