@@ -104,7 +104,7 @@ else # default
       echo -n "`piece $POS`" # need quote
     done
     case $y in
-      8) echo -e "\t\t\t$ARENA_GAME" ;;
+      8) echo -e "\t$ARENA_GAME" ;;
       6) echo -e "\t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}" ;;
       4) echo -e "\t${MESSAGE}" ;;
       2) echo -e "\t☠ : ${REDDEAD}" ;;
@@ -113,5 +113,4 @@ else # default
     esac
   done
   echo -en "   Ａ Ｂ Ｃ Ｄ Ｅ Ｆ Ｇ Ｈ Ｊ Ｋ\tMove No. ${ARENA_MOVENO}: "
-  sleep 1
 fi
