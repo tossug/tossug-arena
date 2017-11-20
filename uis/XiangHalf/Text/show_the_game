@@ -1,12 +1,28 @@
 #!/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
-BOARD="$ARENA_BOARD"
-ENAMES="KAERHCPkaerhcp_@"
-CNAMES="帥仕相俥傌炮兵將士象車馬包卒　＠"
-for i in {0..15} ; do
+function piece {
+  SEQ=$1
+  PIECE=${ARENA_BOARD:SEQ:1}
+  if [ $PIECE = _ ] ; then
+    echo -n "　"
+  elif [ $PIECE = @ ] ; then
+    echo -n "● "
+  else
+    POSXS="ABCDEFGH"
+    if [ "${ARENA_MOVE:2:2}" = ${POSXS:SEQ%8:1}$((SEQ/8+1)) ] ; then
+      echo -en "\033[7m"$PIECE"\033[0m"
+    else
+      echo -n $PIECE
+    fi
+  fi
+}
+
+ENAMES="KAERHCPkaerhcp"
+CNAMES="帥仕相俥傌炮兵將士象車馬包卒"
+for i in {0..13} ; do
   ENAME="${ENAMES:$i:1}"
   CNAME="${CNAMES:$i:1}"
-  BOARD=${BOARD//$ENAME/$CNAME}
+  ARENA_BOARD=${ARENA_BOARD//$ENAME/$CNAME}
 done
 
 if [ -z "$ARENA_COLOR1" ] ; then
@@ -54,7 +70,7 @@ else
   PLAYER1=$PLAYER1" "
 fi
 
-DEADS="${BOARD:33}"
+DEADS="${ARENA_BOARD:33}"
 REDDEAD=""
 BLACKDEAD=""
 i=0
@@ -69,15 +85,15 @@ if [ "${ARENA_THEME,,}" = log ] ; then
   [ -n "$ARENA_STATUS" ] && echo "${MESSAGE} ${ARENA_MOVENO} Moves."
 else # default
   clear
-  echo
-  echo -e "   ╔ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╗ \t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}"
-  echo -e "４ ║ "${BOARD:24:1}"│ "${BOARD:25:1}"│ "${BOARD:26:1}"│ "${BOARD:27:1}"│ "${BOARD:28:1}"│ "${BOARD:29:1}"│ "${BOARD:30:1}"│ "${BOARD:31:1}"║ "
-  echo -e "   ╟ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ╢ "
-  echo -e "３ ║ "${BOARD:16:1}"│ "${BOARD:17:1}"│ "${BOARD:18:1}"│ "${BOARD:19:1}"│ "${BOARD:20:1}"│ "${BOARD:21:1}"│ "${BOARD:22:1}"│ "${BOARD:23:1}"║ "
+  echo -e "   ╔ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╤ ═ ╗ \t\t\t$ARENA_GAME"
+  echo -e "４ ║ "`piece 24`"│ "`piece 25`"│ "`piece 26`"│ "`piece 27`"│ "`piece 28`"│ "`piece 29`"│ "`piece 30`"│ "`piece 31`"║ "
+  echo -e "   ╟ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ╢ \t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}"
+  echo -e "３ ║ "`piece 16`"│ "`piece 17`"│ "`piece 18`"│ "`piece 19`"│ "`piece 20`"│ "`piece 21`"│ "`piece 22`"│ "`piece 23`"║ "
   echo -e "   ╟ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ╢ \t${MESSAGE}"
-  echo -e "２ ║ "${BOARD:8:1}"│ "${BOARD:9:1}"│ "${BOARD:10:1}"│ "${BOARD:11:1}"│ "${BOARD:12:1}"│ "${BOARD:13:1}"│ "${BOARD:14:1}"│ "${BOARD:15:1}"║ "
+  echo -e "２ ║ "`piece 8`"│ "`piece 9`"│ "`piece 10`"│ "`piece 11`"│ "`piece 12`"│ "`piece 13`"│ "`piece 14`"│ "`piece 15`"║ "
   echo -e "   ╟ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ┼ ─ ╢ \t☠ : ${REDDEAD}"
-  echo -e "１ ║ "${BOARD:0:1}"│ "${BOARD:1:1}"│ "${BOARD:2:1}"│ "${BOARD:3:1}"│ "${BOARD:4:1}"│ "${BOARD:5:1}"│ "${BOARD:6:1}"│ "${BOARD:7:1}"║ \t    ${BLACKDEAD}"
+  echo -e "１ ║ "`piece 0`"│ "`piece 1`"│ "`piece 2`"│ "`piece 3`"│ "`piece 4`"│ "`piece 5`"│ "`piece 6`"│ "`piece 7`"║ \t    ${BLACKDEAD}"
   echo -e "   ╚ ═ ╧ ═ ╧ ═ ╧ ═ ╧ ═ ╧ ═ ╧ ═ ╧ ═ ╝ "  
   echo -en "     Ａ  Ｂ  Ｃ  Ｄ  Ｅ  Ｆ  Ｇ  Ｈ  \tMove No. ${ARENA_MOVENO}: "
+  sleep 1
 fi

@@ -23,8 +23,8 @@ for y in {0..3} ; do
     for z in 1,0 0,1 -1,0 0,-1 ; do
       let NEWX=x+${z%,*} NEWY=y+${z#*,}
       [ $NEWX -lt 0 -o $NEWX -gt 7 -o $NEWY -lt 0 -o $NEWY -gt 3 ] && continue
-      POS2=${POSXS:NEWX:1}$((NEWY+1))
       PIECE2=${ARENA_BOARD:NEWY*8+NEWX:1}
+      POS2=${POSXS:NEWX:1}$((NEWY+1))
       if [ $PIECE2 = _ ] ; then
         MOVES="${MOVES}${POS1}${POS2} "
       elif [ $PIECE2 = @ ] ; then
@@ -41,43 +41,28 @@ for y in {0..3} ; do
           [1-4]) [ $RANK2 -ge $RANK1 ] && MOVES="${MOVES}${POS1}${POS2} " ;;
           6) [ $RANK2 -eq 0 -o $RANK2 -eq 6 ] && MOVES="${MOVES}${POS1}${POS2} " ;;
         esac
-      fi      
-    done
-    for z in 2,0 3,0 4,0 5,0 6,0 7,0 0,2 0,3 -2,0 -3,0 -4,0 -5,0 -6,0 -7,0 0,-2 0,-3 ; do
-      let NEWX=x+${z%,*} NEWY=y+${z#*,}
-      [ $NEWX -lt 0 -o $NEWX -gt 7 -o $NEWY -lt 0 -o $NEWY -gt 3 ] && continue
-      POS2=${POSXS:NEWX:1}$((NEWY+1))
-      PIECE2=${ARENA_BOARD:NEWY*8+NEWX:1}
-      if [ ${PIECE1^} = C -a $PIECE2 != _ -a $PIECE2 != @ ] ; then
-        [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && continue
-        [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && continue
+      fi
+      if [ ${PIECE1^} = C ] ; then
+        let DELTAX=${z%,*} DELTAY=${z#*,}
         MIDDLE=0
-        if [ $NEWX -eq $x -a $NEWY -gt $y ] ; then
-          let NEWY--
-          while [ $NEWY -gt $y ] ; do
-            [ ${ARENA_BOARD:NEWY*8+NEWX:1} != _ ] && let MIDDLE++
-            let NEWY--
-          done
-        elif [ $NEWX -eq $x -a $NEWY -lt $y ] ; then
-          let NEWY++
-          while [ $NEWY -lt $y ] ; do
-            [ ${ARENA_BOARD:NEWY*8+NEWX:1} != _ ] && let MIDDLE++
-            let NEWY++
-          done
-        elif [ $NEWX -gt $x -a $NEWY -eq $y ] ; then
-          let NEWX--
-          while [ $NEWX -gt $x ] ; do
-            [ ${ARENA_BOARD:NEWY*8+NEWX:1} != _ ] && let MIDDLE++
-            let NEWX--
-          done
-        elif [ $NEWX -lt $x -a $NEWY -eq $y ] ; then
-          let NEWX++
-          while [ $NEWX -lt $x ] ; do
-            [ ${ARENA_BOARD:NEWY*8+NEWX:1} != _ ] && let MIDDLE++
-            let NEWX++
-          done
-        fi
-        [ $MIDDLE -eq 1 ] && MOVES="${MOVES}${POS1}${POS2} "
+        while [ $NEWX -ge 0 -a $NEWX -lt 8 -a $NEWY -ge 0 -a $NEWY -lt 4 ] ; do
+          PIECE2=${ARENA_BOARD:NEWY*8+NEWX:1}
+          if [ $PIECE2 = _ ] ; then
+            let NEWX+=DELTAX NEWY+=DELTAY
+          else
+            if [ $MIDDLE -eq 0 ] ; then
+              MIDDLE=1
+              let NEWX+=DELTAX NEWY+=DELTAY
+            else
+              [ $PIECE2 = @ ] && break
+              [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && break
+              [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && break
+              POS2=${POSXS:NEWX:1}$((NEWY+1))
+              MOVES="${MOVES}${POS1}${POS2} "
+              break
+            fi
+          fi
+        done
       fi
     done
   done

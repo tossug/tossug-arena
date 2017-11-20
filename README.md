@@ -6,7 +6,8 @@ Gamelets Arena for AI Players
 Testing
 =======
 	./tossug-arena
-	./tossug-arena XiangHalf RandomFast RandomFast
+	./tossug-arena XiangQi RandomFast Random
+	./tossug-arena XiangHalf Random RandomFast
 	mkdir players/XiangHalf/YourName
 	cp players/XiangHalf/RandomFast/main players/XiangHalf/YourName/main
 	$EDITOR players/XiangHalf/YourName/main

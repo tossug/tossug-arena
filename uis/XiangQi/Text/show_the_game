@@ -1,5 +1,38 @@
 #!/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+function piece {
+  SEQ=$1
+  PIECE=${ARENA_BOARD:SEQ:1}
+  if [ $PIECE = _ ] ; then
+    case $SEQ in
+      0) PIECE="╚ ═" ;;
+      [1-8]) PIECE="╧ ═" ;;
+      9) PIECE="╝ " ;;
+      [1-7]0) PIECE="╟ ─" ;;
+      [1-7][123678]) PIECE="┼ ─" ;;
+      [1-7]4) PIECE="┤  " ;;
+      [1-7]5) PIECE="├ ─" ;;
+      [1-7]9) PIECE="╢ " ;;
+      80) PIECE="╔ ═" ;;
+      8[1-8]) PIECE="╤ ═" ;;
+      89) PIECE="╗ " ;;
+    esac
+  else
+    POSXS="ABCDEFGHJK"
+    [ "${ARENA_MOVE:2:2}" = ${POSXS:SEQ%10:1}$((SEQ/10+1)) ] && PIECE="\033[7m"$PIECE"\033[0m"
+    if [ $((SEQ%10)) -ne 9 ] ; then
+      if [ $((SEQ/10%8)) -eq 0 ] ; then
+        PIECE=$PIECE"═"
+      elif [ $((SEQ%10)) -ne 4 ] ; then
+        PIECE=$PIECE"─"
+      else
+        PIECE=$PIECE" "
+      fi
+    fi
+  fi
+  echo -en "$PIECE" # need quote
+}
+
 ENAMES="KAERHCPkaerhcp"
 CNAMES="帥仕相俥傌炮兵將士象車馬包卒"
 for i in {0..13} ; do
@@ -7,27 +40,6 @@ for i in {0..13} ; do
   CNAME="${CNAMES:$i:1}"
   ARENA_BOARD=${ARENA_BOARD//$ENAME/$CNAME}
 done
-BOARD=""
-for i in {0..89} ; do
-  CNAME="${ARENA_BOARD:$i:1}"
-  if [ "$CNAME" = _ ] ; then
-    case $i in
-      0) CNAME="╚" ;;
-      [1-8]) CNAME="╧" ;;
-      9) CNAME="╝" ;;
-      [1-7]0) CNAME="╟" ;;
-      [1-7][123678]) CNAME="┼" ;;
-      [1-7]4) CNAME="┤" ;;
-      [1-7]5) CNAME="├" ;;
-      [1-7]9) CNAME="╢" ;;
-      80) CNAME="╔" ;;
-      8[1-8]) CNAME="╤" ;;
-      89) CNAME="╗" ;;
-    esac
-  fi
-  BOARD="$BOARD$CNAME"
-done
-BOARD="$BOARD"${ARENA_BOARD:90}
 
 PLAYER1="(Red)"
 PLAYER2="(Black)"
@@ -69,7 +81,7 @@ else
   PLAYER1=$PLAYER1" "
 fi
 
-DEADS="${BOARD:91}"
+DEADS="${ARENA_BOARD:91}"
 REDDEAD=""
 BLACKDEAD=""
 i=0
@@ -85,30 +97,21 @@ if [ "${ARENA_THEME,,}" = log ] ; then
 else # default
   POSY="１２３４５６７８９"
   clear
-  echo
   for y in {8..0} ; do
     echo -n ${POSY:y:1}" "
     for x in {0..9} ; do
       POS=$((y*10+x))
-      echo -n ${BOARD:POS:1}
-      if [ ${ARENA_BOARD:POS:1} = _ ] ; then
-        echo -n " "
-      fi
-      if [ $x -ne 9 ] ; then
-        if [ $y -eq 8 -o $y -eq 0 ] ; then
-          echo -n "═"
-        else
-          [ $x -eq 4 ] && echo -n " " || echo -n "─"
-        fi
-      fi
+      echo -n "`piece $POS`" # need quote
     done
     case $y in
-      8) echo -e "\t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}" ;;
-      5) echo -e "\t${MESSAGE}" ;;
+      8) echo -e "\t\t\t$ARENA_GAME" ;;
+      6) echo -e "\t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}" ;;
+      4) echo -e "\t${MESSAGE}" ;;
       2) echo -e "\t☠ : ${REDDEAD}" ;;
       1) echo -e "\t    ${BLACKDEAD}" ;;
       *) echo ;;
     esac
   done
   echo -en "   Ａ Ｂ Ｃ Ｄ Ｅ Ｆ Ｇ Ｈ Ｊ Ｋ\tMove No. ${ARENA_MOVENO}: "
+  sleep 1
 fi
