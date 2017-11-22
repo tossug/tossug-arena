@@ -1,0 +1,149 @@
+#!/bin/bash
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+POSXS="ABCDEFGHJ"
+[ $((ARENA_MOVENO%3)) -eq 1 ] && TURN=$ARENA_COLOR1 # get color turn
+[ $((ARENA_MOVENO%3)) -eq 2 ] && TURN=$ARENA_COLOR2
+[ $((ARENA_MOVENO%3)) -eq 0 ] && TURN=$ARENA_COLOR3
+PIECESRED="AERHC"
+PIECESBLACK="aerhc"
+PIECESMIXED="KkPp"
+
+MOVES=""
+for y in {0..4} ; do
+  for x in {0..8} ; do
+    let SEQ1=y*9+x
+    POS1=${POSXS:x:1}$((y+1))
+    PIECE1=${ARENA_BOARD:SEQ1:1}
+    if [ $PIECE1 = _ ] ; then
+      continue
+    elif [ $PIECE1 = @ ] ; then
+      MOVES="${MOVES}${POS1}${POS1} "
+      continue
+    elif [ "$TURN" = Red ] ; then
+      [ $PIECESRED = ${PIECESRED/$PIECE1/} ] && continue
+    elif [ "$TURN" = Black ] ; then
+      [ $PIECESBLACK = ${PIECESBLACK/$PIECE1/} ] && continue
+    elif [ "$TURN" = Mixed ] ; then
+      [ $PIECESMIXED = ${PIECESMIXED/$PIECE1/} ] && continue
+    else
+      continue
+    fi
+
+    case $PIECE1 in
+      A|a)
+        for z in 1,1 -1,1 -1,-1 1,-1 ; do
+          let NEWX=x+${z%,*} NEWY=y+${z#*,}
+          [ $NEWX -lt 0 -o $NEWX -gt 8 -o $NEWY -lt 0 -o $NEWY -gt 4 ] && continue
+          PIECE2=${ARENA_BOARD:NEWY*9+NEWX:1}
+          if [ $PIECE2 != _ ] ; then
+            [ $PIECE2 = @ ] && continue
+            [ $TURN = Red -a $PIECESRED != ${PIECESRED/$PIECE2/} ] && continue
+            [ $TURN = Black -a $PIECESBLACK != ${PIECESBLACK/$PIECE2/} ] && continue
+            [ $TURN = Mixed -a $PIECESMIXED != ${PIECESMIXED/$PIECE2/} ] && continue
+          fi
+          POS2=${POSXS:NEWX:1}$((NEWY+1))
+          MOVES="${MOVES}${POS1}${POS2} "
+        done
+        ;;
+      E|e)
+        for z in 2,2 -2,2 -2,-2 2,-2 ; do
+          let NEWX=x+${z%,*} NEWY=y+${z#*,}
+          [ $NEWX -lt 0 -o $NEWX -gt 8 -o $NEWY -lt 0 -o $NEWY -gt 4 ] && continue
+          PIECE2=${ARENA_BOARD:NEWY*9+NEWX:1}
+          if [ $PIECE2 != _ ] ; then
+            [ $PIECE2 = @ ] && continue
+            [ $TURN = Red -a $PIECESRED != ${PIECESRED/$PIECE2/} ] && continue
+            [ $TURN = Black -a $PIECESBLACK != ${PIECESBLACK/$PIECE2/} ] && continue
+            [ $TURN = Mixed -a $PIECESMIXED != ${PIECESMIXED/$PIECE2/} ] && continue
+          fi
+          POS2=${POSXS:NEWX:1}$((NEWY+1))
+          MOVES="${MOVES}${POS1}${POS2} "
+        done
+        ;;
+      K|k|R|r)
+        for z in 1,0 0,1 -1,0 0,-1 ; do
+          let DELTAX=${z%,*} DELTAY=${z#*,}
+          let NEWX=x+DELTAX NEWY=y+DELTAY
+          while [ $NEWX -ge 0 -a $NEWX -lt 9 -a $NEWY -ge 0 -a $NEWY -lt 5 ] ; do
+            PIECE2=${ARENA_BOARD:NEWY*9+NEWX:1}
+            if [ $PIECE2 = _ ] ; then
+              POS2=${POSXS:NEWX:1}$((NEWY+1))
+              MOVES="${MOVES}${POS1}${POS2} "
+              let NEWX+=DELTAX NEWY+=DELTAY            
+            else
+              [ $PIECE2 = @ ] && break
+              [ $TURN = Red -a $PIECESRED != ${PIECESRED/$PIECE2/} ] && break
+              [ $TURN = Black -a $PIECESBLACK != ${PIECESBLACK/$PIECE2/} ] && break
+              [ $TURN = Mixed -a $PIECESMIXED != ${PIECESMIXED/$PIECE2/} ] && break
+              POS2=${POSXS:NEWX:1}$((NEWY+1))
+              MOVES="${MOVES}${POS1}${POS2} "
+              break
+            fi
+          done
+        done
+        ;;
+      H|h)
+        for z in 2,1 1,2 -1,2 -2,1 -2,-1 -1,-2 1,-2 2,-1 ; do
+          let NEWX=x+${z%,*} NEWY=y+${z#*,}
+          [ $NEWX -lt 0 -o $NEWX -gt 8 -o $NEWY -lt 0 -o $NEWY -gt 4 ] && continue
+          PIECE2=${ARENA_BOARD:NEWY*9+NEWX:1}
+          if [ $PIECE2 != _ ] ; then
+            [ $PIECE2 = @ ] && continue
+            [ $TURN = Red -a $PIECESRED != ${PIECESRED/$PIECE2/} ] && continue
+            [ $TURN = Black -a $PIECESBLACK != ${PIECESBLACK/$PIECE2/} ] && continue
+            [ $TURN = Mixed -a $PIECESMIXED != ${PIECESMIXED/$PIECE2/} ] && continue
+          fi
+          POS2=${POSXS:NEWX:1}$((NEWY+1))
+          MOVES="${MOVES}${POS1}${POS2} "
+        done
+        ;;
+      C|c)
+        for z in 1,0 0,1 -1,0 0,-1 ; do
+          let DELTAX=${z%,*} DELTAY=${z#*,}
+          let NEWX=x+DELTAX NEWY=y+DELTAY
+          MIDDLE=0
+          while [ $NEWX -ge 0 -a $NEWX -lt 9 -a $NEWY -ge 0 -a $NEWY -lt 5 ] ; do
+            PIECE2=${ARENA_BOARD:NEWY*9+NEWX:1}
+            if [ $PIECE2 = _ ] ; then
+              if [ $MIDDLE -eq 0 ] ; then
+                POS2=${POSXS:NEWX:1}$((NEWY+1))
+                MOVES="${MOVES}${POS1}${POS2} "
+              fi
+              let NEWX+=DELTAX NEWY+=DELTAY
+            else
+              if [ $MIDDLE -eq 0 ] ; then
+                MIDDLE=1
+                let NEWX+=DELTAX NEWY+=DELTAY
+              else
+                [ $PIECE2 = @ ] && break
+                [ $TURN = Red -a $PIECESRED != ${PIECESRED/$PIECE2/} ] && break
+                [ $TURN = Black -a $PIECESBLACK != ${PIECESBLACK/$PIECE2/} ] && break
+                [ $TURN = Mixed -a $PIECESMIXED != ${PIECESMIXED/$PIECE2/} ] && break
+                POS2=${POSXS:NEWX:1}$((NEWY+1))
+                MOVES="${MOVES}${POS1}${POS2} "
+                break
+              fi
+            fi
+          done
+        done
+        ;;
+      P|p)
+        for z in 1,0 -1,0 0,1 0,-1 ; do
+          let NEWX=x+${z%,*} NEWY=y+${z#*,}
+          [ $NEWX -lt 0 -o $NEWX -gt 8 -o $NEWY -lt 0 -o $NEWY -gt 4 ] && continue
+          PIECE2=${ARENA_BOARD:NEWY*9+NEWX:1}
+          if [ $PIECE2 != _ ] ; then
+            [ $PIECE2 = @ ] && continue
+            [ $TURN = Red -a $PIECESRED != ${PIECESRED/$PIECE2/} ] && continue
+            [ $TURN = Black -a $PIECESBLACK != ${PIECESBLACK/$PIECE2/} ] && continue
+            [ $TURN = Mixed -a $PIECESMIXED != ${PIECESMIXED/$PIECE2/} ] && continue
+          fi
+          POS2=${POSXS:NEWX:1}$((NEWY+1))
+          MOVES="${MOVES}${POS1}${POS2} "
+        done
+        ;;
+    esac
+  done
+done
+
+echo "$MOVES" # need quote

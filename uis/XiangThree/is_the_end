@@ -1,0 +1,19 @@
+#!/bin/bash
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+
+# if no valid move
+MOVES=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"`
+if [ -z "$MOVES" ] ; then
+  let ARENA_MOVENO++
+  MOVES=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"`
+  if [ -z "$MOVES" ] ; then
+    echo "ELIMINATION WINS !"
+    exit 0
+  fi
+fi
+
+# if the game is draw
+
+# not the end of game
+echo "$ARENA_STATUS" # still return last status
+exit 1

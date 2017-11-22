@@ -9,7 +9,7 @@ Pieces Code
 
 Variables Example
 =================
-	ARENA_PLAYER1="RandomFast"
+	ARENA_PLAYER1="Random"
 	ARENA_PLAYER2="Human"
 	ARENA_THEME="default"
 	ARENA_THEME="log"
@@ -25,11 +25,11 @@ Variables Example
 
 Calling Flow
 ============
-* uis/XiangQi/Text/main default RandomFast Human
+* uis/XiangQi/Text/main default Random Human
 	* uis/XiangQi/is_the_end
 		* uis/XiangQi/get_valid_moves
 	* uis/XiangQi/Text/show_the_game
-	* players/XiangQi/RandomFast/main
+	* players/XiangQi/Random/main
 		* uis/XiangQi/get_valid_moves
 		* uis/XiangQi/get_valid_board
 	* uis/XiangQi/get_valid_board

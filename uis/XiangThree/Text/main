@@ -1,0 +1,125 @@
+#!/bin/bash
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+DATADIR=`dirname "$0"`
+export ARENA_UI=`basename "$DATADIR"`
+DATADIR=`dirname "$DATADIR"`
+export ARENA_GAME=`basename "$DATADIR"`
+DATADIR=`dirname "$DATADIR"`
+export DATADIR=`dirname "$DATADIR"`
+
+export ARENA_THEME="$1"
+export ARENA_PLAYER1="$2"
+export ARENA_PLAYER2="$3"
+export ARENA_PLAYER3="$4"
+export ARENA_COLOR1=""
+export ARENA_COLOR2=""
+export ARENA_COLOR3=""
+export ARENA_BOARD="@@@@_@@@@@@@@_@@@@_________@@@@_@@@@@@@@_@@@@|"
+export ARENA_MOVENO=1
+export ARENA_MOVE=""
+export ARENA_STATUS=""
+
+until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
+  "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/show_the_game"
+  if [ $((ARENA_MOVENO%3)) -eq 1 ] ; then
+    ARENA_PLAYER="$ARENA_PLAYER1"
+  elif [ $((ARENA_MOVENO%3)) -eq 2 ] ; then
+    ARENA_PLAYER="$ARENA_PLAYER2"
+  else
+    ARENA_PLAYER="$ARENA_PLAYER3"
+  fi
+  if [ "$ARENA_PLAYER" = Human ] ; then
+    sleep 1
+    read ARENA_MOVE
+    ARENA_MOVE=${ARENA_MOVE^^}
+  else
+    ARENA_MOVE=`"$DATADIR/players/$ARENA_GAME/$ARENA_PLAYER/main"`
+    [ "${ARENA_THEME,,}" != log ] && echo "$ARENA_MOVE"
+  fi
+  if [ -n "$ARENA_MOVE" ] ; then
+    ARENA_BOARD_NEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_board"`
+    if [ -z "$ARENA_BOARD_NEXT" ] ; then
+      ARENA_STATUS="INVALID MOVE: $ARENA_MOVE"
+      if [ "$ARENA_PLAYER" = Human ] ; then
+        continue
+      else
+        break
+      fi
+    else
+      ARENA_BOARD="$ARENA_BOARD_NEXT"
+      ARENA_STATUS=""
+      if [ -z "$ARENA_COLOR1" ] ; then
+        for i in A E R H C ; do
+          [ "$ARENA_BOARD" != "${ARENA_BOARD/$i/}" ] && ARENA_COLOR1="Red"
+        done
+        for i in a e r h c ; do
+          [ "$ARENA_BOARD" != "${ARENA_BOARD/$i/}" ] && ARENA_COLOR1="Black"
+        done
+        for i in K k P p ; do
+          [ "$ARENA_BOARD" != "${ARENA_BOARD/$i/}" ] && ARENA_COLOR1="Mixed"
+        done
+      elif [ -z "$ARENA_COLOR2" -a $((ARENA_MOVENO%3)) -eq 2 ] ; then
+        if [ "$ARENA_COLOR1" != Red ] ; then
+          for i in A E R H C ; do
+            if [ "$ARENA_BOARD" != "${ARENA_BOARD/$i/}" ] ; then
+              ARENA_COLOR2="Red"
+              [ "$ARENA_COLOR1" = Black ] && ARENA_COLOR3="Mixed" || ARENA_COLOR3="Black"
+              break
+            fi
+          done
+        fi
+        if [ "$ARENA_COLOR1" != Black ] ; then
+          for i in a e r h c ; do
+            if [ "$ARENA_BOARD" != "${ARENA_BOARD/$i/}" ] ; then
+              ARENA_COLOR2="Black"
+              [ "$ARENA_COLOR1" = Red ] && ARENA_COLOR3="Mixed" || ARENA_COLOR3="Red"
+              break
+            fi
+          done
+        fi
+        if [ "$ARENA_COLOR1" != Mixed ] ; then
+          for i in K k P p ; do
+            if [ "$ARENA_BOARD" != "${ARENA_BOARD/$i/}" ] ; then
+              ARENA_COLOR2="Mixed"
+              [ "$ARENA_COLOR1" = Black ] && ARENA_COLOR3="Red" || ARENA_COLOR3="Black"
+              break
+            fi
+          done
+        fi
+      elif [ -z "$ARENA_COLOR3" -a $((ARENA_MOVENO%3)) -eq 0 ] ; then
+        if [ "$ARENA_COLOR1" != Red ] ; then
+          for i in A E R H C ; do
+            if [ "$ARENA_BOARD" != "${ARENA_BOARD/$i/}" ] ; then
+              ARENA_COLOR3="Red"
+              [ "$ARENA_COLOR1" = Black ] && ARENA_COLOR2="Mixed" || ARENA_COLOR2="Black"
+              break
+            fi
+          done
+        fi
+        if [ "$ARENA_COLOR1" != Black ] ; then
+          for i in a e r h c ; do
+            if [ "$ARENA_BOARD" != "${ARENA_BOARD/$i/}" ] ; then
+              ARENA_COLOR3="Black"
+              [ "$ARENA_COLOR1" = Red ] && ARENA_COLOR2="Mixed" || ARENA_COLOR2="Red"
+              break
+            fi
+          done
+        fi
+        if [ "$ARENA_COLOR1" != Mixed ] ; then
+          for i in K k P p ; do
+            if [ "$ARENA_BOARD" != "${ARENA_BOARD/$i/}" ] ; then
+              ARENA_COLOR3="Mixed"
+              [ "$ARENA_COLOR1" = Black ] && ARENA_COLOR2="Red" || ARENA_COLOR2="Black"
+              break
+            fi
+          done
+        fi
+      fi
+    fi
+  else
+    ARENA_STATUS="STALEMATE PASS !"
+  fi
+  let ARENA_MOVENO++
+done
+"$DATADIR/uis/$ARENA_GAME/$ARENA_UI/show_the_game"
+[ "${ARENA_THEME,,}" != log ] && echo "THE END"
