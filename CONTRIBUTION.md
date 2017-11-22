@@ -11,8 +11,8 @@ Todos
 =====
 * players/*/YourName/main
 * rounds/Connect6
-        * uis/Connect6/Text/main
-        * uis/Connect6/Window/main
+	* uis/Connect6/Text/main
+	* uis/Connect6/Window/main
 * rounds/Go9
 	* uis/Go9/Text/main
 	* uis/Go9/Window/main

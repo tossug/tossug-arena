@@ -113,7 +113,7 @@ while [ $i -lt ${#DEADS} ] ; do
 done
 
 if [ "${ARENA_THEME,,}" = log ] ; then
-  [ -n "$ARENA_STATUS" ] && echo "${MESSAGE} ${ARENA_MOVENO} Moves."
+  [ "$ARENA_STATUS" != "${ARENA_STATUS/WINS/}" ] && echo "${MESSAGE} ${ARENA_MOVENO} Moves."
 else # default
   clear
   echo -e "   $ARENA_GAME\t\t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2} vs. ${ARENA_PLAYER3}${PLAYER3}"

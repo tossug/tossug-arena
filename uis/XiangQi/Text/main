@@ -16,6 +16,7 @@ export ARENA_BOARD="R__P__p__rH_C____c_hE__P__p__eA________aK__P__p__kA________a
 export ARENA_MOVENO=1
 export ARENA_MOVE=""
 export ARENA_STATUS=""
+export ARENA_TEMP=`mktemp`
 
 until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
   "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/show_the_game"
