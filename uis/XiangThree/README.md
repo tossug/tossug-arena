@@ -35,7 +35,4 @@ Calling Flow
 	* players/XiangThree/Random/main
 		* uis/XiangThree/get_valid_moves
 		* uis/XiangThree/get_valid_board
-	* players/XiangThree/Random0/main
-		* uis/XiangThree/get_valid_moves
-		* uis/XiangThree/get_valid_board
 	* uis/XiangThree/get_valid_board

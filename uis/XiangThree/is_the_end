@@ -13,7 +13,7 @@ if [ -z "$MOVES" ] ; then
 fi
 
 # if the game is draw
-if [ `grep -c "$ARENA_BOARD" $ARENA_TEMP` -eq 5 ] ; then # not sure
+if [ `grep -c "$ARENA_BOARD" $ARENA_TEMP` -eq 10 ] ; then # not sure
   echo "DRAW GAME !"
   exit 0
 else

@@ -30,23 +30,14 @@ for y in {0..4} ; do
     fi
 
     case $PIECE1 in
-      A|a)
-        for z in 1,1 -1,1 -1,-1 1,-1 ; do
-          let NEWX=x+${z%,*} NEWY=y+${z#*,}
-          [ $NEWX -lt 0 -o $NEWX -gt 8 -o $NEWY -lt 0 -o $NEWY -gt 4 ] && continue
-          PIECE2=${ARENA_BOARD:NEWY*9+NEWX:1}
-          if [ $PIECE2 != _ ] ; then
-            [ $PIECE2 = @ ] && continue
-            [ $TURN = Red -a $PIECESRED != ${PIECESRED/$PIECE2/} ] && continue
-            [ $TURN = Black -a $PIECESBLACK != ${PIECESBLACK/$PIECE2/} ] && continue
-            [ $TURN = Mixed -a $PIECESMIXED != ${PIECESMIXED/$PIECE2/} ] && continue
-          fi
-          POS2=${POSXS:NEWX:1}$((NEWY+1))
-          MOVES="${MOVES}${POS1}${POS2} "
-        done
-        ;;
-      E|e)
-        for z in 2,2 -2,2 -2,-2 2,-2 ; do
+      A|a|E|e|H|h|P|p)
+        case $PIECE1 in
+          A|a) DELTAMOVES="1,1 -1,1 -1,-1 1,-1" ;;
+          E|e) DELTAMOVES="2,2 -2,2 -2,-2 2,-2" ;;
+          H|h) DELTAMOVES="2,1 1,2 -1,2 -2,1 -2,-1 -1,-2 1,-2 2,-1" ;;
+          P|p) DELTAMOVES="1,0 -1,0 0,1 0,-1" ;;
+        esac
+        for z in $DELTAMOVES ; do
           let NEWX=x+${z%,*} NEWY=y+${z#*,}
           [ $NEWX -lt 0 -o $NEWX -gt 8 -o $NEWY -lt 0 -o $NEWY -gt 4 ] && continue
           PIECE2=${ARENA_BOARD:NEWY*9+NEWX:1}
@@ -82,21 +73,6 @@ for y in {0..4} ; do
           done
         done
         ;;
-      H|h)
-        for z in 2,1 1,2 -1,2 -2,1 -2,-1 -1,-2 1,-2 2,-1 ; do
-          let NEWX=x+${z%,*} NEWY=y+${z#*,}
-          [ $NEWX -lt 0 -o $NEWX -gt 8 -o $NEWY -lt 0 -o $NEWY -gt 4 ] && continue
-          PIECE2=${ARENA_BOARD:NEWY*9+NEWX:1}
-          if [ $PIECE2 != _ ] ; then
-            [ $PIECE2 = @ ] && continue
-            [ $TURN = Red -a $PIECESRED != ${PIECESRED/$PIECE2/} ] && continue
-            [ $TURN = Black -a $PIECESBLACK != ${PIECESBLACK/$PIECE2/} ] && continue
-            [ $TURN = Mixed -a $PIECESMIXED != ${PIECESMIXED/$PIECE2/} ] && continue
-          fi
-          POS2=${POSXS:NEWX:1}$((NEWY+1))
-          MOVES="${MOVES}${POS1}${POS2} "
-        done
-        ;;
       C|c)
         for z in 1,0 0,1 -1,0 0,-1 ; do
           let DELTAX=${z%,*} DELTAY=${z#*,}
@@ -125,21 +101,6 @@ for y in {0..4} ; do
               fi
             fi
           done
-        done
-        ;;
-      P|p)
-        for z in 1,0 -1,0 0,1 0,-1 ; do
-          let NEWX=x+${z%,*} NEWY=y+${z#*,}
-          [ $NEWX -lt 0 -o $NEWX -gt 8 -o $NEWY -lt 0 -o $NEWY -gt 4 ] && continue
-          PIECE2=${ARENA_BOARD:NEWY*9+NEWX:1}
-          if [ $PIECE2 != _ ] ; then
-            [ $PIECE2 = @ ] && continue
-            [ $TURN = Red -a $PIECESRED != ${PIECESRED/$PIECE2/} ] && continue
-            [ $TURN = Black -a $PIECESBLACK != ${PIECESBLACK/$PIECE2/} ] && continue
-            [ $TURN = Mixed -a $PIECESMIXED != ${PIECESMIXED/$PIECE2/} ] && continue
-          fi
-          POS2=${POSXS:NEWX:1}$((NEWY+1))
-          MOVES="${MOVES}${POS1}${POS2} "
         done
         ;;
     esac
