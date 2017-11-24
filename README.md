@@ -1,7 +1,11 @@
-TOSSUG Arena
-============
-Gamelets Arena for AI Players  
+Gamelets Arena for AI Players
+=============================
+TOSSUG Arena runs as a platform for building gamelets.
+Contributors can add their scripts as player to battle with others,
+human, random or themselves.
+
 <https://github.com/tossug/tossug-arena>
+
 
 Testing
 =======

@@ -10,7 +10,8 @@ BuildArch:	noarch
 
 %description
 TOSSUG Arena runs as a platform for building gamelets.
-Contributors can add their scripts as player to battle with others.
+Contributors can add their scripts as player to battle with others,
+human, random or themselves.
 
 %prep
 %setup -q

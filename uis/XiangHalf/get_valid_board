@@ -23,13 +23,10 @@ function randompiece {
   echo "${PIECES:$i:1}"
 }
 
-SEQ1=`pos2seq ${ARENA_MOVE:0:2}`
-[ "${SEQ1}" -lt 0 -o "${SEQ1}" -gt 31 ] && exit 1
-PIECE1="${ARENA_BOARD:$SEQ1:1}"
-if [ ${#ARENA_MOVE} -eq 2 ] ; then
-  SEQ2="$SEQ1"
-  PIECE2="$PIECE1"
-elif [ ${#ARENA_MOVE} -eq 4 ] ; then
+if [ ${#ARENA_MOVE} -eq 4 ] ; then
+  SEQ1=`pos2seq ${ARENA_MOVE:0:2}`
+  [ "${SEQ1}" -lt 0 -o "${SEQ1}" -gt 31 ] && exit 1
+  PIECE1="${ARENA_BOARD:$SEQ1:1}"
   SEQ2=`pos2seq ${ARENA_MOVE:2:2}`
   [ "${SEQ2}" -lt 0 -o "${SEQ2}" -gt 31 ] && exit 1
   PIECE2="${ARENA_BOARD:$SEQ2:1}"
