@@ -3,29 +3,33 @@
 function piece {
   SEQ=$1
   PIECE=${ARENA_BOARD:SEQ:1}
-  POSXS="ABCDEFGHJ"
   POSX=${POSXS:SEQ%9:1}
   POSY=$((SEQ/9+1))
   if [ $PIECE = _ ] ; then
     case $POSX$POSY in
-      A1) PIECE="╚ " ;;
-      [B-H]1) PIECE="╧ " ;;
-      J1) PIECE="╝ " ;;
-      A[2-4]) PIECE="╟ " ;;
-      [B-H][2-4]) PIECE="┼ " ;;
-      J[2-4]) PIECE="╢ " ;;
-      A5) PIECE="╔ " ;;
-      [B-H]5) PIECE="╤ " ;;
-      J5) PIECE="╗ " ;;
+      A1) PIECE="╚" ;;
+      [B-H]1) PIECE="╧" ;;
+      J1) PIECE="╝" ;;
+      A[2-4]) PIECE="╟" ;;
+      [B-H][2-4]) PIECE="┼" ;;
+      J[2-4]) PIECE="╢" ;;
+      A5) PIECE="╔" ;;
+      [B-H]5) PIECE="╤" ;;
+      J5) PIECE="╗" ;;
     esac
+    [ "${ARENA_MOVE:0:2}" = $POSX$POSY ] && PIECE="\033[2m$PIECE\033[0m"
+    if [ $POSX != J ] ; then
+      [ $POSY -eq 1 -o $POSY -eq 5 ] && PIECE+="═" || PIECE+="─"
+    fi
   elif [ $PIECE = @ ] ; then
     PIECE="◎ "
   else
-    [ "${ARENA_MOVE:2:2}" = $POSX$POSY ] && PIECE="\033[7m"$PIECE"\033[0m"
+    [ "${ARENA_MOVE:2:2}" = $POSX$POSY ] && PIECE="\033[7m$PIECE\033[0m"
   fi
   echo -en "$PIECE" # need quote
 }
 
+POSXS="ABCDEFGHJ"
 ENAMES="AERHCaerhcKkPp"
 CNAMES="仕相俥傌炮士象車馬包帥將兵卒"
 for i in {0..13} ; do
@@ -116,15 +120,15 @@ if [ "${ARENA_THEME,,}" = log ] ; then
   [ "$ARENA_STATUS" != "${ARENA_STATUS/WINS/}" ] && echo "${MESSAGE} ${ARENA_MOVENO} Moves."
 else # default
   clear
-  echo -e "   $ARENA_GAME\t\t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2} vs. ${ARENA_PLAYER3}${PLAYER3}"
-  echo -e "５ "`piece 36`"═ "`piece 37`"═ "`piece 38`"═ "`piece 39`"═ "`piece 40`"═ "`piece 41`"═ "`piece 42`"═ "`piece 43`"═ "`piece 44`
+  echo -e "Three Kingdoms Xiang Qi    ${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2} vs. ${ARENA_PLAYER3}${PLAYER3}"
+  echo -e "５ "`piece 36`"══"`piece 37`"══"`piece 38`"══"`piece 39`"══"`piece 40`"══"`piece 41`"══"`piece 42`"══"`piece 43`"══"`piece 44`
   echo -e "   ║   │   │   │   │   │   │   │   ║ "
-  echo -e "４ "`piece 27`"─ "`piece 28`"─ "`piece 29`"─ "`piece 30`"─ "`piece 31`"─ "`piece 32`"─ "`piece 33`"─ "`piece 34`"─ "`piece 35`"\t${MESSAGE}"
+  echo -e "４ "`piece 27`"──"`piece 28`"──"`piece 29`"──"`piece 30`"──"`piece 31`"──"`piece 32`"──"`piece 33`"──"`piece 34`"──"`piece 35`"\t${MESSAGE}"
   echo -e "   ║   │   │   │   │   │   │   │   ║ "
-  echo -e "３ "`piece 18`"─ "`piece 19`"─ "`piece 20`"─ "`piece 21`"─ "`piece 22`"─ "`piece 23`"─ "`piece 24`"─ "`piece 25`"─ "`piece 26`
+  echo -e "３ "`piece 18`"──"`piece 19`"──"`piece 20`"──"`piece 21`"──"`piece 22`"──"`piece 23`"──"`piece 24`"──"`piece 25`"──"`piece 26`
   echo -e "   ║   │   │   │   │   │   │   │   ║ \t▥ : ${REDDEAD}"
-  echo -e "２ "`piece 9`"─ "`piece 10`"─ "`piece 11`"─ "`piece 12`"─ "`piece 13`"─ "`piece 14`"─ "`piece 15`"─ "`piece 16`"─ "`piece 17`"\t    ${BLACKDEAD}"
+  echo -e "２ "`piece 9`"──"`piece 10`"──"`piece 11`"──"`piece 12`"──"`piece 13`"──"`piece 14`"──"`piece 15`"──"`piece 16`"──"`piece 17`"\t    ${BLACKDEAD}"
   echo -e "   ║   │   │   │   │   │   │   │   ║ \t    ${MIXEDDEAD}"
-  echo -e "１ "`piece 0`"═ "`piece 1`"═ "`piece 2`"═ "`piece 3`"═ "`piece 4`"═ "`piece 5`"═ "`piece 6`"═ "`piece 7`"═ "`piece 8`
+  echo -e "１ "`piece 0`"══"`piece 1`"══"`piece 2`"══"`piece 3`"══"`piece 4`"══"`piece 5`"══"`piece 6`"══"`piece 7`"══"`piece 8`
   echo -en "   Ａ  Ｂ  Ｃ  Ｄ  Ｅ  Ｆ  Ｇ  Ｈ  Ｊ  \tMove No. ${ARENA_MOVENO}: "
 fi

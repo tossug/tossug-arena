@@ -83,13 +83,21 @@ else
 fi
 
 DEADS="${ARENA_BOARD:91}"
-REDDEAD=""
-BLACKDEAD=""
+REDDROPS=""
+REDCODES=""
+BLACKDROPS=""
+BLACKCODES=""
 i=0
 while [ $i -lt ${#DEADS} ] ; do
   DEAD=${DEADS:i:1}
   CNAMEX=${CNAMES%%${DEAD}*}
-  [ ${#CNAMEX} -lt 7 ] && REDDEAD=${REDDEAD}${DEAD} || BLACKDEAD=${BLACKDEAD}${DEAD}
+  if [ ${#CNAMEX} -lt 7 ] ; then
+    BLACKDROPS=${BLACKDROPS}${CNAMES:${#CNAMEX}+7:1}
+    BLACKCODES="${BLACKCODES} ${ENAMES:${#CNAMEX}:1}"
+  else
+    REDDROPS=${REDDROPS}${CNAMES:${#CNAMEX}-7:1}
+    REDCODES="${REDCODES} ${ENAMES:${#CNAMEX}-7:1}"
+  fi
   let i++
 done
 
@@ -105,11 +113,13 @@ else # default
       echo -n "`piece $POS`" # need quote
     done
     case $y in
-      8) echo -e "\tXiang Qi" ;;
+      8) echo -e "\tShuai Qi" ;;
       6) echo -e "\t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}" ;;
-      4) echo -e "\t${MESSAGE}" ;;
-      2) echo -e "\t▥ : ${REDDEAD}" ;;
-      1) echo -e "\t    ${BLACKDEAD}" ;;
+      5) echo -e "\t${MESSAGE}" ;;
+      4) echo -e "\t    ${REDCODES}" ;;
+      3) echo -e "\tＸ: ${REDDROPS}" ;;
+      2) echo -e "\t    ${BLACKDROPS}" ;;
+      1) echo -e "\t    ${BLACKCODES}" ;;
       *) echo ;;
     esac
   done

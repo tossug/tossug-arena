@@ -1,0 +1,52 @@
+#!/bin/bash
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+DATADIR=`dirname "$0"`
+export ARENA_UI=`basename "$DATADIR"`
+DATADIR=`dirname "$DATADIR"`
+export ARENA_GAME=`basename "$DATADIR"`
+DATADIR=`dirname "$DATADIR"`
+export DATADIR=`dirname "$DATADIR"`
+
+export ARENA_THEME="$1"
+export ARENA_PLAYER1="$2"
+export ARENA_PLAYER2="$3"
+export ARENA_COLOR1="Red"
+export ARENA_COLOR2="Black"
+export ARENA_BOARD="R__P__p__rH_C____c_hE__P__p__eA________aK__P__p__kA________aE__P__p__eH_C____c_hR__P__p__r|"
+export ARENA_MOVENO=1
+export ARENA_MOVE=""
+export ARENA_STATUS=""
+export ARENA_TEMP=`mktemp`
+
+until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
+  "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/show_the_game"
+  [ $((ARENA_MOVENO%2)) -eq 1 ] && ARENA_PLAYER="$ARENA_PLAYER1" || ARENA_PLAYER="$ARENA_PLAYER2"
+  if [ "$ARENA_PLAYER" = Human ] ; then
+    sleep 1
+    read ARENA_MOVE
+    ARENA_MOVE=${ARENA_MOVE^^}
+  else
+    ARENA_MOVE=`"$DATADIR/players/$ARENA_GAME/$ARENA_PLAYER/main"`
+    [ "${ARENA_THEME,,}" != log ] && echo "$ARENA_MOVE"
+  fi
+  if [ -n "$ARENA_MOVE" ] ; then
+    ARENA_BOARD_NEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_board"`
+    if [ -z "$ARENA_BOARD_NEXT" ] ; then
+      ARENA_STATUS="INVALID MOVE: $ARENA_MOVE"
+      if [ "$ARENA_PLAYER" = Human ] ; then
+        continue
+      else
+        break
+      fi
+    else
+      ARENA_BOARD="$ARENA_BOARD_NEXT"
+      ARENA_STATUS=""
+    fi
+  else
+    ARENA_STATUS="MIDDLE WINS !"
+    break
+  fi
+  let ARENA_MOVENO++
+done
+"$DATADIR/uis/$ARENA_GAME/$ARENA_UI/show_the_game"
+[ "${ARENA_THEME,,}" != log ] && echo "THE END"

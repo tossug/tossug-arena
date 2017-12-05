@@ -1,5 +1,6 @@
 #!/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+shopt -s extglob
 ARENA_ROUND=$1 # name of round file
 ARENA_PLAYER1=$2 # name of player1
 ARENA_PLAYER2=$3 # name of player2
@@ -13,11 +14,11 @@ RANDOM=`date +%s` # set random seed
 if [ $# -eq 0 ] ; then
   echo "TOSSUG Arena: Gamelets Arena for AI Players"
   echo "Usage:"
-  echo -e "\ttossug-arena ROUND [ PLAYER1 [ PLAYER2 [ PLAYER3 ]]]"
+  echo -e "\ttossug-arena ROUND[-log] [ PLAYER1 [ PLAYER2 [ PLAYER3 ]]]"
   echo
   echo "available ROUNDs:"
   cd "$DATADIR/rounds"
-  echo -e "\t"`ls`
+  echo -e "\t"`ls !(*-log)`
   echo "available PLAYERs: (Human as default)"
   cd "$DATADIR/players"
   for i in * ; do

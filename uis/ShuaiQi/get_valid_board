@@ -1,0 +1,53 @@
+#!/bin/bash
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+if [ ${ARENA_MOVE:0:1} = X ] ; then
+  POSXS="ABCDEFGHJK"
+  [ $((ARENA_MOVENO%2)) -eq 1 ] && TURN=$ARENA_COLOR1 || TURN=$ARENA_COLOR2 # get color turn
+  
+  POSx=${POSXS%%${ARENA_MOVE:2:1}*}
+  POSX2=${#POSx} # x position of piece2 0..9
+  POSY2=$((${ARENA_MOVE:3:1}-1)) # y position of piece2 0..8
+  [ $POSX2 -eq 10 -o $POSY2 -gt 8 ] && exit 1
+
+  if [ ${#ARENA_MOVE} -eq 4 ] ; then
+    PIECE1=${ARENA_MOVE:1:1}
+    [ $TURN = Red ] && PIECE1=${PIECE1,} || PIECE1=${PIECE1^}
+    SEQ2=$((POSY2*10+POSX2))
+    [ $SEQ2 -lt 0 -o $SEQ2 -gt 89 ] && exit 1
+    PIECE2=${ARENA_BOARD:SEQ2:1}
+  else
+    exit 1
+  fi
+
+  LIVES="${ARENA_BOARD:0:90}"
+  DEADS="${ARENA_BOARD:91}"
+  [ "$DEADS" = "${DEADS/$PIECE1/}" ] && exit 1
+  [ $PIECE2 != _ ] && exit 1
+  
+  if [ $TURN = Red ] ; then # check if red turn
+    case $PIECE1 in
+      a) [ $POSX2 -ne 0 -o $POSY2 -ne 3 -a $POSY2 -ne 5 ] && exit 1 ;;
+      e) [ $POSX2 -ne 0 -o $POSY2 -ne 2 -a $POSY2 -ne 6 ] && exit 1 ;;
+      r) [ $POSX2 -ne 0 -o $POSY2 -ne 0 -a $POSY2 -ne 8 ] && exit 1 ;;
+      h) [ $POSX2 -ne 0 -o $POSY2 -ne 1 -a $POSY2 -ne 7 ] && exit 1 ;;
+      c) [ $POSX2 -ne 2 -o $POSY2 -ne 1 -a $POSY2 -ne 7 ] && exit 1 ;;
+      p) [ $POSX2 -ne 3 -o $((POSY2%2)) -ne 0 ] && exit 1 ;;
+      *) exit 1 ;;
+    esac
+  else
+    case $PIECE1 in
+      A) [ $POSX2 -ne 9 -o $POSY2 -ne 3 -a $POSY2 -ne 5 ] && exit 1 ;;
+      E) [ $POSX2 -ne 9 -o $POSY2 -ne 2 -a $POSY2 -ne 6 ] && exit 1 ;;
+      R) [ $POSX2 -ne 9 -o $POSY2 -ne 0 -a $POSY2 -ne 8 ] && exit 1 ;;
+      H) [ $POSX2 -ne 9 -o $POSY2 -ne 1 -a $POSY2 -ne 7 ] && exit 1 ;;
+      C) [ $POSX2 -ne 7 -o $POSY2 -ne 1 -a $POSY2 -ne 7 ] && exit 1 ;;
+      P) [ $POSX2 -ne 6 -o $((POSY2%2)) -ne 0 ] && exit 1 ;;
+      *) exit 1 ;;
+    esac
+  fi
+  ARENA_BOARD="${LIVES:0:SEQ2}${PIECE1~}${LIVES:SEQ2+1}|${DEADS/$PIECE1/}"
+else
+  ARENA_BOARD=`"$DATADIR/uis/XiangQi/get_valid_board"`
+fi
+
+echo "$ARENA_BOARD"

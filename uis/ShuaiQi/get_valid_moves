@@ -1,0 +1,48 @@
+#!/bin/bash
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+POSXS="ABCDEFGHJK"
+[ $((ARENA_MOVENO%2)) -eq 1 ] && TURN=$ARENA_COLOR1 || TURN=$ARENA_COLOR2 # get color turn
+
+DEADS="${ARENA_BOARD:91}"
+MOVES=""
+i=0
+while [ $i -lt ${#DEADS} ] ; do
+  DEAD=${DEADS:i:1}
+  if [ $TURN = Red ] ; then
+    case $DEAD in
+      a) NEWXYS="0305" ;;
+      e) NEWXYS="0206" ;;
+      r) NEWXYS="0008" ;;
+      h) NEWXYS="0107" ;;
+      c) NEWXYS="2127" ;;
+      p) NEWXYS="3032343638" ;;
+      *) NEWXYS="" ;;
+    esac
+  else
+    case $DEAD in
+      A) NEWXYS="9395" ;;
+      E) NEWXYS="9296" ;;
+      R) NEWXYS="9098" ;;
+      H) NEWXYS="9197" ;;
+      C) NEWXYS="7177" ;;
+      P) NEWXYS="6062646668" ;;
+      *) NEWXYS="" ;;
+    esac
+  fi
+  j=0
+  while [ $j -lt ${#NEWXYS} ] ; do
+    NEWX=${NEWXYS:j:1}
+    NEWY=${NEWXYS:j+1:1}
+    PIECE2=${ARENA_BOARD:NEWY*10+NEWX:1}
+    if [ $PIECE2 = _ ] ; then
+      POS1=X${DEAD^}
+      POS2=${POSXS:NEWX:1}$((NEWY+1))
+      MOVES="${MOVES}${POS1}${POS2} "
+    fi
+    let j+=2
+  done
+  let i++
+done
+
+MOVES="$MOVES"`"$DATADIR/uis/XiangQi/get_valid_moves"`
+echo "$MOVES" # need quote

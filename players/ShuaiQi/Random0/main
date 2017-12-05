@@ -1,0 +1,15 @@
+#!/bin/bash
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+POSXS="ABCDEFGHJKX" # X positions of board
+DEADS="AERHCP"
+BOARDNEXT=""
+while [ -z "$BOARDNEXT" ] ; do
+  MOVE=${POSXS:RANDOM%11:1}
+  if [ $MOVE = X ] ; then
+    MOVE=$MOVE${DEADS:RANDOM%6:1}${POSXS:RANDOM%10:1}$((RANDOM%9+1))
+  else
+    MOVE=$MOVE$((RANDOM%9+1))${POSXS:RANDOM%10:1}$((RANDOM%9+1))
+  fi
+  BOARDNEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_board"`
+done
+echo "${MOVE}"

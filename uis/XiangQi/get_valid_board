@@ -1,6 +1,8 @@
 #!/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
 POSXS="ABCDEFGHJK"
+[ $((ARENA_MOVENO%2)) -eq 1 ] && TURN=$ARENA_COLOR1 || TURN=$ARENA_COLOR2 # get color turn
+
 POSx=${POSXS%%${ARENA_MOVE:0:1}*}
 POSX1=${#POSx} # x position of piece1 0..9
 POSx=${POSXS%%${ARENA_MOVE:2:1}*}
@@ -25,7 +27,7 @@ fi
 [ $PIECE1 = _ ] && exit 1
 [ $SEQ1 -eq $SEQ2 ] && exit 1
 
-if [ $((ARENA_MOVENO%2)) -eq 1 ] ; then # check if red turn
+if [ $TURN = Red ] ; then # check if red turn
   [ $PIECE1 != ${PIECE1^} ] && exit 1
   [ $PIECE2 != _ -a $PIECE2 = ${PIECE2^} ] && exit 1
 else
