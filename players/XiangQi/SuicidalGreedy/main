@@ -1,0 +1,84 @@
+#!/bin/bash
+# CC0, Kerwin Hui <kommodorekerz@gmail.com>, 2017
+# this AI is suicidal greedy
+# the logic says it is willing to sacrifice K for a p.
+
+# value of pieces according to oracle:
+# P=A=1, E=2, H=C=(4 to 5), R=9, K=infinity
+# we use 5 here for H and C.
+
+MOVESNEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"` # next valid moves
+
+POSXS="ABCDEFGHJK"
+FILTERED_MOVES=""
+is_capture=0 # store value of piece captured in FILTERED_MOVES; for K we take shortcut
+
+for test_move in ${MOVESNEXT}
+do
+	landing_pos=$((${test_move:3:1}*10-10))
+	# test landing position to see if it is capture
+	for x in {0..9}
+	do
+		if [ "${test_move:2:1}" = "${POSXS:x:1}" ]
+		then
+			landing_pos=$((landing_pos + x))
+		fi
+	done
+	case "${ARENA_BOARD:landing_pos:1}" in
+		"_")
+			[ "$is_capture" = "0" ] && FILTERED_MOVES="${FILTERED_MOVES}${test_move} "
+			;;
+		"P"|"p"|"A"|"a")
+			if [ "$is_capture" = "0" ]
+			then
+				is_capture="1"
+				FILTERED_MOVES="${test_move} "
+			elif [ ${is_capture} = "1" ]
+			then
+				FILTERED_MOVES="${FILTERED_MOVES}${test_move} "
+			fi
+			;;
+		"E"|"e")
+			if [ "$is_capture" -lt "2" ]
+			then
+				is_capture="2"
+				FILTERED_MOVES="${test_move} "
+			elif [ ${is_capture} = "2" ]
+			then
+				FILTERED_MOVES="${FILTERED_MOVES}${test_move} "
+			fi
+			;;
+		"H"|"h"|"C"|"c")
+			if [ "$is_capture" -lt "5" ]
+			then
+				is_capture="5"
+				FILTERED_MOVES="${test_move} "
+			elif [ ${is_capture} = "5" ]
+			then
+				FILTERED_MOVES="${FILTERED_MOVES}${test_move} "
+			fi
+			;;
+		"R"|"r")
+			if [ "$is_capture" -lt "9" ]
+			then
+				is_capture="9"
+				FILTERED_MOVES="${test_move} "
+			elif [ ${is_capture} = "9" ]
+			then
+				FILTERED_MOVES="${FILTERED_MOVES}${test_move} "
+			fi
+			;;
+		"K"|"k")
+			echo ${test_move}
+			exit 0
+			;;
+		*)
+			#shouldn't be here!
+			;;
+	esac
+done
+
+MOVESNO=$((${#FILTERED_MOVES}/5))
+MOVE=${FILTERED_MOVES:(RANDOM%MOVESNO)*5:4}
+
+echo ${MOVE}
