@@ -7,10 +7,15 @@
 # P=A=1, E=2, H=C=(4 to 5), R=9, K=infinity
 # we use 5 here for H and C.
 
+# AI preference: capture > drop > move
+# within capture, prefer capturing high value piece
+# within drop, prefer dropping high value piece
+
 MOVESNEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"` # next valid moves
 
 POSXS="ABCDEFGHJK"
 FILTERED_MOVES=""
+DROP_MOVES=""
 is_capture=0 # store value of piece captured in FILTERED_MOVES; for K we take shortcut
 
 for test_move in ${MOVESNEXT}
@@ -24,6 +29,10 @@ do
 			landing_pos=$((landing_pos + x))
 		fi
 	done
+	if [ "${test_move:0:1}" = "X" ]
+	then
+		DROP_MOVES="${DROP_MOVES}${test_move} "
+	fi
 	case "${ARENA_BOARD:landing_pos:1}" in
 		"_")
 			[ "$is_capture" = "0" ] && FILTERED_MOVES="${FILTERED_MOVES}${test_move} "
@@ -77,6 +86,40 @@ do
 			;;
 	esac
 done
+if [ -n "${DROP_MOVES}" -a "$is_capture" = "0" ]
+then
+	# sort drop pieces
+	# drop PAEHCR
+	FILTERED_MOVES=${DROP_MOVES}
+	# only P/A?
+	DROP_MOVES=${DROP_MOVES//XP?? /}
+	DROP_MOVES=${DROP_MOVES//Xp?? /}
+	DROP_MOVES=${DROP_MOVES//XA?? /}
+	DROP_MOVES=${DROP_MOVES//Xa?? /}
+	if [ -n "${DROP_MOVES}" ]
+	then
+		# drop EHCR
+		FILTERED_MOVES=${DROP_MOVES}
+		# only E?
+		DROP_MOVES=${DROP_MOVES//XE?? /}
+		DROP_MOVES=${DROP_MOVES//Xe?? /}
+		if [ -n "${DROP_MOVES}" ]
+		then
+			# drop HCR
+			FILTERED_MOVES=${DROP_MOVES}
+			# any R left?
+			DROP_MOVES=${DROP_MOVES//XH?? /}
+			DROP_MOVES=${DROP_MOVES//Xh?? /}
+			DROP_MOVES=${DROP_MOVES//XC?? /}
+			DROP_MOVES=${DROP_MOVES//Xc?? /}
+			if [ -n "${DROP_MOVES}" ]
+			then
+				# drop R
+				FILTERED_MOVES=${DROP_MOVES}
+			fi
+		fi
+	fi
+fi
 
 MOVESNO=$((${#FILTERED_MOVES}/5))
 MOVE=${FILTERED_MOVES:(RANDOM%MOVESNO)*5:4}

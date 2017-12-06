@@ -1,6 +1,7 @@
 Contributors
 ============
 Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+Kerwin Hui <kommodorekerz@gmail.com>, 2017
 
 Development Guide
 =================
