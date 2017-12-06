@@ -10,6 +10,7 @@ while [ -z "$BOARDNEXT" ] ; do
   else
     MOVE=$MOVE$((RANDOM%9+1))${POSXS:RANDOM%10:1}$((RANDOM%9+1))
   fi
+  ARENA_MOVE="$MOVE" # for calling get_valid_board
   BOARDNEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_board"`
 done
-echo "${MOVE}"
+echo "$MOVE"

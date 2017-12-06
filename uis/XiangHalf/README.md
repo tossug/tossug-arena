@@ -4,8 +4,8 @@ Xiang Qi with half board (Blind/Dark Elephant-Chess)
 
 Pieces Code
 ===========
-"KAERHCP" for "帥仕相俥傌炮兵" (Red)
-"kaerhcp" for "將士象車馬包卒" (Black)
+* "KAERHCP" for "帥仕相俥傌炮兵" (Red)
+* "kaerhcp" for "將士象車馬包卒" (Black)
 
 Variables Example
 =================

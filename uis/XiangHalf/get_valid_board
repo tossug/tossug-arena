@@ -13,61 +13,59 @@ function randompiece {
   BOARD="$1"
   PIECES="KAAEERRHHCCPPPPPkaaeerrhhccppppp"
   i=0
-  while [ "$i" -lt ${#BOARD} ] ; do
-    PIECE="${BOARD:$i:1}"
-    PIECES="${PIECES/$PIECE/}"
+  while [ $i -lt ${#BOARD} ] ; do
+    PIECE=${BOARD:$i:1}
+    PIECES=${PIECES/$PIECE/}
     let i++
   done
   i=${#PIECES}
   i=$((RANDOM%i))
-  echo "${PIECES:$i:1}"
+  echo ${PIECES:$i:1}
 }
 
 if [ ${#ARENA_MOVE} -eq 4 ] ; then
   SEQ1=`pos2seq ${ARENA_MOVE:0:2}`
-  [ "${SEQ1}" -lt 0 -o "${SEQ1}" -gt 31 ] && exit 1
-  PIECE1="${ARENA_BOARD:$SEQ1:1}"
+  [ ${SEQ1} -lt 0 -o ${SEQ1} -gt 31 ] && exit 1
+  PIECE1=${ARENA_BOARD:$SEQ1:1}
   SEQ2=`pos2seq ${ARENA_MOVE:2:2}`
-  [ "${SEQ2}" -lt 0 -o "${SEQ2}" -gt 31 ] && exit 1
-  PIECE2="${ARENA_BOARD:$SEQ2:1}"
+  [ ${SEQ2} -lt 0 -o ${SEQ2} -gt 31 ] && exit 1
+  PIECE2=${ARENA_BOARD:$SEQ2:1}
 else
   exit 1
 fi
 
-[ "${PIECE1}" = "_" ] && exit 1
-if [ "$SEQ1" -eq "$SEQ2" ] ; then
-  [ "${PIECE1}" != "@" ] && exit 1
+[ ${PIECE1} = _ ] && exit 1
+if [ $SEQ1 -eq $SEQ2 ] ; then
+  [ ${PIECE1} != @ ] && exit 1
   ARENA_BOARD="${ARENA_BOARD:0:$SEQ1}"`randompiece ${ARENA_BOARD}`"${ARENA_BOARD:$SEQ1+1}"
   echo "$ARENA_BOARD"
   exit 0
 fi
 
-[ "$PIECE1" = "@" -o "$PIECE2" = "@" ] && exit 1
+[ $PIECE1 = @ -o $PIECE2 = @ ] && exit 1
 [ $((ARENA_MOVENO%2)) -eq 1 ] && TURN=$ARENA_COLOR1 || TURN=$ARENA_COLOR2 # get color turn
 if [ $TURN = Red ] ; then
-  [ "$PIECE1" != "${PIECE1^}" ] && exit 1
-  [ "$PIECE2" != "_" -a "$PIECE2" = "${PIECE2^}" ] && exit 1
+  [ $PIECE1 != ${PIECE1^} ] && exit 1
+  [ $PIECE2 != _ -a $PIECE2 = ${PIECE2^} ] && exit 1
 elif [ $TURN = Black ] ; then
-  [ "$PIECE1" = "${PIECE1^}" ] && exit 1
-  [ "$PIECE2" != "_" -a "$PIECE2" != "${PIECE2^}" ] && exit 1
+  [ $PIECE1 = ${PIECE1^} ] && exit 1
+  [ $PIECE2 != _ -a $PIECE2 != ${PIECE2^} ] && exit 1
 else
   exit 1
 fi
 
-if [ "$PIECE2" = "_" -o "${PIECE1^}" != C ] ; then # check position
-  if [ "${ARENA_MOVE:0:1}" = "${ARENA_MOVE:2:1}" ] ; then
-    [ "${ARENA_MOVE:1:1}" = 1 -a "${ARENA_MOVE:3:1}" != 2 ] && exit 1
-    [ "${ARENA_MOVE:1:1}" = 2 -a "${ARENA_MOVE:3:1}" = 4 ] && exit 1
-    [ "${ARENA_MOVE:1:1}" = 3 -a "${ARENA_MOVE:3:1}" = 1 ] && exit 1
-    [ "${ARENA_MOVE:1:1}" = 4 -a "${ARENA_MOVE:3:1}" != 3 ] && exit 1
-  elif [ "${ARENA_MOVE:1:1}" = "${ARENA_MOVE:3:1}" ] ; then
-    [ "$SEQ1" -gt "$SEQ2" ] && let MIDDLE=SEQ1-SEQ2 || let MIDDLE=SEQ2-SEQ1
-    [ "$MIDDLE" -ne 1 ] && exit 1
+if [ $PIECE2 = _ -o ${PIECE1^} != C ] ; then # check position
+  if [ ${ARENA_MOVE:0:1} = ${ARENA_MOVE:2:1} ] ; then
+    [ $SEQ1 -gt $SEQ2 ] && let MIDDLE=SEQ1-SEQ2 || let MIDDLE=SEQ2-SEQ1
+    [ $MIDDLE -ne 8 ] && exit 1
+  elif [ ${ARENA_MOVE:1:1} = ${ARENA_MOVE:3:1} ] ; then
+    [ $SEQ1 -gt $SEQ2 ] && let MIDDLE=SEQ1-SEQ2 || let MIDDLE=SEQ2-SEQ1
+    [ $MIDDLE -ne 1 ] && exit 1
   else
     exit 1
   fi
 else
-  if [ "${ARENA_MOVE:0:1}" = "${ARENA_MOVE:2:1}" ] ; then
+  if [ ${ARENA_MOVE:0:1} = ${ARENA_MOVE:2:1} ] ; then
     [ "${ARENA_MOVE:1:1}" = 1 -a "${ARENA_MOVE:3:1}" = 2 ] && exit 1
     [ "${ARENA_MOVE:1:1}" = 1 -a "${ARENA_MOVE:3:1}" = 3 -a "${ARENA_BOARD:SEQ1+8:1}" = "_" ] && exit 1
     [ "${ARENA_MOVE:1:1}" = 1 -a "${ARENA_MOVE:3:1}" = 4 -a "${ARENA_BOARD:SEQ1+8:1}" != "_" -a "${ARENA_BOARD:SEQ1+16:1}" != "_" ] && exit 1
@@ -80,28 +78,28 @@ else
     [ "${ARENA_MOVE:1:1}" = 4 -a "${ARENA_MOVE:3:1}" = 2 -a "${ARENA_BOARD:SEQ1-8:1}" = "_" ] && exit 1
     [ "${ARENA_MOVE:1:1}" = 4 -a "${ARENA_MOVE:3:1}" = 1 -a "${ARENA_BOARD:SEQ1-16:1}" != "_" -a "${ARENA_BOARD:SEQ1-8:1}" != "_" ] && exit 1
     [ "${ARENA_MOVE:1:1}" = 4 -a "${ARENA_MOVE:3:1}" = 1 -a "${ARENA_BOARD:SEQ1-16:1}" = "_" -a "${ARENA_BOARD:SEQ1-8:1}" = "_" ] && exit 1
-  elif [ "${ARENA_MOVE:1:1}" = "${ARENA_MOVE:3:1}" ] ; then
-    [ "$SEQ1" -gt "$SEQ2" ] && MIDDLE="${ARENA_BOARD:SEQ2:SEQ1-SEQ2}" || MIDDLE="${ARENA_BOARD:SEQ1:SEQ2-SEQ1}"
-    MIDDLE="${MIDDLE//_/}"
+  elif [ ${ARENA_MOVE:1:1} = ${ARENA_MOVE:3:1} ] ; then
+    [ $SEQ1 -gt $SEQ2 ] && MIDDLE=${ARENA_BOARD:SEQ2:SEQ1-SEQ2} || MIDDLE=${ARENA_BOARD:SEQ1:SEQ2-SEQ1}
+    MIDDLE=${MIDDLE//_/}
     [ ${#MIDDLE} -ne 2 ] && exit 1
   else
     exit 1
   fi
 fi
-if [ "$PIECE2" != "_" ] ; then # check rank
+if [ $PIECE2 != _ ] ; then # check rank
   RANKS="KAERHCPkaerhcp"
-  RANK1="${RANKS%%${PIECE1}*}"
+  RANK1=${RANKS%%${PIECE1}*}
   RANK1=$((${#RANK1}%7))
-  RANK2="${RANKS%%${PIECE2}*}"
+  RANK2=${RANKS%%${PIECE2}*}
   RANK2=$((${#RANK2}%7))
-  case "$RANK1" in
-    0) [ "$RANK2" -eq 6 ] && exit 1 ;;
-    [1-4]) [ "$RANK2" -lt "$RANK1" ] && exit 1 ;;    
-    6) [ "$RANK2" -gt 0 -a "$RANK2" -lt 6 ] && exit 1 ;;
+  case $RANK1 in
+    0) [ $RANK2 -eq 6 ] && exit 1 ;;
+    [1-4]) [ $RANK2 -lt $RANK1 ] && exit 1 ;;    
+    6) [ $RANK2 -gt 0 -a $RANK2 -lt 6 ] && exit 1 ;;
   esac
 fi
 
-ARENA_BOARD="${ARENA_BOARD:0:$SEQ1}""_""${ARENA_BOARD:$SEQ1+1}"
-[ "$PIECE2" != "_" ] && ARENA_BOARD="${ARENA_BOARD:0:$SEQ2}${PIECE1}${ARENA_BOARD:$SEQ2+1}${PIECE2}" || ARENA_BOARD="${ARENA_BOARD:0:$SEQ2}${PIECE1}${ARENA_BOARD:$SEQ2+1}"
+ARENA_BOARD="${ARENA_BOARD:0:$SEQ1}_${ARENA_BOARD:$SEQ1+1}"
+[ $PIECE2 != _ ] && ARENA_BOARD="${ARENA_BOARD:0:$SEQ2}${PIECE1}${ARENA_BOARD:$SEQ2+1}${PIECE2}" || ARENA_BOARD="${ARENA_BOARD:0:$SEQ2}${PIECE1}${ARENA_BOARD:$SEQ2+1}"
 
 echo "$ARENA_BOARD"
