@@ -4,36 +4,15 @@ function piece {
   SEQ=$1
   PIECE=${ARENA_BOARD:SEQ:1}
   if [ $PIECE = _ ] ; then
-    case $SEQ in
-      0) PIECE="╚═" ;;
-      [1-8]) PIECE="╧═" ;;
-      9) PIECE="╝ " ;;
-      [1-7]0) PIECE="╟─" ;;
-      [1-7][123678]) PIECE="┼─" ;;
-      [1-7]4) PIECE="┤ " ;;
-      [1-7]5) PIECE="├─" ;;
-      [1-7]9) PIECE="╢ " ;;
-      80) PIECE="╔═" ;;
-      8[1-8]) PIECE="╤═" ;;
-      89) PIECE="╗ " ;;
-    esac
-    [ "${ARENA_MOVE:0:2}" = ${POSXS:SEQ%10:1}$((SEQ/10+1)) ] && PIECE="\033[2m$PIECE\033[0m"
+    [ "${ARENA_MOVE:0:2}" = ${POSXS:SEQ%8:1}$((SEQ/8+1)) ] && echo -en "﹍" || echo -n "　"
+  elif [ $PIECE = @ ] ; then
+    echo -n "◎ "
   else
-    [ "${ARENA_MOVE:2:2}" = ${POSXS:SEQ%10:1}$((SEQ/10+1)) ] && PIECE="\033[7m$PIECE\033[0m"
+    [ "${ARENA_MOVE:2:2}" = ${POSXS:SEQ%8:1}$((SEQ/8+1)) ] && echo -en "\033[7m$PIECE\033[0m" || echo -n "$PIECE"
   fi
-  if [ $((SEQ%10)) -ne 9 ] ; then
-    if [ $((SEQ/10%8)) -eq 0 ] ; then
-      PIECE="$PIECE═"
-    elif [ $((SEQ%10)) -ne 4 ] ; then
-      PIECE="$PIECE─"
-    else
-      PIECE="$PIECE "
-    fi
-  fi
-  echo -en "$PIECE" # need quote
 }
 
-POSXS="ABCDEFGHJK"
+POSXS="ABCDEFGH"
 ENAMES="KAERHCPkaerhcp"
 CNAMES="帥仕相俥傌炮兵將士象車馬包卒"
 for i in {0..13} ; do
@@ -42,8 +21,8 @@ for i in {0..13} ; do
   ARENA_BOARD=${ARENA_BOARD//$ENAME/$CNAME}
 done
 
-PLAYER1="(Red)"
-PLAYER2="(Black)"
+[ -z "$ARENA_COLOR1" ] && PLAYER1="(?)" || PLAYER1="($ARENA_COLOR1)"
+[ -z "$ARENA_COLOR2" ] && PLAYER2="(?)" || PLAYER2="($ARENA_COLOR2)"
 if [ $((ARENA_MOVENO%2)) -eq 1 ] ; then # check if player1's turn
   if [ -z "$ARENA_STATUS" ] ; then
     MESSAGE=""
@@ -78,6 +57,10 @@ else
   elif [ "${ARENA_STATUS:0:7}" = "INVALID" ] ; then
     MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${ARENA_STATUS}"
     PLAYER2=$PLAYER2"*"
+  elif [ "${ARENA_STATUS:0:6}" = "Choose" ] ; then
+    MESSAGE="${ARENA_STATUS}"
+    PLAYER2=$PLAYER2"*"
+    ARENA_STATUS=""
   else
     MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${ARENA_STATUS}"
     PLAYER2=$PLAYER2" "
@@ -86,7 +69,7 @@ else
   PLAYER1=$PLAYER1" "
 fi
 
-DEADS="${ARENA_BOARD:91}"
+DEADS="${ARENA_BOARD:33}"
 REDDEAD=""
 BLACKDEAD=""
 i=0
@@ -100,22 +83,15 @@ done
 if [ "${ARENA_THEME,,}" = log ] ; then
   [ -n "$ARENA_STATUS" ] && echo "$MESSAGE $ARENA_MOVENO Moves."
 else # default
-  POSY="１２３４５６７８９"
   clear
-  for y in {8..0} ; do
-    echo -n ${POSY:y:1}" "
-    for x in {0..9} ; do
-      POS=$((y*10+x))
-      echo -n "`piece $POS`" # need quote
-    done
-    case $y in
-      8) echo -e "\tXiang Qi" ;;
-      6) echo -e "\t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}" ;;
-      4) echo -e "\t${MESSAGE}" ;;
-      2) echo -e "\t▥ : ${REDDEAD}" ;;
-      1) echo -e "\t    ${BLACKDEAD}" ;;
-      *) echo ;;
-    esac
-  done
-  echo -en "   Ａ Ｂ Ｃ Ｄ Ｅ Ｆ Ｇ Ｈ Ｊ Ｋ\tMove No. ${ARENA_MOVENO}: "
+  echo -e "   ╔═══╤═══╤═══╤═══╤═══╤═══╤═══╤═══╗ \tFarm Board Xiang Qi"
+  echo -e "４ ║ "`piece 24`"│ "`piece 25`"│ "`piece 26`"│ "`piece 27`"│ "`piece 28`"│ "`piece 29`"│ "`piece 30`"│ "`piece 31`"║ "
+  echo -e "   ╟───┼───┼───┼───┼───┼───┼───┼───╢ \t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}"
+  echo -e "３ ║ "`piece 16`"│ "`piece 17`"│ "`piece 18`"│ "`piece 19`"│ "`piece 20`"│ "`piece 21`"│ "`piece 22`"│ "`piece 23`"║ "
+  echo -e "   ╟───┼───┼───┼───┼───┼───┼───┼───╢ \t${MESSAGE}"
+  echo -e "２ ║ "`piece 8`"│ "`piece 9`"│ "`piece 10`"│ "`piece 11`"│ "`piece 12`"│ "`piece 13`"│ "`piece 14`"│ "`piece 15`"║ "
+  echo -e "   ╟───┼───┼───┼───┼───┼───┼───┼───╢ \t▥ : ${REDDEAD}"
+  echo -e "１ ║ "`piece 0`"│ "`piece 1`"│ "`piece 2`"│ "`piece 3`"│ "`piece 4`"│ "`piece 5`"│ "`piece 6`"│ "`piece 7`"║ \t    ${BLACKDEAD}"
+  echo -e "   ╚═══╧═══╧═══╧═══╧═══╧═══╧═══╧═══╝ "
+  echo -en "     Ａ  Ｂ  Ｃ  Ｄ  Ｅ  Ｆ  Ｇ  Ｈ  \tMove No. ${ARENA_MOVENO}: "
 fi

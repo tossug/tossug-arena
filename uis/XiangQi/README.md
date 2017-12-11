@@ -4,8 +4,8 @@ Xiang Qi (Elephant-Chess)
 
 Pieces Code
 ===========
-* "KAERHCP" for "帥仕相俥傌炮兵" (Red)
-* "kaerhcp" for "將士象車馬包卒" (Black)
+* "KAAEERRHHCCPPPPP" for "帥仕仕相相俥俥傌傌炮炮兵兵兵兵兵" (Red)
+* "kaaeerrhhccppppp" for "將士士象象車車馬馬包包卒卒卒卒卒" (Black)
 
 Variables Example
 =================

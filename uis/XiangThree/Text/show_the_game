@@ -48,6 +48,7 @@ if [ $((ARENA_MOVENO%3)) -eq 1 ] ; then # check if player1's turn
   elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
     MESSAGE="${ARENA_STATUS}"
     PLAYER1=$PLAYER1" "
+    ARENA_MOVENO=$((ARENA_MOVENO-1))
   elif  [ "${ARENA_STATUS}" = "STALEMATE PASS !" ] ; then
     MESSAGE="${ARENA_PLAYER3}${PLAYER3} ${ARENA_STATUS}"
     PLAYER1=$PLAYER1"*"
@@ -57,6 +58,7 @@ if [ $((ARENA_MOVENO%3)) -eq 1 ] ; then # check if player1's turn
   else
     MESSAGE="${ARENA_PLAYER3}${PLAYER3} ${ARENA_STATUS}"
     PLAYER1=$PLAYER1" "
+    ARENA_MOVENO=$((ARENA_MOVENO-1))
   fi
   PLAYER2=$PLAYER2" "
   PLAYER3=$PLAYER3" "
@@ -67,6 +69,7 @@ elif [ $((ARENA_MOVENO%3)) -eq 2 ] ; then
   elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
     MESSAGE="${ARENA_STATUS}"
     PLAYER2=$PLAYER2" "
+    ARENA_MOVENO=$((ARENA_MOVENO-1))
   elif  [ "${ARENA_STATUS}" = "STALEMATE PASS !" ] ; then
     MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${ARENA_STATUS}"
     PLAYER2=$PLAYER2"*"
@@ -76,6 +79,7 @@ elif [ $((ARENA_MOVENO%3)) -eq 2 ] ; then
   else
     MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${ARENA_STATUS}"
     PLAYER2=$PLAYER2" "
+    ARENA_MOVENO=$((ARENA_MOVENO-1))
   fi
   PLAYER1=$PLAYER1" "
   PLAYER3=$PLAYER3" "
@@ -86,6 +90,7 @@ else
   elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
     MESSAGE="${ARENA_STATUS}"
     PLAYER3=$PLAYER3" "
+    ARENA_MOVENO=$((ARENA_MOVENO-1))
   elif  [ "${ARENA_STATUS}" = "STALEMATE PASS !" ] ; then
     MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${ARENA_STATUS}"
     PLAYER3=$PLAYER3"*"
@@ -95,6 +100,7 @@ else
   else
     MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${ARENA_STATUS}"
     PLAYER3=$PLAYER3" "
+    ARENA_MOVENO=$((ARENA_MOVENO-1))
   fi
   PLAYER1=$PLAYER1" "
   PLAYER2=$PLAYER2" "
@@ -117,7 +123,7 @@ while [ $i -lt ${#DEADS} ] ; do
 done
 
 if [ "${ARENA_THEME,,}" = log ] ; then
-  [ "$ARENA_STATUS" != "${ARENA_STATUS/WINS/}" ] && echo "${MESSAGE} ${ARENA_MOVENO} Moves."
+  [ "$ARENA_STATUS" != "${ARENA_STATUS/WINS/}" ] && echo "$MESSAGE $ARENA_MOVENO Moves."
 else # default
   clear
   echo -e "Three Kingdoms Xiang Qi    ${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2} vs. ${ARENA_PLAYER3}${PLAYER3}"

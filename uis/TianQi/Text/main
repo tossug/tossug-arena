@@ -10,13 +10,12 @@ export DATADIR=`dirname "$DATADIR"`
 export ARENA_THEME="$1"
 export ARENA_PLAYER1="$2"
 export ARENA_PLAYER2="$3"
-export ARENA_COLOR1="Red"
-export ARENA_COLOR2="Black"
-export ARENA_MOVENO=1
+export ARENA_COLOR1=""
+export ARENA_COLOR2=""
+export ARENA_MOVENO=0
 export ARENA_MOVE=""
 export ARENA_STATUS=""
-export ARENA_TEMP=`mktemp`
-export ARENA_BOARD="R__P__p__rH_C____c_hE__P__p__eA________aK__P__p__kA________aE__P__p__eH_C____c_hR__P__p__r|"
+export ARENA_BOARD=`"$DATADIR/uis/$ARENA_GAME/get_valid_board"`
 
 until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
   "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/show_the_game"
@@ -30,17 +29,28 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
     [ "${ARENA_THEME,,}" != log ] && echo "$ARENA_MOVE"
   fi
   if [ -n "$ARENA_MOVE" ] ; then
-    ARENA_BOARD_NEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_board"`
-    if [ -z "$ARENA_BOARD_NEXT" ] ; then
-      ARENA_STATUS="INVALID MOVE: $ARENA_MOVE"
-      if [ "$ARENA_PLAYER" = Human ] ; then
-        continue
+    if [ $ARENA_MOVENO -eq 0 ] ; then
+      if [ ${ARENA_MOVE:0:1} = B ] ; then
+        ARENA_COLOR1="Red"
+        ARENA_COLOR2="Black"
       else
-        break
+        ARENA_COLOR1="Black"
+        ARENA_COLOR2="Red"
       fi
-    else
-      ARENA_BOARD="$ARENA_BOARD_NEXT"
       ARENA_STATUS=""
+    else
+      ARENA_BOARD_NEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_board"`
+      if [ -z "$ARENA_BOARD_NEXT" ] ; then
+        ARENA_STATUS="INVALID MOVE: $ARENA_MOVE"
+        if [ "$ARENA_PLAYER" = Human ] ; then
+          continue
+        else
+          break
+        fi
+      else
+        ARENA_BOARD="$ARENA_BOARD_NEXT"
+        ARENA_STATUS=""
+      fi
     fi
   else
     ARENA_STATUS="MIDDLE WINS !"

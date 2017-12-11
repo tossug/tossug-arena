@@ -4,9 +4,9 @@ Xiang Qi of Three Kingdoms
 
 Pieces Code
 ===========
-* "AERHC" for "仕相俥傌炮" (Red)
-* "aerhc" for "士象車馬包" (Black)
-* "KkPp" for "帥將兵卒" (Mixed)
+* "AAEERRHHCC" for "仕仕相相俥俥傌傌炮炮" (Red)
+* "aaeerrhhcc" for "士士象象車車馬馬包包" (Black)
+* "KkPPPPPppppp" for "帥將兵兵兵兵兵卒卒卒卒卒" (Mixed)
 
 Variables Example
 =================

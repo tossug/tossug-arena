@@ -30,6 +30,7 @@ if [ $((ARENA_MOVENO%2)) -eq 1 ] ; then # check if player1's turn
   elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
     MESSAGE="${ARENA_STATUS}"
     PLAYER1=$PLAYER1" "
+    ARENA_MOVENO=$((ARENA_MOVENO-1))
   elif  [ "${ARENA_STATUS}" = "MIDDLE WINS !" ] ; then
     MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${ARENA_STATUS}"
     PLAYER1=$PLAYER1" "
@@ -39,6 +40,7 @@ if [ $((ARENA_MOVENO%2)) -eq 1 ] ; then # check if player1's turn
   else
     MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${ARENA_STATUS}"
     PLAYER1=$PLAYER1" "
+    ARENA_MOVENO=$((ARENA_MOVENO-1))
   fi
   PLAYER2=$PLAYER2" "
 else
@@ -48,6 +50,7 @@ else
   elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
     MESSAGE="${ARENA_STATUS}"
     PLAYER2=$PLAYER2" "
+    ARENA_MOVENO=$((ARENA_MOVENO-1))
   elif  [ "${ARENA_STATUS}" = "MIDDLE WINS !" ] ; then
     MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${ARENA_STATUS}"
     PLAYER2=$PLAYER2" "
@@ -57,6 +60,7 @@ else
   else
     MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${ARENA_STATUS}"
     PLAYER2=$PLAYER2" "
+    ARENA_MOVENO=$((ARENA_MOVENO-1))
   fi
   PLAYER1=$PLAYER1" "
 fi
@@ -73,7 +77,7 @@ while [ $i -lt ${#DEADS} ] ; do
 done
 
 if [ "${ARENA_THEME,,}" = log ] ; then
-  [ -n "$ARENA_STATUS" ] && echo "${MESSAGE} ${ARENA_MOVENO} Moves."
+  [ -n "$ARENA_STATUS" ] && echo $MESSAGE $ARENA_MOVENO Moves."
 else # default
   clear
   echo -e "   ╔═══╤═══╤═══╤═══╤═══╤═══╤═══╤═══╗ \tHalf Board Xiang Qi"

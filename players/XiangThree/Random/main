@@ -7,4 +7,4 @@ else
   MOVESNO=$((${#MOVESNEXT}/5))
   MOVE=${MOVESNEXT:(RANDOM%MOVESNO)*5:4}
 fi
-echo "${MOVE}"
+echo "$MOVE"

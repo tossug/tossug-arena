@@ -12,9 +12,6 @@ for y in {0..3} ; do
     PIECE1=${ARENA_BOARD:SEQ:1}
     if [ $PIECE1 = _ ] ; then
       continue
-    elif [ $PIECE1 = @ ] ; then
-      MOVES="${MOVES}${POS1}${POS1} "
-      continue
     else
       [ $TURN = Red -a $PIECE1 != ${PIECE1^} ] && continue
       [ $TURN = Black -a $PIECE1 = ${PIECE1^} ] && continue
@@ -23,13 +20,15 @@ for y in {0..3} ; do
     for z in 1,0 0,1 -1,0 0,-1 ; do
       let DELTAX=${z%,*} DELTAY=${z#*,}
       let NEWX=x+DELTAX NEWY=y+DELTAY
+      if [ ${PIECE1^} = H ] ; then # convert to 1,1 -1,1 -1,-1 1,-1
+        [ $NEWX -eq $x ] && let NEWX=x-DELTAY
+        [ $NEWY -eq $y ] && let NEWY=y+DELTAX
+      fi
       [ $NEWX -lt 0 -o $NEWX -gt 7 -o $NEWY -lt 0 -o $NEWY -gt 3 ] && continue
       PIECE2=${ARENA_BOARD:NEWY*8+NEWX:1}
       POS2=${POSXS:NEWX:1}$((NEWY+1))
       if [ $PIECE2 = _ ] ; then
         MOVES="${MOVES}${POS1}${POS2} "
-      elif [ $PIECE2 = @ ] ; then
-        continue
       else
         [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && continue
         [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && continue
@@ -39,11 +38,26 @@ for y in {0..3} ; do
         RANK2=$((${#RANK2}%7))
         case $RANK1 in
           0) [ $RANK2 -ne 6 ] && MOVES="${MOVES}${POS1}${POS2} " ;;
-          [1-4]) [ $RANK2 -ge $RANK1 ] && MOVES="${MOVES}${POS1}${POS2} " ;;
+          [1-3]) [ $RANK2 -ge $RANK1 ] && MOVES="${MOVES}${POS1}${POS2} " ;;
           6) [ $RANK2 -eq 0 -o $RANK2 -eq 6 ] && MOVES="${MOVES}${POS1}${POS2} " ;;
         esac
       fi
-      if [ ${PIECE1^} = C ] ; then
+      if [ ${PIECE1^} = R ] ; then
+        while [ $NEWX -ge 0 -a $NEWX -lt 8 -a $NEWY -ge 0 -a $NEWY -lt 4 ] ; do
+          PIECE2=${ARENA_BOARD:NEWY*8+NEWX:1}
+          if [ $PIECE2 = _ ] ; then
+            let NEWX+=DELTAX NEWY+=DELTAY
+          elif [ $NEWX -eq $((x+DELTAX)) -a $NEWY -eq $((y+DELTAY)) ] ; then
+            break
+          else
+            [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && break
+            [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && break
+            POS2=${POSXS:NEWX:1}$((NEWY+1))
+            MOVES="${MOVES}${POS1}${POS2} "
+            break
+          fi
+        done
+      elif [ ${PIECE1^} = C ] ; then
         MIDDLE=0
         while [ $NEWX -ge 0 -a $NEWX -lt 8 -a $NEWY -ge 0 -a $NEWY -lt 4 ] ; do
           PIECE2=${ARENA_BOARD:NEWY*8+NEWX:1}
@@ -54,7 +68,6 @@ for y in {0..3} ; do
               MIDDLE=1
               let NEWX+=DELTAX NEWY+=DELTAY
             else
-              [ $PIECE2 = @ ] && break
               [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && break
               [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && break
               POS2=${POSXS:NEWX:1}$((NEWY+1))

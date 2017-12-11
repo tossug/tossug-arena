@@ -3,4 +3,4 @@
 MOVESNEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"` # next valid moves
 MOVESNO=$((${#MOVESNEXT}/5))
 MOVE=${MOVESNEXT:(RANDOM%MOVESNO)*5:4}
-echo ${MOVE}
+echo "$MOVE"

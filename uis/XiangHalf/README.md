@@ -4,8 +4,8 @@ Xiang Qi with half board (Blind/Dark Elephant-Chess)
 
 Pieces Code
 ===========
-* "KAERHCP" for "帥仕相俥傌炮兵" (Red)
-* "kaerhcp" for "將士象車馬包卒" (Black)
+* "KAAEERRHHCCPPPPP" for "帥仕仕相相俥俥傌傌炮炮兵兵兵兵兵" (Red)
+* "kaaeerrhhccppppp" for "將士士象象車車馬馬包包卒卒卒卒卒" (Black)
 
 Variables Example
 =================
@@ -15,9 +15,9 @@ Variables Example
 	ARENA_THEME="log"
 	ARENA_BOARD="@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|"
 	ARENA_BOARD="k_______________________________|KAAEERRHHCCPPPPPaaeerrhhccppppp"
-	ARENA_COLOR1=""
-	ARENA_COLOR2="Red"
-	ARENA_COLOR2="Black"
+	ARENA_COLOR1="Red"
+	ARENA_COLOR1="Black"
+	ARENA_COLOR2=""
 	ARENA_MOVENO=1
 	ARENA_MOVENO=42
 	ARENA_MOVE="A1A1"

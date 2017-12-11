@@ -1,0 +1,15 @@
+#!/bin/bash
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+if [ $ARENA_MOVENO -eq 0 ] ; then
+  [ $((RANDOM%2)) -eq 0 ] && echo "Red" || echo "Black"
+  exit
+fi
+
+POSXS="ABCDEFGH" # X positions of board
+BOARDNEXT=""
+while [ -z "$BOARDNEXT" ] ; do
+  MOVE=${POSXS:RANDOM%8:1}$((RANDOM%4+1))${POSXS:RANDOM%8:1}$((RANDOM%4+1))
+  ARENA_MOVE="$MOVE" # for calling get_valid_board
+  BOARDNEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_board"`
+done
+echo "$MOVE"
