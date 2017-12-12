@@ -77,7 +77,7 @@ while [ $i -lt ${#DEADS} ] ; do
 done
 
 if [ "${ARENA_THEME,,}" = log ] ; then
-  [ -n "$ARENA_STATUS" ] && echo $MESSAGE $ARENA_MOVENO Moves."
+  [ -n "$ARENA_STATUS" ] && echo "$MESSAGE $ARENA_MOVENO Moves."
 else # default
   clear
   echo -e "   ╔═══╤═══╤═══╤═══╤═══╤═══╤═══╤═══╗ \tHalf Board Xiang Qi"

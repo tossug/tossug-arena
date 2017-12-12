@@ -12,8 +12,8 @@ for y in {0..8} ; do
     if [ $PIECE1 = _ ] ; then
       continue
     else
-      [ $TURN = Red -a $PIECE1 != ${PIECE1^} ] && continue
-      [ $TURN = Black -a $PIECE1 = ${PIECE1^} ] && continue
+      [ $PIECE1 = ${PIECE1^} ] && COLOR1=Red || COLOR1=Black
+      [ $COLOR1 != $TURN ] && continue
     fi
 
     case $PIECE1 in
@@ -51,8 +51,8 @@ for y in {0..8} ; do
           [ $NEWX -gt 2 -a $NEWX -lt 7 -o $NEWY -lt 3 -o $NEWY -gt 5 ] && continue
           PIECE2=${ARENA_BOARD:NEWY*10+NEWX:1}
           if [ $PIECE2 != _ ] ; then
-            [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && continue
-            [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && continue
+            [ $PIECE2 = ${PIECE2^} ] && COLOR2=Red || COLOR2=Black
+            [ $COLOR2 = $TURN ] && continue
           fi
           POS2=${POSXS:NEWX:1}$((NEWY+1))
           MOVES="${MOVES}${POS1}${POS2} "
@@ -65,8 +65,8 @@ for y in {0..8} ; do
           [ $NEWX -gt 2 -a $NEWX -lt 7 -o $NEWY -lt 3 -o $NEWY -gt 5 ] && continue
           PIECE2=${ARENA_BOARD:NEWY*10+NEWX:1}
           if [ $PIECE2 != _ ] ; then
-            [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && continue
-            [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && continue
+            [ $PIECE2 = ${PIECE2^} ] && COLOR2=Red || COLOR2=Black
+            [ $COLOR2 = $TURN ] && continue
           fi
           POS2=${POSXS:NEWX:1}$((NEWY+1))
           MOVES="${MOVES}${POS1}${POS2} "
@@ -79,8 +79,8 @@ for y in {0..8} ; do
           [ $NEWX -eq 3 -o $NEWX -eq 6 ] && continue
           PIECE2=${ARENA_BOARD:NEWY*10+NEWX:1}
           if [ $PIECE2 != _ ] ; then
-            [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && continue
-            [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && continue
+            [ $PIECE2 = ${PIECE2^} ] && COLOR2=Red || COLOR2=Black
+            [ $COLOR2 = $TURN ] && continue
           fi
           SEQ2=$(((NEWY+y)/2*10+(NEWX+x)/2))
           [ ${ARENA_BOARD:SEQ2:1} != _ ] && continue
@@ -99,8 +99,8 @@ for y in {0..8} ; do
               MOVES="${MOVES}${POS1}${POS2} "
               let NEWX+=DELTAX NEWY+=DELTAY            
             else
-              [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && break
-              [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && break
+              [ $PIECE2 = ${PIECE2^} ] && COLOR2=Red || COLOR2=Black
+              [ $COLOR2 = $TURN ] && break
               POS2=${POSXS:NEWX:1}$((NEWY+1))
               MOVES="${MOVES}${POS1}${POS2} "
               break
@@ -114,8 +114,8 @@ for y in {0..8} ; do
           [ $NEWX -lt 0 -o $NEWX -gt 9 -o $NEWY -lt 0 -o $NEWY -gt 8 ] && continue
           PIECE2=${ARENA_BOARD:NEWY*10+NEWX:1}
           if [ $PIECE2 != _ ] ; then
-            [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && continue
-            [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && continue
+            [ $PIECE2 = ${PIECE2^} ] && COLOR2=Red || COLOR2=Black
+            [ $COLOR2 = $TURN ] && continue
           fi
           if [ $z = 2,1 -o $z = 2,-1 ] ; then
             let BLOCKX=x+1 BLOCKY=y
@@ -149,8 +149,8 @@ for y in {0..8} ; do
                 MIDDLE=1
                 let NEWX+=DELTAX NEWY+=DELTAY
               else
-                [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && break
-                [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && break
+                [ $PIECE2 = ${PIECE2^} ] && COLOR2=Red || COLOR2=Black
+                [ $COLOR2 = $TURN ] && break
                 POS2=${POSXS:NEWX:1}$((NEWY+1))
                 MOVES="${MOVES}${POS1}${POS2} "
                 break
@@ -159,29 +159,21 @@ for y in {0..8} ; do
           done
         done
         ;;
-      P)
-        for z in 1,0 0,1 0,-1 ; do
+      P|p)
+        for z in 1,0 -1,0 0,1 0,-1 ; do
           let NEWX=x+${z%,*} NEWY=y+${z#*,}
           [ $NEWX -lt 0 -o $NEWX -gt 9 -o $NEWY -lt 0 -o $NEWY -gt 8 ] && continue
-          [ $NEWX -eq $x -a $x -lt 5 ] && continue
-          PIECE2=${ARENA_BOARD:NEWY*10+NEWX:1}
-          if [ $PIECE2 != _ ] ; then
-            [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && continue
-            [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && continue
+          if [ $PIECE1 = P ] ; then
+            [ $z = -1,0 ] && continue
+            [ $NEWX -eq $x -a $x -lt 5 ] && continue
+          else
+            [ $z = 1,0 ] && continue
+            [ $NEWX -eq $x -a $x -gt 4 ] && continue
           fi
-          POS2=${POSXS:NEWX:1}$((NEWY+1))
-          MOVES="${MOVES}${POS1}${POS2} "
-        done
-        ;;
-      p)
-        for z in -1,0 0,1 0,-1 ; do
-          let NEWX=x+${z%,*} NEWY=y+${z#*,}
-          [ $NEWX -lt 0 -o $NEWX -gt 9 -o $NEWY -lt 0 -o $NEWY -gt 8 ] && continue
-          [ $NEWX -eq $x -a $x -gt 4 ] && continue
           PIECE2=${ARENA_BOARD:NEWY*10+NEWX:1}
           if [ $PIECE2 != _ ] ; then
-            [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && continue
-            [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && continue
+            [ $PIECE2 = ${PIECE2^} ] && COLOR2=Red || COLOR2=Black
+            [ $COLOR2 = $TURN ] && continue
           fi
           POS2=${POSXS:NEWX:1}$((NEWY+1))
           MOVES="${MOVES}${POS1}${POS2} "

@@ -16,8 +16,8 @@ for y in {0..3} ; do
       MOVES="${MOVES}${POS1}${POS1} "
       continue
     else
-      [ $TURN = Red -a $PIECE1 != ${PIECE1^} ] && continue
-      [ $TURN = Black -a $PIECE1 = ${PIECE1^} ] && continue
+      [ $PIECE1 = ${PIECE1^} ] && COLOR1=Red || COLOR1=Black
+      [ $COLOR1 != $TURN ] && continue
     fi
     
     for z in 1,0 0,1 -1,0 0,-1 ; do
@@ -28,20 +28,19 @@ for y in {0..3} ; do
       POS2=${POSXS:NEWX:1}$((NEWY+1))
       if [ $PIECE2 = _ ] ; then
         MOVES="${MOVES}${POS1}${POS2} "
-      elif [ $PIECE2 = @ ] ; then
-        continue
-      else
-        [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && continue
-        [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && continue
-        RANK1=${RANKS%%${PIECE1}*}
-        RANK1=$((${#RANK1}%7))
-        RANK2=${RANKS%%${PIECE2}*}
-        RANK2=$((${#RANK2}%7))
-        case $RANK1 in
-          0) [ $RANK2 -ne 6 ] && MOVES="${MOVES}${POS1}${POS2} " ;;
-          [1-4]) [ $RANK2 -ge $RANK1 ] && MOVES="${MOVES}${POS1}${POS2} " ;;
-          6) [ $RANK2 -eq 0 -o $RANK2 -eq 6 ] && MOVES="${MOVES}${POS1}${POS2} " ;;
-        esac
+      elif [ $PIECE2 != @ ] ; then
+        [ $PIECE2 = ${PIECE2^} ] && COLOR2=Red || COLOR2=Black
+        if [ $COLOR2 != $TURN ] ; then
+          RANK1=${RANKS%%${PIECE1}*}
+          RANK1=$((${#RANK1}%7))
+          RANK2=${RANKS%%${PIECE2}*}
+          RANK2=$((${#RANK2}%7))
+          case $RANK1 in
+            0) [ $RANK2 -ne 6 ] && MOVES="${MOVES}${POS1}${POS2} " ;;
+            [1-4]) [ $RANK2 -ge $RANK1 ] && MOVES="${MOVES}${POS1}${POS2} " ;;
+            6) [ $RANK2 -eq 0 -o $RANK2 -eq 6 ] && MOVES="${MOVES}${POS1}${POS2} " ;;
+          esac
+        fi
       fi
       if [ ${PIECE1^} = C ] ; then
         MIDDLE=0
@@ -55,8 +54,8 @@ for y in {0..3} ; do
               let NEWX+=DELTAX NEWY+=DELTAY
             else
               [ $PIECE2 = @ ] && break
-              [ $TURN = Red -a $PIECE2 = ${PIECE2^} ] && break
-              [ $TURN = Black -a $PIECE2 != ${PIECE2^} ] && break
+              [ $PIECE2 = ${PIECE2^} ] && COLOR2=Red || COLOR2=Black
+              [ $COLOR2 = $TURN ] && break
               POS2=${POSXS:NEWX:1}$((NEWY+1))
               MOVES="${MOVES}${POS1}${POS2} "
               break
