@@ -84,14 +84,14 @@ if [ "${ARENA_THEME,,}" = log ] ; then
   [ -n "$ARENA_STATUS" ] && echo "$MESSAGE $ARENA_MOVENO Moves."
 else # default
   clear
-  echo -e "   ╔═══╤═══╤═══╤═══╤═══╤═══╤═══╤═══╗ \tFarm Board Xiang Qi"
-  echo -e "４ ║ "`piece 24`"│ "`piece 25`"│ "`piece 26`"│ "`piece 27`"│ "`piece 28`"│ "`piece 29`"│ "`piece 30`"│ "`piece 31`"║ "
-  echo -e "   ╟───┼───┼───┼───┼───┼───┼───┼───╢ \t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}"
-  echo -e "３ ║ "`piece 16`"│ "`piece 17`"│ "`piece 18`"│ "`piece 19`"│ "`piece 20`"│ "`piece 21`"│ "`piece 22`"│ "`piece 23`"║ "
-  echo -e "   ╟───┼───┼───┼───┼───┼───┼───┼───╢ \t${MESSAGE}"
-  echo -e "２ ║ "`piece 8`"│ "`piece 9`"│ "`piece 10`"│ "`piece 11`"│ "`piece 12`"│ "`piece 13`"│ "`piece 14`"│ "`piece 15`"║ "
-  echo -e "   ╟───┼───┼───┼───┼───┼───┼───┼───╢ \t▥ : ${REDDEAD}"
-  echo -e "１ ║ "`piece 0`"│ "`piece 1`"│ "`piece 2`"│ "`piece 3`"│ "`piece 4`"│ "`piece 5`"│ "`piece 6`"│ "`piece 7`"║ \t    ${BLACKDEAD}"
-  echo -e "   ╚═══╧═══╧═══╧═══╧═══╧═══╧═══╧═══╝ "
+  echo -e "   ┏━━━┯━━━┯━━━┯━━━┯━━━┯━━━┯━━━┯━━━┓ \tFarm Board Xiang Qi"
+  echo -e "４ ┃ "`piece 24`"│ "`piece 25`"│ "`piece 26`"│ "`piece 27`"│ "`piece 28`"│ "`piece 29`"│ "`piece 30`"│ "`piece 31`"┃ "
+  echo -e "   ┠───┼───┼───╆━━━╈━━━╅───┼───┼───┨ \t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}"
+  echo -e "３ ┃ "`piece 16`"│ "`piece 17`"│ "`piece 18`"┃ "`piece 19`"┃ "`piece 20`"┃ "`piece 21`"│ "`piece 22`"│ "`piece 23`"┃ "
+  echo -e "   ┠───┼───┼───╊━━━╋━━━╉───┼───┼───┨ \t${MESSAGE}"
+  echo -e "２ ┃ "`piece 8`"│ "`piece 9`"│ "`piece 10`"┃ "`piece 11`"┃ "`piece 12`"┃ "`piece 13`"│ "`piece 14`"│ "`piece 15`"┃ "
+  echo -e "   ┠───┼───┼───╄━━━╇━━━╃───┼───┼───┨ \t▥ : ${REDDEAD}"
+  echo -e "１ ┃ "`piece 0`"│ "`piece 1`"│ "`piece 2`"│ "`piece 3`"│ "`piece 4`"│ "`piece 5`"│ "`piece 6`"│ "`piece 7`"┃ \t    ${BLACKDEAD}"
+  echo -e "   ┗━━━┷━━━┷━━━┷━━━┷━━━┷━━━┷━━━┷━━━┛ "
   echo -en "     Ａ  Ｂ  Ｃ  Ｄ  Ｅ  Ｆ  Ｇ  Ｈ  \tMove No. ${ARENA_MOVENO}: "
 fi
