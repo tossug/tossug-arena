@@ -38,7 +38,7 @@ if [ ${#LIVE} -eq 2 ] ; then
   if [ "${LIVE^^}" = CC -o "${LIVE^^}" = CP -o "${LIVE^^}" = PC ] ; then
     echo "DRAW GAME !"
     exit 0
-  elif [ $RANK1 -ne $RANK2 ] ; then
+  elif [ $RANK1 -ne $RANK2 -a $RANK1 -ne 3 -a $RANK1 -ne 4 -a $RANK2 -ne 3 -a $RANK2 -ne 4 ] ; then
     POS1=${BOARD%%${PIECE1}*}
     POS1=${#POS1}
     POS2=${BOARD%%${PIECE2}*}
