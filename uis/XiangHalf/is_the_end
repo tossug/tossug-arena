@@ -53,6 +53,11 @@ if [ ${#LIVE} -eq 2 ] ; then
   fi
 fi
 
+# store the game board
+if [ "${ARENA_STATUS:0:7}" != "INVALID" ] ; then
+  echo ${ARENA_BOARD:0:32} >> $ARENA_TEMP
+fi
+
 # not the end of game
 echo "$ARENA_STATUS" # still return last status
 exit 1

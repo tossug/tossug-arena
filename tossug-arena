@@ -19,7 +19,7 @@ if [ $# -eq 0 ] ; then
   echo "available ROUNDs:"
   cd "$DATADIR/rounds"
   echo -e "\t"`ls !(*-log)`
-  echo "available PLAYERs: (Human as default)"
+  echo "available PLAYERs: (Human as reserved default)"
   cd "$DATADIR/players"
   for i in * ; do
     echo -en "\tfor $i: "

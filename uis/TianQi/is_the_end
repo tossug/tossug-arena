@@ -35,17 +35,20 @@ if [ ${#LIVE} -eq 2 ] ; then
   RANK1=$((${#RANK1}%7))
   RANK2=${RANKS%%${PIECE2}*}
   RANK2=$((${#RANK2}%7))
+  POS1=${BOARD%%${PIECE1}*}
+  POS1=${#POS1}
+  POS2=${BOARD%%${PIECE2}*}
+  POS2=${#POS2}
+  DISTX=$((POS2/8-POS1/8))
+  DISTY=$((POS2%8-POS1%8))
+  let DIST=${DISTX#-}+${DISTY#-} # get distance between pieces
   if [ "${LIVE^^}" = CC -o "${LIVE^^}" = CP -o "${LIVE^^}" = PC ] ; then
     echo "DRAW GAME !"
     exit 0
+  elif [ "${LIVE^^}" = HH -a $((DIST%2)) -eq 1 ] ; then
+    echo "DRAW GAME !"
+    exit 0
   elif [ $RANK1 -ne $RANK2 -a $RANK1 -ne 3 -a $RANK1 -ne 4 -a $RANK2 -ne 3 -a $RANK2 -ne 4 ] ; then
-    POS1=${BOARD%%${PIECE1}*}
-    POS1=${#POS1}
-    POS2=${BOARD%%${PIECE2}*}
-    POS2=${#POS2}
-    DISTX=$((POS2/8-POS1/8))
-    DISTY=$((POS2%8-POS1%8))
-    let DIST=${DISTX#-}+${DISTY#-} # get distance between pieces
     [ $RANK1 -lt $RANK2 -o $RANK1 -eq 6 -a $RANK2 -eq 0 ] && STRONGER=$COLOR1 || STRONGER=$COLOR2
     if [ "$TURN" = "$STRONGER" -a $((DIST%2)) -eq 0 ] ; then
       echo "DRAW GAME !"
@@ -55,6 +58,11 @@ if [ ${#LIVE} -eq 2 ] ; then
       exit 0
     fi
   fi
+fi
+
+# store the game board
+if [ "${ARENA_STATUS:0:7}" != "INVALID" ] ; then
+  echo ${ARENA_BOARD:0:32} >> $ARENA_TEMP
 fi
 
 # not the end of game

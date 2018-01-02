@@ -30,7 +30,6 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
     ARENA_PLAYER="$ARENA_PLAYER3"
   fi
   if [ "$ARENA_PLAYER" = Human ] ; then
-    sleep 1
     read ARENA_MOVE
     ARENA_MOVE=${ARENA_MOVE^^}
   else

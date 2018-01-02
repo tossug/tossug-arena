@@ -109,7 +109,9 @@ if [ $PIECE2 != _ -a $DIST -eq 1 ] ; then # check rank
   esac
 fi
 
+LIVES=${ARENA_BOARD:0:32}
 ARENA_BOARD="${ARENA_BOARD:0:$SEQ1}_${ARENA_BOARD:$SEQ1+1}"
 [ $PIECE2 != _ ] && ARENA_BOARD="${ARENA_BOARD:0:$SEQ2}${PIECE1}${ARENA_BOARD:$SEQ2+1}${PIECE2}" || ARENA_BOARD="${ARENA_BOARD:0:$SEQ2}${PIECE1}${ARENA_BOARD:$SEQ2+1}"
+[ `grep -Pzc "$LIVES"'\n'${ARENA_BOARD:0:32} $ARENA_TEMP` -eq 1 ] && exit 1
 
 echo "$ARENA_BOARD"

@@ -15,13 +15,13 @@ export ARENA_COLOR2=""
 export ARENA_MOVENO=1
 export ARENA_MOVE=""
 export ARENA_STATUS=""
+export ARENA_TEMP=`mktemp`
 export ARENA_BOARD="@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|"
 
 until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
   "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/show_the_game"
   [ $((ARENA_MOVENO%2)) -eq 1 ] && ARENA_PLAYER="$ARENA_PLAYER1" || ARENA_PLAYER="$ARENA_PLAYER2"
   if [ "$ARENA_PLAYER" = Human ] ; then
-    sleep 1
     read ARENA_MOVE
     ARENA_MOVE=${ARENA_MOVE^^}
   else
