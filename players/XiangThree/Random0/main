@@ -1,15 +1,11 @@
 #!/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
 POSXS="ABCDEFGHJ" # X positions of board
-BOARDNEXT=""
-MOVESNEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"` # next valid moves
-if [ -z "$MOVESNEXT" ] ; then
-  MOVE=""
+if [ -z "`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"`" ] ; then
+  ARENA_MOVE=""
 else
-  while [ -z "$BOARDNEXT" ] ; do
-    MOVE=${POSXS:RANDOM%9:1}$((RANDOM%5+1))${POSXS:RANDOM%9:1}$((RANDOM%5+1))
-    ARENA_MOVE="$MOVE" # for calling get_valid_board
-    BOARDNEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_board"`
+  until "$DATADIR/uis/$ARENA_GAME/get_valid_board" &>/dev/null ; do
+    ARENA_MOVE=${POSXS:RANDOM%9:1}$((RANDOM%5+1))${POSXS:RANDOM%9:1}$((RANDOM%5+1))
   done
 fi
-echo "$MOVE"
+echo "$ARENA_MOVE"
