@@ -13,8 +13,8 @@ Variables Example
 	ARENA_PLAYER2="Human"
 	ARENA_THEME="default"
 	ARENA_THEME="log"
-	ARENA_BOARD="R__P__p__rH_C____c_hE__P__p__eA________aK__P__p__kA________aE__P__p__eH_C____c_hR__P__p__r|"
-	ARENA_BOARD="________________________________________k_________________________________________________|KAAEERRHHCCPPPPPaaeerrhhccppppp"
+	ARENA_BOARD="R__P__p__rH_C____c_hE__P__p__eA________aK__P__p__kA________aE__P__p__eH_C____c_hR__P__p__r/"
+	ARENA_BOARD="________________________________________k_________________________________________________/KAAEERRHHCCPPPPPaaeerrhhccppppp"
 	ARENA_COLOR1="Red"
 	ARENA_COLOR2="Black"
 	ARENA_MOVENO=1
