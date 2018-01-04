@@ -34,7 +34,7 @@ if [ $((ARENA_MOVENO%2)) -eq 1 ] ; then # check if player1's turn
   elif  [ "${ARENA_STATUS}" = "MIDDLE WINS !" ] ; then
     MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${ARENA_STATUS}"
     PLAYER1=$PLAYER1" "
-  elif [ "${ARENA_STATUS:0:7}" = "INVALID" ] ; then
+  elif [ "${ARENA_STATUS:0:7}" = INVALID -o "${ARENA_STATUS:0:7}" = ILLEGAL ] ; then
     MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${ARENA_STATUS}"
     PLAYER1=$PLAYER1"*"
   else
@@ -54,7 +54,7 @@ else
   elif  [ "${ARENA_STATUS}" = "MIDDLE WINS !" ] ; then
     MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${ARENA_STATUS}"
     PLAYER2=$PLAYER2" "
-  elif [ "${ARENA_STATUS:0:7}" = "INVALID" ] ; then
+  elif [ "${ARENA_STATUS:0:7}" = INVALID -o "${ARENA_STATUS:0:7}" = ILLEGAL ] ; then
     MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${ARENA_STATUS}"
     PLAYER2=$PLAYER2"*"
   else

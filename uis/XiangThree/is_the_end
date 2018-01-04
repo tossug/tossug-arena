@@ -1,6 +1,11 @@
 #!/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
 
+# store the game board
+if [ "${ARENA_STATUS:0:7}" != INVALID -a "${ARENA_STATUS:0:7}" != ILLEGAL ] ; then
+  echo $ARENA_BOARD >> $ARENA_TEMP
+fi
+
 # if no valid move
 MOVES=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"`
 if [ -z "$MOVES" ] ; then
@@ -10,11 +15,6 @@ if [ -z "$MOVES" ] ; then
     echo "ELIMINATION WINS !"
     exit 0
   fi
-fi
-
-# store the game board
-if [ "${ARENA_STATUS:0:7}" != "INVALID" ] ; then
-  echo ${ARENA_BOARD:0:45} >> $ARENA_TEMP
 fi
 
 # not the end of game

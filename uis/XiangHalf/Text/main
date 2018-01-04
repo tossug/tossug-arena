@@ -31,11 +31,20 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
   if [ -n "$ARENA_MOVE" ] ; then
     ARENA_BOARD_NEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_board"`
     if [ -z "$ARENA_BOARD_NEXT" ] ; then
-      ARENA_STATUS="INVALID MOVE: $ARENA_MOVE"
-      if [ "$ARENA_PLAYER" = Human ] ; then
-        continue
-      else
+      if [ "${ARENA_STATUS:0:7}" = INVALID ] ; then
+        ARENA_STATUS="MIDDLE WINS !"
         break
+      else
+        ARENA_STATUS="INVALID MOVE: $ARENA_MOVE"
+        continue
+      fi
+    elif grep -Pz $ARENA_BOARD'\n'$ARENA_BOARD_NEXT $ARENA_TEMP &>/dev/null ; then
+      if [ "${ARENA_STATUS:0:7}" = ILLEGAL ] ; then
+        ARENA_STATUS="MIDDLE WINS !"
+        break
+      else
+        ARENA_STATUS="ILLEGAL MOVE: $ARENA_MOVE"
+        continue
       fi
     else
       ARENA_BOARD="$ARENA_BOARD_NEXT"
