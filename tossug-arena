@@ -1,23 +1,23 @@
 #!/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
 shopt -s extglob
-ARENA_ROUND=$1 # name of round file
+ARENA_MATCH=$1 # name of match file
 ARENA_PLAYER1=$2 # name of player1
 ARENA_PLAYER2=$3 # name of player2
 ARENA_PLAYER3=$4 # name of player3
-ARENA_GAME="" # game type from round file
-ARENA_UI="" # game ui from round file
-ARENA_THEME="" # ui theme from round file
+ARENA_GAME="" # game type from match file
+ARENA_UI="" # game ui from match file
+ARENA_THEME="" # ui theme from match file
 [ "$0" = "./tossug-arena" ] && DATADIR="$PWD" || DATADIR=/usr/share/tossug-arena
 RANDOM=`date +%s` # set random seed
 
 if [ $# -eq 0 ] ; then
   echo "TOSSUG Arena: Gamelets Arena for AI Players"
   echo "Usage:"
-  echo -e "\ttossug-arena ROUND[-log] [ PLAYER1 [ PLAYER2 [ PLAYER3 ]]]"
+  echo -e "\ttossug-arena MATCH[-log] [ PLAYER1 [ PLAYER2 [ PLAYER3 ]]]"
   echo
-  echo "available ROUNDs:"
-  cd "$DATADIR/rounds"
+  echo "available MATCHs:"
+  cd "$DATADIR/matches"
   echo -e "\t"`ls !(Human*|*-log)`
   echo "available PLAYERs: (Human as reserved default)"
   cd "$DATADIR/players"
@@ -32,11 +32,11 @@ if [ $# -eq 0 ] ; then
   exit 1
 fi
 
-if ! [ -f "$DATADIR/rounds/$ARENA_ROUND" ] ; then
-  echo "round file: $DATADIR/rounds/$ARENA_ROUND not found."
+if ! [ -f "$DATADIR/matches/$ARENA_MATCH" ] ; then
+  echo "match file: $DATADIR/matches/$ARENA_MATCH not found."
   exit 1
 fi
-source "$DATADIR/rounds/$ARENA_ROUND"
+source "$DATADIR/matches/$ARENA_MATCH"
 if ! [ -x "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/main" ] ; then
   echo "ui path: $DATADIR/uis/$ARENA_GAME/$ARENA_UI/main not found."
   exit 1

@@ -11,10 +11,10 @@ Development Guide
 Todos
 =====
 * players/*/YourName/main
-* rounds/Connect6
+* matches/Connect6
 	* uis/Connect6/Text/main
-* rounds/Go9
+* matches/Go9
 	* uis/Go9/Text/main
-* rounds/Chess
+* matches/Chess
 	* uis/Chess/Text/main
 * uis/*/Graph/main
