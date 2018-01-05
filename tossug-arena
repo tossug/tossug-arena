@@ -18,7 +18,7 @@ if [ $# -eq 0 ] ; then
   echo
   echo "available ROUNDs:"
   cd "$DATADIR/rounds"
-  echo -e "\t"`ls !(*-log)`
+  echo -e "\t"`ls !(Human*|*-log)`
   echo "available PLAYERs: (Human as reserved default)"
   cd "$DATADIR/players"
   for i in * ; do

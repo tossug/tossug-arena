@@ -7,7 +7,7 @@ human/random players or themselves. <https://github.com/tossug/tossug-arena>
 Testing
 =======
 	./tossug-arena
-	./tossug-arena XiangHalf Random0 Random
+	./tossug-arena XiangHalf Human Random
 	mkdir players/XiangHalf/YourName
 	cp players/XiangHalf/Random/main players/XiangHalf/YourName/main
 	$EDITOR players/XiangHalf/YourName/main
@@ -16,5 +16,5 @@ Testing
 Install & Usage
 ===============
 	make install
-	tossug-arena XiangHalf Human Human
+	tossug-arena XiangHalf
 	tossug-arena XiangHalf-log Random Random0

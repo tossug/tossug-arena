@@ -12,6 +12,9 @@ uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/$(PACKAGE)
 	rm -rf $(DESTDIR)$(PREFIX)/share/$(PACKAGE)
 
+termux:
+	sed -i 's|#!/bin/bash|#!/data/data/com.termux/files/usr/bin/bash|' `find . -type f`
+
 rpm: $(PACKAGE).spec
 	rsync -aC --delete . $(HOME)/rpmbuild/SOURCES/$(PACKAGE)-$(VERSION)
 	tar czf $(HOME)/rpmbuild/SOURCES/$(PACKAGE)-$(VERSION).tar.gz -C $(HOME)/rpmbuild/SOURCES $(PACKAGE)-$(VERSION)
