@@ -22,7 +22,7 @@ human, random or themselves.
 make DESTDIR=%{buildroot} install
 
 %files
-%doc *.md LICENSE
+%doc *.md LICENSE README.android
 %{_bindir}/%{name}
 %{_datadir}/%{name}
 

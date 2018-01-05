@@ -3,5 +3,6 @@ $ pkg upgrade
 $ pkg install git make
 $ git clone https://github.com/tossug/tossug-arena.git
 $ cd tossug-arena
-$ make termux
+$ make
 $ ./tossug-arena
+$ ./tossug-arena XiangHalf

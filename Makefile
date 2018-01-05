@@ -3,6 +3,9 @@ DESTDIR =
 PREFIX = /usr
 PACKAGE = tossug-arena
 
+build:
+	sed -i 's|#!/bin/bash|#!'`which bash`'|' `find . -type f`
+
 install:
 	install -Dm755 $(PACKAGE) $(DESTDIR)$(PREFIX)/bin/$(PACKAGE)
 	install -d $(DESTDIR)$(PREFIX)/share/$(PACKAGE)
@@ -11,9 +14,6 @@ install:
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/$(PACKAGE)
 	rm -rf $(DESTDIR)$(PREFIX)/share/$(PACKAGE)
-
-termux:
-	sed -i 's|#!/bin/bash|#!/data/data/com.termux/files/usr/bin/bash|' `find . -type f`
 
 rpm: $(PACKAGE).spec
 	rsync -aC --delete . $(HOME)/rpmbuild/SOURCES/$(PACKAGE)-$(VERSION)
