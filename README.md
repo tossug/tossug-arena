@@ -8,13 +8,13 @@ Testing
 =======
 	./tossug-arena
 	./tossug-arena XiangHalf Human Random
-	mkdir players/XiangHalf/YourName
-	cp players/XiangHalf/Random/main players/XiangHalf/YourName/main
-	$EDITOR players/XiangHalf/YourName/main
-	./tossug-arena XiangHalf Random YourName
+	mkdir players/XiangHalf/AgentName
+	cp players/XiangHalf/Random/main players/XiangHalf/AgentName/main
+	$EDITOR players/XiangHalf/AgentName/main
+	./tossug-arena XiangHalf Random AgentName
 
 Install & Usage
 ===============
 	make install
-	tossug-arena XiangHalf
+	tossug-arena XiangHalf HumanName1 HumanName2
 	tossug-arena XiangHalf-log Random Random0

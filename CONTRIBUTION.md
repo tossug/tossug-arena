@@ -10,7 +10,7 @@ Development Guide
 
 Todos
 =====
-* players/*/YourName/main
+* players/*/AgentName/main
 * matches/Connect6
 	* uis/Connect6/Text/main
 * matches/Go9

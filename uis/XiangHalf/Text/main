@@ -21,12 +21,12 @@ export ARENA_BOARD="@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@/"
 until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
   "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/show_the_game"
   [ $((ARENA_MOVENO%2)) -eq 1 ] && ARENA_PLAYER="$ARENA_PLAYER1" || ARENA_PLAYER="$ARENA_PLAYER2"
-  if [ "$ARENA_PLAYER" = Human ] ; then
-    read ARENA_MOVE
-    ARENA_MOVE=${ARENA_MOVE^^}
-  else
+  if [ -x "$DATADIR/players/$ARENA_GAME/$ARENA_PLAYER/main" -a "${ARENA_PLAYER:0:5}" != Human ] ; then
     ARENA_MOVE=`"$DATADIR/players/$ARENA_GAME/$ARENA_PLAYER/main"`
     [ "${ARENA_THEME,,}" != log ] && echo "$ARENA_MOVE"
+  else
+    read ARENA_MOVE
+    ARENA_MOVE=${ARENA_MOVE^^}
   fi
   if [ -n "$ARENA_MOVE" ] ; then
     ARENA_BOARD_NEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_board"`
