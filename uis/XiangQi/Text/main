@@ -39,7 +39,7 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
         continue
       fi
     elif grep -Pz $ARENA_BOARD'\n'$ARENA_BOARD_NEXT $ARENA_TEMP &>/dev/null ; then
-      if [ "${ARENA_STATUS:0:7}" = ILLEGAL ] ; then
+      if [ `grep -Pzo $ARENA_BOARD'\n'$ARENA_BOARD_NEXT $ARENA_TEMP|grep -c ''` -eq 4 ] ; then
         ARENA_STATUS="MIDDLE WINS !"
         break
       else

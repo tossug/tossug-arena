@@ -1,6 +1,7 @@
 # Please install "termux" app. first, then enter:
 $ pkg upgrade
-$ pkg install git make
+$ pkg install git make grep
+$ hash -r
 $ git clone https://github.com/tossug/tossug-arena.git
 $ cd tossug-arena
 $ make
