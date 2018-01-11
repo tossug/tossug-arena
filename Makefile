@@ -4,7 +4,7 @@ PREFIX = /usr
 PACKAGE = tossug-arena
 
 build:
-	sed -i 's|#!/bin/bash|#!'`which bash`'|' `find . -type f`
+	sed -i -e 's|#!/bin/bash|#!'`which bash`'|' -e 's|#!/usr/bin/env|#!'`which env`'|' `find . -type f`
 
 install:
 	install -Dm755 $(PACKAGE) $(DESTDIR)$(PREFIX)/bin/$(PACKAGE)

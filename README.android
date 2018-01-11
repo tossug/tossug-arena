@@ -1,4 +1,4 @@
-# Please install "termux" app. first, then enter:
+# Please install "termux" app. first, then input:
 $ pkg upgrade
 $ pkg install git make grep
 $ hash -r
@@ -6,9 +6,9 @@ $ git clone https://github.com/tossug/tossug-arena.git
 $ cd tossug-arena
 $ make
 $ ./tossug-arena
-$ ./tossug-arena XiangHalf
+$ ./tossug-arena TianQi
 
-# Next time you may need:
+# Next time you may input:
 $ cd tossug-arena
 $ git pull
-$ ./tossug-arena XiangQi
+$ ./tossug-arena ShuaiQi
