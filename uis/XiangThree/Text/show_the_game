@@ -20,7 +20,7 @@ function piece {
     esac
     [ "${ARENA_MOVE:0:2}" = $POSX$POSY ] && PIECE="\e[103m$PIECE\e[43m"
   elif [ $PIECE = @ ] ; then
-    PIECE="\e[36m◎ \e[90m"
+    PIECE="\e[36m⦿ \e[90m"
   elif [ $RNAMES = ${RNAMES/$PIECE/} ] ; then
     [ "${ARENA_MOVE:2:2}" = $POSX$POSY ] && PIECE="\e[7;30m$PIECE\e[27;90m" || PIECE="\e[30m$PIECE\e[90m"
   else
@@ -126,7 +126,7 @@ if [ "${ARENA_THEME,,}" = log ] ; then
   [ "$ARENA_STATUS" != "${ARENA_STATUS/WINS/}" ] && echo "$MESSAGE $ARENA_MOVENO Moves."
 else # default
   clear
-  echo -e "    ${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2} vs. ${ARENA_PLAYER3}${PLAYER3}"
+  echo -e "   ${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2} vs. ${ARENA_PLAYER3}${PLAYER3}"
   echo -e "５ \e[90;43m"`piece 36`"══"`piece 37`"══"`piece 38`"══"`piece 39`"══"`piece 40`"══"`piece 41`"══"`piece 42`"══"`piece 43`"══"`piece 44`"\e[0m"
   echo -e "   \e[90;43m║   │   │   │   │   │   │   │   ║ \e[0m\tThree Kingdoms Xiang Qi"
   echo -e "４ \e[90;43m"`piece 27`"──"`piece 28`"──"`piece 29`"──"`piece 30`"──"`piece 31`"──"`piece 32`"──"`piece 33`"──"`piece 34`"──"`piece 35`"\e[0m"
