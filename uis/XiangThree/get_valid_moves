@@ -23,7 +23,7 @@ for y in {0..4} ; do
       [ $PIECESRED = ${PIECESRED/$PIECE1/} ] && continue
     elif [ "$TURN" = Black ] ; then
       [ $PIECESBLACK = ${PIECESBLACK/$PIECE1/} ] && continue
-    elif [ "$TURN" = Mixed ] ; then
+    elif [ "$TURN" = Blue ] ; then
       [ $PIECESMIXED = ${PIECESMIXED/$PIECE1/} ] && continue
     else
       continue
@@ -45,7 +45,7 @@ for y in {0..4} ; do
             [ $PIECE2 = @ ] && continue
             [ $TURN = Red -a $PIECESRED != ${PIECESRED/$PIECE2/} ] && continue
             [ $TURN = Black -a $PIECESBLACK != ${PIECESBLACK/$PIECE2/} ] && continue
-            [ $TURN = Mixed -a $PIECESMIXED != ${PIECESMIXED/$PIECE2/} ] && continue
+            [ $TURN = Blue -a $PIECESMIXED != ${PIECESMIXED/$PIECE2/} ] && continue
           fi
           POS2=${POSXS:NEWX:1}$((NEWY+1))
           MOVES="${MOVES}${POS1}${POS2} "
@@ -65,7 +65,7 @@ for y in {0..4} ; do
               [ $PIECE2 = @ ] && break
               [ $TURN = Red -a $PIECESRED != ${PIECESRED/$PIECE2/} ] && break
               [ $TURN = Black -a $PIECESBLACK != ${PIECESBLACK/$PIECE2/} ] && break
-              [ $TURN = Mixed -a $PIECESMIXED != ${PIECESMIXED/$PIECE2/} ] && break
+              [ $TURN = Blue -a $PIECESMIXED != ${PIECESMIXED/$PIECE2/} ] && break
               POS2=${POSXS:NEWX:1}$((NEWY+1))
               MOVES="${MOVES}${POS1}${POS2} "
               break
@@ -94,7 +94,7 @@ for y in {0..4} ; do
                 [ $PIECE2 = @ ] && break
                 [ $TURN = Red -a $PIECESRED != ${PIECESRED/$PIECE2/} ] && break
                 [ $TURN = Black -a $PIECESBLACK != ${PIECESBLACK/$PIECE2/} ] && break
-                [ $TURN = Mixed -a $PIECESMIXED != ${PIECESMIXED/$PIECE2/} ] && break
+                [ $TURN = Blue -a $PIECESMIXED != ${PIECESMIXED/$PIECE2/} ] && break
                 POS2=${POSXS:NEWX:1}$((NEWY+1))
                 MOVES="${MOVES}${POS1}${POS2} "
                 break

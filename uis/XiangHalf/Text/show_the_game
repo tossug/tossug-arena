@@ -7,12 +7,17 @@ function piece {
   if [ $PIECE = _ ] ; then
     [ "${ARENA_MOVE:0:2}" = ${POSXS:SEQ%8:1}$((SEQ/8+1)) ] && echo -en "\e[103m　\e[43m" || echo -n "　"
   elif [ $PIECE = @ ] ; then
-    echo -n "\e[36m⦿ \e[90m"
-  elif [ $RNAMES = ${RNAMES/$PIECE/} ] ; then
-    [ "${ARENA_MOVE:2:2}" = ${POSXS:SEQ%8:1}$((SEQ/8+1)) ] && echo -en "\e[7;30m$PIECE\e[27;90m" || echo -n "\e[30m$PIECE\e[90m"
+    echo -n "\e[32m⬤ \e[90m"
+  elif [ $RNAMES != ${RNAMES/$PIECE/} ] ; then
+    [ "${ARENA_MOVE:2:2}" = ${POSXS:SEQ%8:1}$((SEQ/8+1)) ] && echo -en "\e[103;31m$PIECE\e[43;90m" || echo -n "\e[31m$PIECE\e[90m"
   else
-    [ "${ARENA_MOVE:2:2}" = ${POSXS:SEQ%8:1}$((SEQ/8+1)) ] && echo -en "\e[7;31m$PIECE\e[27;90m" || echo -n "\e[31m$PIECE\e[90m"
+    [ "${ARENA_MOVE:2:2}" = ${POSXS:SEQ%8:1}$((SEQ/8+1)) ] && echo -en "\e[103;30m$PIECE\e[43;90m" || echo -n "\e[30m$PIECE\e[90m"
   fi
+}
+
+function color {
+  [ "$1" = Red ] && echo -n '\e[31m⬤ \e[0m'
+  [ "$1" = Black ] && echo -n '◯ '
 }
 
 POSXS="ABCDEFGH"
@@ -24,8 +29,8 @@ for i in {0..13} ; do
   ARENA_BOARD=${ARENA_BOARD//$ENAME/$CNAME}
 done
 
-[ -z "$ARENA_COLOR1" ] && PLAYER1="(?)" || PLAYER1="($ARENA_COLOR1)"
-[ -z "$ARENA_COLOR2" ] && PLAYER2="(?)" || PLAYER2="($ARENA_COLOR2)"
+[ -z "$ARENA_COLOR1" ] && PLAYER1="？" || PLAYER1=`color $ARENA_COLOR1`
+[ -z "$ARENA_COLOR2" ] && PLAYER2="？" || PLAYER2=`color $ARENA_COLOR2`
 if [ $((ARENA_MOVENO%2)) -eq 1 ] ; then # check if player1's turn
   if [ -z "$ARENA_STATUS" ] ; then
     MESSAGE=""
@@ -83,14 +88,14 @@ if [ "${ARENA_THEME,,}" = log ] ; then
   [ -n "$ARENA_STATUS" ] && echo "$MESSAGE $ARENA_MOVENO Moves."
 else # default
   clear
-  echo -e "   \e[90;43m╔═══╤═══╤═══╤═══╤═══╤═══╤═══╤═══╗ \e[0m\tHalf Board Xiang Qi"
-  echo -e "４ \e[90;43m║ "`piece 24`"│ "`piece 25`"│ "`piece 26`"│ "`piece 27`"│ "`piece 28`"│ "`piece 29`"│ "`piece 30`"│ "`piece 31`"║ \e[0m"
-  echo -e "   \e[90;43m╟───┼───┼───┼───┼───┼───┼───┼───╢ \e[0m\t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}"
-  echo -e "３ \e[90;43m║ "`piece 16`"│ "`piece 17`"│ "`piece 18`"│ "`piece 19`"│ "`piece 20`"│ "`piece 21`"│ "`piece 22`"│ "`piece 23`"║ \e[0m"
-  echo -e "   \e[90;43m╟───┼───┼───┼───┼───┼───┼───┼───╢ \e[0m\t${MESSAGE}"
-  echo -e "２ \e[90;43m║ "`piece 8`"│ "`piece 9`"│ "`piece 10`"│ "`piece 11`"│ "`piece 12`"│ "`piece 13`"│ "`piece 14`"│ "`piece 15`"║ \e[0m"
-  echo -e "   \e[90;43m╟───┼───┼───┼───┼───┼───┼───┼───╢ \e[0m\t▥ : ${REDDEAD}"
-  echo -e "１ \e[90;43m║ "`piece 0`"│ "`piece 1`"│ "`piece 2`"│ "`piece 3`"│ "`piece 4`"│ "`piece 5`"│ "`piece 6`"│ "`piece 7`"║ \e[0m\t    ${BLACKDEAD}"
-  echo -e "   \e[90;43m╚═══╧═══╧═══╧═══╧═══╧═══╧═══╧═══╝ \e[0m"
+  echo -e "  \e[90;43m ╔═══╤═══╤═══╤═══╤═══╤═══╤═══╤═══╗ \e[0m\tHalf Board Xiang Qi"
+  echo -e "４\e[90;43m ║ "`piece 24`"│ "`piece 25`"│ "`piece 26`"│ "`piece 27`"│ "`piece 28`"│ "`piece 29`"│ "`piece 30`"│ "`piece 31`"║ \e[0m"
+  echo -e "  \e[90;43m ╟───┼───┼───┼───┼───┼───┼───┼───╢ \e[0m\t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}"
+  echo -e "３\e[90;43m ║ "`piece 16`"│ "`piece 17`"│ "`piece 18`"│ "`piece 19`"│ "`piece 20`"│ "`piece 21`"│ "`piece 22`"│ "`piece 23`"║ \e[0m"
+  echo -e "  \e[90;43m ╟───┼───┼───┼───┼───┼───┼───┼───╢ \e[0m\t${MESSAGE}"
+  echo -e "２\e[90;43m ║ "`piece 8`"│ "`piece 9`"│ "`piece 10`"│ "`piece 11`"│ "`piece 12`"│ "`piece 13`"│ "`piece 14`"│ "`piece 15`"║ \e[0m"
+  echo -e "  \e[90;43m ╟───┼───┼───┼───┼───┼───┼───┼───╢ \e[0m\t▥ : \e[107;31m${REDDEAD}\e[0m"
+  echo -e "１\e[90;43m ║ "`piece 0`"│ "`piece 1`"│ "`piece 2`"│ "`piece 3`"│ "`piece 4`"│ "`piece 5`"│ "`piece 6`"│ "`piece 7`"║ \e[0m\t    \e[107;30m${BLACKDEAD}\e[0m"
+  echo -e "  \e[90;43m ╚═══╧═══╧═══╧═══╧═══╧═══╧═══╧═══╝ \e[0m"
   echo -en "     Ａ  Ｂ  Ｃ  Ｄ  Ｅ  Ｆ  Ｇ  Ｈ  \tMove No. ${ARENA_MOVENO}: "
 fi

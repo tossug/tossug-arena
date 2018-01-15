@@ -65,14 +65,14 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
           [ "$ARENA_BOARD" != "${ARENA_BOARD/$i/}" ] && ARENA_COLOR1="Black"
         done
         for i in K k P p ; do
-          [ "$ARENA_BOARD" != "${ARENA_BOARD/$i/}" ] && ARENA_COLOR1="Mixed"
+          [ "$ARENA_BOARD" != "${ARENA_BOARD/$i/}" ] && ARENA_COLOR1="Blue"
         done
       elif [ -z "$ARENA_COLOR2" -a $((ARENA_MOVENO%3)) -eq 2 ] ; then
         if [ "$ARENA_COLOR1" != Red ] ; then
           for i in A E R H C ; do
             if [ "$ARENA_BOARD" != "${ARENA_BOARD/$i/}" ] ; then
               ARENA_COLOR2="Red"
-              [ "$ARENA_COLOR1" = Black ] && ARENA_COLOR3="Mixed" || ARENA_COLOR3="Black"
+              [ "$ARENA_COLOR1" = Black ] && ARENA_COLOR3="Blue" || ARENA_COLOR3="Black"
               break
             fi
           done
@@ -81,15 +81,15 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
           for i in a e r h c ; do
             if [ "$ARENA_BOARD" != "${ARENA_BOARD/$i/}" ] ; then
               ARENA_COLOR2="Black"
-              [ "$ARENA_COLOR1" = Red ] && ARENA_COLOR3="Mixed" || ARENA_COLOR3="Red"
+              [ "$ARENA_COLOR1" = Red ] && ARENA_COLOR3="Blue" || ARENA_COLOR3="Red"
               break
             fi
           done
         fi
-        if [ "$ARENA_COLOR1" != Mixed ] ; then
+        if [ "$ARENA_COLOR1" != Blue ] ; then
           for i in K k P p ; do
             if [ "$ARENA_BOARD" != "${ARENA_BOARD/$i/}" ] ; then
-              ARENA_COLOR2="Mixed"
+              ARENA_COLOR2="Blue"
               [ "$ARENA_COLOR1" = Black ] && ARENA_COLOR3="Red" || ARENA_COLOR3="Black"
               break
             fi
@@ -100,7 +100,7 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
           for i in A E R H C ; do
             if [ "$ARENA_BOARD" != "${ARENA_BOARD/$i/}" ] ; then
               ARENA_COLOR3="Red"
-              [ "$ARENA_COLOR1" = Black ] && ARENA_COLOR2="Mixed" || ARENA_COLOR2="Black"
+              [ "$ARENA_COLOR1" = Black ] && ARENA_COLOR2="Blue" || ARENA_COLOR2="Black"
               break
             fi
           done
@@ -109,15 +109,15 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
           for i in a e r h c ; do
             if [ "$ARENA_BOARD" != "${ARENA_BOARD/$i/}" ] ; then
               ARENA_COLOR3="Black"
-              [ "$ARENA_COLOR1" = Red ] && ARENA_COLOR2="Mixed" || ARENA_COLOR2="Red"
+              [ "$ARENA_COLOR1" = Red ] && ARENA_COLOR2="Blue" || ARENA_COLOR2="Red"
               break
             fi
           done
         fi
-        if [ "$ARENA_COLOR1" != Mixed ] ; then
+        if [ "$ARENA_COLOR1" != Blue ] ; then
           for i in K k P p ; do
             if [ "$ARENA_BOARD" != "${ARENA_BOARD/$i/}" ] ; then
-              ARENA_COLOR3="Mixed"
+              ARENA_COLOR3="Blue"
               [ "$ARENA_COLOR1" = Black ] && ARENA_COLOR2="Red" || ARENA_COLOR2="Black"
               break
             fi

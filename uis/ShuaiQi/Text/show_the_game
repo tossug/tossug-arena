@@ -19,10 +19,10 @@ function piece {
       89) PIECE="╗ " ;;
     esac
     [ "${ARENA_MOVE:0:2}" = ${POSXS:SEQ%10:1}$((SEQ/10+1)) ] && PIECE="\e[103m$PIECE\e[43m"
-  elif [ $RNAMES = ${RNAMES/$PIECE/} ] ; then
-    [ "${ARENA_MOVE:2:2}" = ${POSXS:SEQ%10:1}$((SEQ/10+1)) ] && PIECE="\e[7;30m$PIECE\e[27;90m" || PIECE="\e[30m$PIECE\e[90m"
+  elif [ $RNAMES != ${RNAMES/$PIECE/} ] ; then
+    [ "${ARENA_MOVE:2:2}" = ${POSXS:SEQ%10:1}$((SEQ/10+1)) ] && PIECE="\e[103;31m$PIECE\e[43;90m" || PIECE="\e[31m$PIECE\e[90m"
   else
-    [ "${ARENA_MOVE:2:2}" = ${POSXS:SEQ%10:1}$((SEQ/10+1)) ] && PIECE="\e[7;31m$PIECE\e[27;90m" || PIECE="\e[31m$PIECE\e[90m"
+    [ "${ARENA_MOVE:2:2}" = ${POSXS:SEQ%10:1}$((SEQ/10+1)) ] && PIECE="\e[103;30m$PIECE\e[43;90m" || PIECE="\e[30m$PIECE\e[90m"
   fi
   if [ $((SEQ%10)) -ne 9 ] ; then
     if [ $((SEQ/10%8)) -eq 0 ] ; then
@@ -45,8 +45,8 @@ for i in {0..13} ; do
   ARENA_BOARD=${ARENA_BOARD//$ENAME/$CNAME}
 done
 
-PLAYER1="(Red)"
-PLAYER2="(Black)"
+PLAYER1="\e[31m⬤ \e[0m"
+PLAYER2="◯ "
 if [ $((ARENA_MOVENO%2)) -eq 1 ] ; then # check if player1's turn
   if [ -z "$ARENA_STATUS" ] ; then
     MESSAGE=""
@@ -114,7 +114,7 @@ else # default
   POSY="１２３４５６７８９"
   clear
   for y in {8..0} ; do
-    echo -en ${POSY:y:1}" \e[90;43m "
+    echo -en ${POSY:y:1}"\e[90;43m "
     for x in {0..9} ; do
       POS=$((y*10+x))
       echo -n "`piece $POS`" # need quote
@@ -125,8 +125,8 @@ else # default
       6) echo -e "\t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}" ;;
       5) echo -e "\t${MESSAGE}" ;;
       4) echo -e "\t    ${REDCODES}" ;;
-      3) echo -e "\tＸ: ${REDDROPS}" ;;
-      2) echo -e "\t    ${BLACKDROPS}" ;;
+      3) echo -e "\tＸ: \e[107;31m${REDDROPS}\e[0m" ;;
+      2) echo -e "\t    \e[107;30m${BLACKDROPS}\e[0m" ;;
       1) echo -e "\t    ${BLACKCODES}" ;;
       *) echo ;;
     esac

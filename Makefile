@@ -6,6 +6,9 @@ PACKAGE = tossug-arena
 build:
 	sed -i -e 's|#!/bin/bash|#!'`which bash`'|' -e 's|#!/usr/bin/env|#!'`which env`'|' `find . -type f`
 
+reverse:
+	sed -i -e 's|#!'`which bash`'|#!/bin/bash|' -e 's|#!'`which env`'|#!/usr/bin/env|' `find . -type f`
+
 install:
 	install -Dm755 $(PACKAGE) $(DESTDIR)$(PREFIX)/bin/$(PACKAGE)
 	install -d $(DESTDIR)$(PREFIX)/share/$(PACKAGE)

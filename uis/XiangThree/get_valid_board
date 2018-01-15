@@ -57,7 +57,7 @@ if [ "$TURN" = Red ] ; then
 elif [ "$TURN" = Black ] ; then
   [ $PIECESBLACK = ${PIECESBLACK/$PIECE1/} ] && exit 1
   [ $PIECESBLACK != ${PIECESBLACK/$PIECE2/} ] && exit 1
-elif [ "$TURN" = Mixed ] ; then
+elif [ "$TURN" = Blue ] ; then
   [ $PIECESMIXED = ${PIECESMIXED/$PIECE1/} ] && exit 1
   [ $PIECESMIXED != ${PIECESMIXED/$PIECE2/} ] && exit 1
 else

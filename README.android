@@ -8,7 +8,12 @@ $ make
 $ ./tossug-arena
 $ ./tossug-arena TianQi
 
-# Next time you may input:
+# Next time you only need:
 $ cd tossug-arena
-$ git pull
 $ ./tossug-arena ShuaiQi
+
+# To update you may input:
+$ cd tossug-arena
+$ make reverse
+$ git pull
+$ make

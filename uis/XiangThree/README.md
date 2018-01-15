@@ -6,7 +6,7 @@ Pieces Code
 ===========
 * "AAEERRHHCC" for "仕仕相相俥俥傌傌炮炮" (Red)
 * "aaeerrhhcc" for "士士象象車車馬馬包包" (Black)
-* "KkPPPPPppppp" for "帥將兵兵兵兵兵卒卒卒卒卒" (Mixed)
+* "KkPPPPPppppp" for "帥將兵兵兵兵兵卒卒卒卒卒" (Blue)
 
 Variables Example
 =================
@@ -19,7 +19,7 @@ Variables Example
 	ARENA_BOARD="______________________k______________________/KAAEERRHHCCPPPPPaaeerrhhccppppp"
 	ARENA_COLOR1="Red"
 	ARENA_COLOR2="Black"
-	ARENA_COLOR3="Mixed"
+	ARENA_COLOR3="Blue"
 	ARENA_MOVENO=1
 	ARENA_MOVENO=42
 	ARENA_MOVE="A1B1"
