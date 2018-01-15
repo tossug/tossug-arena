@@ -50,7 +50,7 @@ fi
 [ $((ARENA_MOVENO%3)) -eq 0 ] && TURN=$ARENA_COLOR3
 PIECESRED="AERHC"
 PIECESBLACK="aerhc"
-PIECESMIXED="KkPp"
+PIECESBLUE="KkPp"
 if [ "$TURN" = Red ] ; then
   [ $PIECESRED = ${PIECESRED/$PIECE1/} ] && exit 1
   [ $PIECESRED != ${PIECESRED/$PIECE2/} ] && exit 1
@@ -58,8 +58,8 @@ elif [ "$TURN" = Black ] ; then
   [ $PIECESBLACK = ${PIECESBLACK/$PIECE1/} ] && exit 1
   [ $PIECESBLACK != ${PIECESBLACK/$PIECE2/} ] && exit 1
 elif [ "$TURN" = Blue ] ; then
-  [ $PIECESMIXED = ${PIECESMIXED/$PIECE1/} ] && exit 1
-  [ $PIECESMIXED != ${PIECESMIXED/$PIECE2/} ] && exit 1
+  [ $PIECESBLUE = ${PIECESBLUE/$PIECE1/} ] && exit 1
+  [ $PIECESBLUE != ${PIECESBLUE/$PIECE2/} ] && exit 1
 else
   exit 1
 fi

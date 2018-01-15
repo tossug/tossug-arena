@@ -52,17 +52,17 @@ if [ $((ARENA_MOVENO%2)) -eq 1 ] ; then # check if player1's turn
     MESSAGE=""
     PLAYER1=$PLAYER1"*"
   elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
-    MESSAGE="${ARENA_STATUS}"
+    MESSAGE="$ARENA_STATUS"
     PLAYER1=$PLAYER1" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
-  elif  [ "${ARENA_STATUS}" = "MIDDLE WINS !" ] ; then
-    MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${ARENA_STATUS}"
+  elif  [ "$ARENA_STATUS" = "MIDDLE WINS !" ] ; then
+    MESSAGE="$ARENA_PLAYER2 $PLAYER2 $ARENA_STATUS"
     PLAYER1=$PLAYER1" "
   elif [ "${ARENA_STATUS:0:7}" = INVALID -o "${ARENA_STATUS:0:7}" = ILLEGAL ] ; then
-    MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${ARENA_STATUS}"
+    MESSAGE="$ARENA_PLAYER1 $PLAYER1 $ARENA_STATUS"
     PLAYER1=$PLAYER1"*"
   else
-    MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${ARENA_STATUS}"
+    MESSAGE="$ARENA_PLAYER2 $PLAYER2 $ARENA_STATUS"
     PLAYER1=$PLAYER1" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   fi
@@ -72,17 +72,17 @@ else
     MESSAGE=""
     PLAYER2=$PLAYER2"*"
   elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
-    MESSAGE="${ARENA_STATUS}"
+    MESSAGE="$ARENA_STATUS"
     PLAYER2=$PLAYER2" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
-  elif  [ "${ARENA_STATUS}" = "MIDDLE WINS !" ] ; then
-    MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${ARENA_STATUS}"
+  elif  [ "$ARENA_STATUS" = "MIDDLE WINS !" ] ; then
+    MESSAGE="$ARENA_PLAYER1 $PLAYER1 $ARENA_STATUS"
     PLAYER2=$PLAYER2" "
   elif [ "${ARENA_STATUS:0:7}" = INVALID -o "${ARENA_STATUS:0:7}" = ILLEGAL ] ; then
-    MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${ARENA_STATUS}"
+    MESSAGE="$ARENA_PLAYER2 $PLAYER2 $ARENA_STATUS"
     PLAYER2=$PLAYER2"*"
   else
-    MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${ARENA_STATUS}"
+    MESSAGE="$ARENA_PLAYER1 $PLAYER1 $ARENA_STATUS"
     PLAYER2=$PLAYER2" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   fi
@@ -99,11 +99,11 @@ while [ $i -lt ${#DEADS} ] ; do
   DEAD=${DEADS:i:1}
   CNAMEX=${CNAMES%%${DEAD}*}
   if [ ${#CNAMEX} -lt 7 ] ; then
-    BLACKDROPS=${BLACKDROPS}${CNAMES:${#CNAMEX}+7:1}
-    BLACKCODES="${BLACKCODES} ${ENAMES:${#CNAMEX}:1}"
+    BLACKDROPS="$BLACKDROPS${CNAMES:${#CNAMEX}+7:1}"
+    BLACKCODES="$BLACKCODES ${ENAMES:${#CNAMEX}:1}"
   else
-    REDDROPS=${REDDROPS}${CNAMES:${#CNAMEX}-7:1}
-    REDCODES="${REDCODES} ${ENAMES:${#CNAMEX}-7:1}"
+    REDDROPS="$REDDROPS${CNAMES:${#CNAMEX}-7:1}"
+    REDCODES="$REDCODES ${ENAMES:${#CNAMEX}-7:1}"
   fi
   let i++
 done
@@ -122,14 +122,14 @@ else # default
     echo -en " \e[0m"
     case $y in
       8) echo -e "\tShuai Qi" ;;
-      6) echo -e "\t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}" ;;
-      5) echo -e "\t${MESSAGE}" ;;
-      4) echo -e "\t    ${REDCODES}" ;;
-      3) echo -e "\tＸ: \e[107;31m${REDDROPS}\e[0m" ;;
-      2) echo -e "\t    \e[107;30m${BLACKDROPS}\e[0m" ;;
-      1) echo -e "\t    ${BLACKCODES}" ;;
+      6) echo -e "\t$ARENA_PLAYER1 $PLAYER1 vs. $ARENA_PLAYER2 $PLAYER2" ;;
+      5) echo -e "\t$MESSAGE" ;;
+      4) echo -e "\t    $REDCODES" ;;
+      3) echo -e "\tＸ: \e[107;31m$REDDROPS\e[0m" ;;
+      2) echo -e "\t    \e[107;30m$BLACKDROPS\e[0m" ;;
+      1) echo -e "\t    $BLACKCODES" ;;
       *) echo ;;
     esac
   done
-  echo -en "   Ａ Ｂ Ｃ Ｄ Ｅ Ｆ Ｇ Ｈ Ｊ Ｋ\tMove No. ${ARENA_MOVENO}: "
+  echo -en "   Ａ Ｂ Ｃ Ｄ Ｅ Ｆ Ｇ Ｈ Ｊ Ｋ\tMove No. $ARENA_MOVENO: "
 fi

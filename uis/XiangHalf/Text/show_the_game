@@ -36,17 +36,17 @@ if [ $((ARENA_MOVENO%2)) -eq 1 ] ; then # check if player1's turn
     MESSAGE=""
     PLAYER1=$PLAYER1"*"
   elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
-    MESSAGE="${ARENA_STATUS}"
+    MESSAGE="$ARENA_STATUS"
     PLAYER1=$PLAYER1" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
-  elif  [ "${ARENA_STATUS}" = "MIDDLE WINS !" ] ; then
-    MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${ARENA_STATUS}"
+  elif  [ "$ARENA_STATUS" = "MIDDLE WINS !" ] ; then
+    MESSAGE="$ARENA_PLAYER2 $PLAYER2 $ARENA_STATUS"
     PLAYER1=$PLAYER1" "
   elif [ "${ARENA_STATUS:0:7}" = INVALID -o "${ARENA_STATUS:0:7}" = ILLEGAL ] ; then
-    MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${ARENA_STATUS}"
+    MESSAGE="$ARENA_PLAYER1 $PLAYER1 $ARENA_STATUS"
     PLAYER1=$PLAYER1"*"
   else
-    MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${ARENA_STATUS}"
+    MESSAGE="$ARENA_PLAYER2 $PLAYER2 $ARENA_STATUS"
     PLAYER1=$PLAYER1" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   fi
@@ -56,17 +56,17 @@ else
     MESSAGE=""
     PLAYER2=$PLAYER2"*"
   elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
-    MESSAGE="${ARENA_STATUS}"
+    MESSAGE="$ARENA_STATUS"
     PLAYER2=$PLAYER2" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
-  elif  [ "${ARENA_STATUS}" = "MIDDLE WINS !" ] ; then
-    MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${ARENA_STATUS}"
+  elif  [ "$ARENA_STATUS" = "MIDDLE WINS !" ] ; then
+    MESSAGE="$ARENA_PLAYER1 $PLAYER1 $ARENA_STATUS"
     PLAYER2=$PLAYER2" "
   elif [ "${ARENA_STATUS:0:7}" = INVALID -o "${ARENA_STATUS:0:7}" = ILLEGAL ] ; then
-    MESSAGE="${ARENA_PLAYER2}${PLAYER2} ${ARENA_STATUS}"
+    MESSAGE="$ARENA_PLAYER2 $PLAYER2 $ARENA_STATUS"
     PLAYER2=$PLAYER2"*"
   else
-    MESSAGE="${ARENA_PLAYER1}${PLAYER1} ${ARENA_STATUS}"
+    MESSAGE="$ARENA_PLAYER1 $PLAYER1 $ARENA_STATUS"
     PLAYER2=$PLAYER2" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   fi
@@ -80,7 +80,7 @@ i=0
 while [ $i -lt ${#DEADS} ] ; do
   DEAD=${DEADS:i:1}
   CNAMEX=${CNAMES%%${DEAD}*}
-  [ ${#CNAMEX} -lt 7 ] && REDDEAD=${REDDEAD}${DEAD} || BLACKDEAD=${BLACKDEAD}${DEAD}
+  [ ${#CNAMEX} -lt 7 ] && REDDEAD=$REDDEAD$DEAD || BLACKDEAD=$BLACKDEAD$DEAD
   let i++
 done
 
@@ -90,12 +90,12 @@ else # default
   clear
   echo -e "  \e[90;43m ╔═══╤═══╤═══╤═══╤═══╤═══╤═══╤═══╗ \e[0m\tHalf Board Xiang Qi"
   echo -e "４\e[90;43m ║ "`piece 24`"│ "`piece 25`"│ "`piece 26`"│ "`piece 27`"│ "`piece 28`"│ "`piece 29`"│ "`piece 30`"│ "`piece 31`"║ \e[0m"
-  echo -e "  \e[90;43m ╟───┼───┼───┼───┼───┼───┼───┼───╢ \e[0m\t${ARENA_PLAYER1}${PLAYER1} vs. ${ARENA_PLAYER2}${PLAYER2}"
+  echo -e "  \e[90;43m ╟───┼───┼───┼───┼───┼───┼───┼───╢ \e[0m\t$ARENA_PLAYER1 $PLAYER1 vs. $ARENA_PLAYER2 $PLAYER2"
   echo -e "３\e[90;43m ║ "`piece 16`"│ "`piece 17`"│ "`piece 18`"│ "`piece 19`"│ "`piece 20`"│ "`piece 21`"│ "`piece 22`"│ "`piece 23`"║ \e[0m"
-  echo -e "  \e[90;43m ╟───┼───┼───┼───┼───┼───┼───┼───╢ \e[0m\t${MESSAGE}"
+  echo -e "  \e[90;43m ╟───┼───┼───┼───┼───┼───┼───┼───╢ \e[0m\t$MESSAGE"
   echo -e "２\e[90;43m ║ "`piece 8`"│ "`piece 9`"│ "`piece 10`"│ "`piece 11`"│ "`piece 12`"│ "`piece 13`"│ "`piece 14`"│ "`piece 15`"║ \e[0m"
-  echo -e "  \e[90;43m ╟───┼───┼───┼───┼───┼───┼───┼───╢ \e[0m\t▥ : \e[107;31m${REDDEAD}\e[0m"
-  echo -e "１\e[90;43m ║ "`piece 0`"│ "`piece 1`"│ "`piece 2`"│ "`piece 3`"│ "`piece 4`"│ "`piece 5`"│ "`piece 6`"│ "`piece 7`"║ \e[0m\t    \e[107;30m${BLACKDEAD}\e[0m"
+  echo -e "  \e[90;43m ╟───┼───┼───┼───┼───┼───┼───┼───╢ \e[0m\t▥ : \e[107;31m$REDDEAD\e[0m"
+  echo -e "１\e[90;43m ║ "`piece 0`"│ "`piece 1`"│ "`piece 2`"│ "`piece 3`"│ "`piece 4`"│ "`piece 5`"│ "`piece 6`"│ "`piece 7`"║ \e[0m\t    \e[107;30m$BLACKDEAD\e[0m"
   echo -e "  \e[90;43m ╚═══╧═══╧═══╧═══╧═══╧═══╧═══╧═══╝ \e[0m"
-  echo -en "     Ａ  Ｂ  Ｃ  Ｄ  Ｅ  Ｆ  Ｇ  Ｈ  \tMove No. ${ARENA_MOVENO}: "
+  echo -en "     Ａ  Ｂ  Ｃ  Ｄ  Ｅ  Ｆ  Ｇ  Ｈ  \tMove No. $ARENA_MOVENO: "
 fi
