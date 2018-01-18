@@ -1,5 +1,5 @@
 Name:		tossug-arena
-Version:	2017.12
+Version:	2018.1
 Release:	1
 Summary:	Gamelets Arena for AI Players
 License:	CC0
@@ -27,8 +27,8 @@ make DESTDIR=%{buildroot} install
 %{_datadir}/%{name}
 
 %changelog
-* Wed Dec 13 2017 Wei-Lun Chao <bluebat@member.fsf.org> - 2017.12
-- Update to 2017.12
+* Thu Jan 18 2018 Wei-Lun Chao <bluebat@member.fsf.org> - 2018.1
+- Update to 2018.1
 
 * Tue Oct 31 2017 Wei-Lun Chao <bluebat@member.fsf.org> - 2017.10
 - First release

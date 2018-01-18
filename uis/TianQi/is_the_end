@@ -3,7 +3,7 @@
 
 # let player2 choose color
 if [ $ARENA_MOVENO -eq 0 ] ; then
-  echo "Choose Red/Black for player 2"
+  echo "Choose Red/Black for $ARENA_PLAYER2"
   exit 1
 fi
 

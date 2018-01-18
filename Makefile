@@ -1,4 +1,4 @@
-VERSION = 2017.12
+VERSION = 2018.1
 DESTDIR =
 PREFIX = /usr
 PACKAGE = tossug-arena
