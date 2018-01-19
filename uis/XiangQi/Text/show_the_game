@@ -52,17 +52,17 @@ if [ $((ARENA_MOVENO%2)) -eq 1 ] ; then # check if player1's turn
     MESSAGE=""
     PLAYER1=$PLAYER1"*"
   elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
-    MESSAGE="$ARENA_STATUS"
+    MESSAGE="\e[95m$ARENA_STATUS"
     PLAYER1=$PLAYER1" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   elif  [ "$ARENA_STATUS" = "MIDDLE WINS !" ] ; then
-    MESSAGE="$ARENA_PLAYER2 $PLAYER2 $ARENA_STATUS"
+    MESSAGE="$ARENA_PLAYER2 $PLAYER2 \e[95m$ARENA_STATUS"
     PLAYER1=$PLAYER1" "
   elif [ "${ARENA_STATUS:0:7}" = INVALID -o "${ARENA_STATUS:0:7}" = ILLEGAL ] ; then
-    MESSAGE="$ARENA_PLAYER1 $PLAYER1 $ARENA_STATUS"
+    MESSAGE="$ARENA_PLAYER1 $PLAYER1 \e[95m$ARENA_STATUS"
     PLAYER1=$PLAYER1"*"
   else
-    MESSAGE="$ARENA_PLAYER2 $PLAYER2 $ARENA_STATUS"
+    MESSAGE="$ARENA_PLAYER2 $PLAYER2 \e[95m$ARENA_STATUS"
     PLAYER1=$PLAYER1" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   fi
@@ -72,17 +72,17 @@ else
     MESSAGE=""
     PLAYER2=$PLAYER2"*"
   elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
-    MESSAGE="$ARENA_STATUS"
+    MESSAGE="\e[95m$ARENA_STATUS"
     PLAYER2=$PLAYER2" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   elif  [ "$ARENA_STATUS" = "MIDDLE WINS !" ] ; then
-    MESSAGE="$ARENA_PLAYER1 $PLAYER1 $ARENA_STATUS"
+    MESSAGE="$ARENA_PLAYER1 $PLAYER1 \e[95m$ARENA_STATUS"
     PLAYER2=$PLAYER2" "
   elif [ "${ARENA_STATUS:0:7}" = INVALID -o "${ARENA_STATUS:0:7}" = ILLEGAL ] ; then
-    MESSAGE="$ARENA_PLAYER2 $PLAYER2 $ARENA_STATUS"
+    MESSAGE="$ARENA_PLAYER2 $PLAYER2 \e[95m$ARENA_STATUS"
     PLAYER2=$PLAYER2"*"
   else
-    MESSAGE="$ARENA_PLAYER1 $PLAYER1 $ARENA_STATUS"
+    MESSAGE="$ARENA_PLAYER1 $PLAYER1 \e[95m$ARENA_STATUS"
     PLAYER2=$PLAYER2" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   fi
@@ -113,13 +113,13 @@ else # default
     done
     echo -en " \e[0m"
     case $y in
-      8) echo -e "\tXiang Qi" ;;
+      8) echo -e "\t\e[94mXiang Qi\e[0m" ;;
       6) echo -e "\t$ARENA_PLAYER1 $PLAYER1 vs. $ARENA_PLAYER2 $PLAYER2" ;;
-      4) echo -e "\t$MESSAGE" ;;
+      4) echo -e "\t$MESSAGE\e[0m" ;;
       2) echo -e "\t▥ : \e[107;31m$REDDEAD\e[0m" ;;
       1) echo -e "\t    \e[107;30m$BLACKDEAD\e[0m" ;;
       *) echo ;;
     esac
   done
-  echo -en "   Ａ Ｂ Ｃ Ｄ Ｅ Ｆ Ｇ Ｈ Ｊ Ｋ\tMove No. $ARENA_MOVENO: "
+  echo -en "   Ａ Ｂ Ｃ Ｄ Ｅ Ｆ Ｇ Ｈ Ｊ Ｋ\tMove No. $ARENA_MOVENO: \e[93m"
 fi

@@ -23,9 +23,10 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
   [ $((ARENA_MOVENO%2)) -eq 1 ] && ARENA_PLAYER="$ARENA_PLAYER1" || ARENA_PLAYER="$ARENA_PLAYER2"
   if [ -x "$DATADIR/players/$ARENA_GAME/$ARENA_PLAYER/main" -a "${ARENA_PLAYER:0:5}" != Human ] ; then
     ARENA_MOVE=`"$DATADIR/players/$ARENA_GAME/$ARENA_PLAYER/main"`
-    [ "${ARENA_THEME,,}" != log ] && echo "$ARENA_MOVE"
+    [ "${ARENA_THEME,,}" != log ] && echo -e "$ARENA_MOVE\e[0m"
   else
     read ARENA_MOVE
+    echo -en "\e[0m"
     ARENA_MOVE=${ARENA_MOVE^^}
   fi
   if [ -n "$ARENA_MOVE" ] ; then
@@ -57,4 +58,4 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
   let ARENA_MOVENO++
 done
 "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/show_the_game"
-[ "${ARENA_THEME,,}" != log ] && echo "THE END"
+[ "${ARENA_THEME,,}" != log ] && echo -e "THE END\e[0m"
