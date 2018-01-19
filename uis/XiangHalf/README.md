@@ -2,7 +2,7 @@ XiangHalf
 =========
 Xiang Qi with half board (Blind/Dark Elephant-Chess)
 
-https://github.com/tossug/tossug-arena/releases/download/v2018.1/XiangHalf.png
+![XiangHalf](https://user-images.githubusercontent.com/6536345/35132168-d107d70a-fd04-11e7-9205-c29b974a18a8.png)
 
 Pieces Code
 ===========

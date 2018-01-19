@@ -2,7 +2,7 @@ XiangQi
 =======
 Xiang Qi (Elephant-Chess)
 
-https://github.com/tossug/tossug-arena/releases/download/v2018.1/XiangQi.png
+![XiangQi](https://user-images.githubusercontent.com/6536345/35132169-d1371164-fd04-11e7-8f26-90368d032e10.png)
 
 Pieces Code
 ===========

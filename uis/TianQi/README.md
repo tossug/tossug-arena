@@ -2,7 +2,7 @@ TianQi
 ======
 Xiang Qi with half board as farm
 
-https://github.com/tossug/tossug-arena/releases/download/v2018.1/TianQi.png
+![TianQi](https://user-images.githubusercontent.com/6536345/35132166-d0af2524-fd04-11e7-8b73-398723a34a7f.png)
 
 Pieces Code
 ===========

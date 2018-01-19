@@ -18,7 +18,7 @@ Install & Usage
 	make install
 	tossug-arena TianQi Human Human
 	tossug-arena TianQi-log Random Random0
-https://github.com/tossug/tossug-arena/releases/download/v2017.12/tianqi-human.gif
+![animated](https://user-images.githubusercontent.com/6536345/35132167-d0d8b240-fd04-11e7-8eff-d83152d9a3d3.gif)
 
 Chinese Description
 ===================
@@ -33,7 +33,7 @@ Chinese Description
 
 For Android
 ===========
-# Please install "termux" app. first, then input:
+Please install "termux" app. first, then input:
 	$ pkg upgrade
 	$ pkg install git make grep
 	$ hash -r
@@ -43,11 +43,11 @@ For Android
 	$ ./tossug-arena
 	$ ./tossug-arena TianQi
 
-# Next time you only need:
+Next time you only need:
 	$ cd tossug-arena
 	$ ./tossug-arena ShuaiQi
 
-# To update you may input:
+To update you may input:
 	$ cd tossug-arena
 	$ make reverse
 	$ git pull
