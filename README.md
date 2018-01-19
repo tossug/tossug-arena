@@ -31,22 +31,22 @@ Chinese Description
 
 For Android
 ===========
-Please install "termux" app. first, then input:  
-	pkg upgrade
-	pkg install git make grep
-	hash -r
-	git clone https://github.com/tossug/tossug-arena.git
-	cd tossug-arena
-	make
-	./tossug-arena
-	./tossug-arena TianQi
+Please install "termux" app. first, then input
+	$ pkg upgrade
+	$ pkg install git make grep
+	$ hash -r
+	$ git clone https://github.com/tossug/tossug-arena.git
+	$ cd tossug-arena
+	$ make
+	$ ./tossug-arena
+	$ ./tossug-arena TianQi
 
-Next time you only need:  
-	cd tossug-arena
-	./tossug-arena ShuaiQi
+Next time you only need
+	$ cd tossug-arena
+	$ ./tossug-arena ShuaiQi
 
-To update you may input:  
-	cd tossug-arena
-	make reverse
-	git pull
-	make
+To update you may input
+	$ cd tossug-arena
+	$ make reverse
+	$ git pull
+	$ make
