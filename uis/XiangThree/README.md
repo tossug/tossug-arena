@@ -2,7 +2,7 @@ XiangThree
 ==========
 Xiang Qi of Three Kingdoms
 
-(https://github.com/tossug/tossug-arena/releases/download/v2018.1/XiangThree.png)
+https://github.com/tossug/tossug-arena/releases/download/v2018.1/XiangThree.png
 
 Pieces Code
 ===========

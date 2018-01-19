@@ -2,7 +2,7 @@ ShuaiQi
 =======
 Xiang Qi with Dropping rule
 
-![](https://github.com/tossug/tossug-arena/releases/download/v2018.1/ShuaiQi.png)
+https://github.com/tossug/tossug-arena/releases/download/v2018.1/ShuaiQi.png
 
 Pieces Code
 ===========
