@@ -2,6 +2,8 @@ XiangThree
 ==========
 Xiang Qi of Three Kingdoms
 
+(https://github.com/tossug/tossug-arena/releases/download/v2018.1/XiangThree.png)
+
 Pieces Code
 ===========
 * "AAEERRHHCC" for "仕仕相相俥俥傌傌炮炮" (Red)

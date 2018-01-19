@@ -2,6 +2,8 @@ TianQi
 ======
 Xiang Qi with half board as farm
 
+![](https://github.com/tossug/tossug-arena/releases/download/v2018.1/TianQi.png)
+
 Pieces Code
 ===========
 * "KAAEERRHHCCPPP" for "帥仕仕相相俥俥傌傌炮炮兵兵兵" (Red)
