@@ -18,12 +18,10 @@ Install & Usage
 	make install
 	tossug-arena TianQi Human Human
 	tossug-arena TianQi-log Random Random0
-![animated](https://user-images.githubusercontent.com/6536345/35132167-d0d8b240-fd04-11e7-8eff-d83152d9a3d3.gif?)
+![animated](https://user-images.githubusercontent.com/6536345/35132167-d0d8b240-fd04-11e7-8eff-d83152d9a3d3.gif)
 
 Chinese Description
 ===================
-「土虱競技場」於 https://github.com/tossug/tossug-arena
-
 簡單的桌遊開發平臺，提供參與者協同開發環境，或可視為「窮人的人工智能練習場」(不敢妄稱智慧)。
 遊戲引擎與玩家引擎可以分別實作，不同的遊戲引擎可以有不同的使用者介面，不同的玩家引擎之間還可對戰以增加趣味。
 
@@ -34,21 +32,21 @@ Chinese Description
 For Android
 ===========
 Please install "termux" app. first, then input:  
-	$ pkg upgrade
-	$ pkg install git make grep
-	$ hash -r
-	$ git clone https://github.com/tossug/tossug-arena.git
-	$ cd tossug-arena
-	$ make
-	$ ./tossug-arena
-	$ ./tossug-arena TianQi
+	pkg upgrade
+	pkg install git make grep
+	hash -r
+	git clone https://github.com/tossug/tossug-arena.git
+	cd tossug-arena
+	make
+	./tossug-arena
+	./tossug-arena TianQi
 
 Next time you only need:  
-	$ cd tossug-arena
-	$ ./tossug-arena ShuaiQi
+	cd tossug-arena
+	./tossug-arena ShuaiQi
 
 To update you may input:  
-	$ cd tossug-arena
-	$ make reverse
-	$ git pull
-	$ make
+	cd tossug-arena
+	make reverse
+	git pull
+	make
