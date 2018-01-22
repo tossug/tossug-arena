@@ -52,20 +52,20 @@ done
 [ -z "$ARENA_COLOR3" ] && PLAYER3="？" || PLAYER3=`color $ARENA_COLOR3`
 if [ $((ARENA_MOVENO%3)) -eq 1 ] ; then # check if player1's turn
   if [ -z "$ARENA_STATUS" ] ; then
-    MESSAGE=""
+    PLAYER=""
     PLAYER1=$PLAYER1"*"
   elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
-    MESSAGE="\e[95m$ARENA_STATUS"
+    PLAYER=""
     PLAYER1=$PLAYER1" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   elif  [ "$ARENA_STATUS" = "STALEMATE PASS !" ] ; then
-    MESSAGE="$ARENA_PLAYER3 $PLAYER3 \e[95m$ARENA_STATUS"
+    PLAYER="$ARENA_PLAYER3 $PLAYER3"
     PLAYER1=$PLAYER1"*"
   elif [ "${ARENA_STATUS:0:7}" = INVALID -o "${ARENA_STATUS:0:7}" = ILLEGAL ] ; then
-    MESSAGE="$ARENA_PLAYER1 $PLAYER1 \e[95m$ARENA_STATUS"
+    PLAYER="$ARENA_PLAYER1 $PLAYER1"
     PLAYER1=$PLAYER1"*"
   else
-    MESSAGE="$ARENA_PLAYER3 $PLAYER3 \e[95m$ARENA_STATUS"
+    PLAYER="$ARENA_PLAYER3 $PLAYER3"
     PLAYER1=$PLAYER1" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   fi
@@ -73,20 +73,20 @@ if [ $((ARENA_MOVENO%3)) -eq 1 ] ; then # check if player1's turn
   PLAYER3=$PLAYER3" "
 elif [ $((ARENA_MOVENO%3)) -eq 2 ] ; then
   if [ -z "$ARENA_STATUS" ] ; then
-    MESSAGE=""
+    PLAYER=""
     PLAYER2=$PLAYER2"*"
   elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
-    MESSAGE="\e[95m$ARENA_STATUS"
+    PLAYER=""
     PLAYER2=$PLAYER2" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   elif  [ "$ARENA_STATUS" = "STALEMATE PASS !" ] ; then
-    MESSAGE="$ARENA_PLAYER1 $PLAYER1 \e[95m$ARENA_STATUS"
+    PLAYER="$ARENA_PLAYER1 $PLAYER1"
     PLAYER2=$PLAYER2"*"
   elif [ "${ARENA_STATUS:0:7}" = INVALID -o "${ARENA_STATUS:0:7}" = ILLEGAL ] ; then
-    MESSAGE="$ARENA_PLAYER2 $PLAYER2 \e[95m$ARENA_STATUS"
+    PLAYER="$ARENA_PLAYER2 $PLAYER2"
     PLAYER2=$PLAYER2"*"
   else
-    MESSAGE="$ARENA_PLAYER1 $PLAYER1 \e[95m$ARENA_STATUS"
+    PLAYER="$ARENA_PLAYER1 $PLAYER1"
     PLAYER2=$PLAYER2" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   fi
@@ -94,20 +94,20 @@ elif [ $((ARENA_MOVENO%3)) -eq 2 ] ; then
   PLAYER3=$PLAYER3" "
 else
   if [ -z "$ARENA_STATUS" ] ; then
-    MESSAGE=""
+    PLAYER=""
     PLAYER3=$PLAYER3"*"
   elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
-    MESSAGE="\e[95m$ARENA_STATUS"
+    PLAYER=""
     PLAYER3=$PLAYER3" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   elif  [ "${ARENA_STATUS}" = "STALEMATE PASS !" ] ; then
-    MESSAGE="$ARENA_PLAYER2 $PLAYER2 \e[95m$ARENA_STATUS"
+    PLAYER="$ARENA_PLAYER2 $PLAYER2"
     PLAYER3=$PLAYER3"*"
   elif [ "${ARENA_STATUS:0:7}" = INVALID -o "${ARENA_STATUS:0:7}" = ILLEGAL ] ; then
-    MESSAGE="$ARENA_PLAYER3 $PLAYER3 \e[95m$ARENA_STATUS"
+    PLAYER="$ARENA_PLAYER3 $PLAYER3"
     PLAYER3=$PLAYER3"*"
   else
-    MESSAGE="$ARENA_PLAYER2 $PLAYER2 \e[95m$ARENA_STATUS"
+    PLAYER="$ARENA_PLAYER2 $PLAYER2"
     PLAYER3=$PLAYER3" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   fi
@@ -132,14 +132,14 @@ while [ $i -lt ${#DEADS} ] ; do
 done
 
 if [ "${ARENA_THEME,,}" = log ] ; then
-  [ "$ARENA_STATUS" != "${ARENA_STATUS/WINS/}" ] && echo "$MESSAGE $ARENA_MOVENO Moves."
+  [ "$ARENA_STATUS" != "${ARENA_STATUS/WINS/}" ] && echo "$PLAYER $ARENA_STATUS $ARENA_MOVENO Moves."
 else # default
   clear
   echo -e "  $ARENA_PLAYER1 $PLAYER1 vs. $ARENA_PLAYER2 $PLAYER2 vs. $ARENA_PLAYER3 $PLAYER3"
   echo -e "５\e[90;43m "`piece 36`"══"`piece 37`"══"`piece 38`"══"`piece 39`"══"`piece 40`"══"`piece 41`"══"`piece 42`"══"`piece 43`"══"`piece 44`"\e[0m"
   echo -e "  \e[90;43m ║   │   │   │   │   │   │   │   ║ \e[0m\t\e[94mThree Kingdoms Xiang Qi\e[0m"
   echo -e "４\e[90;43m "`piece 27`"──"`piece 28`"──"`piece 29`"──"`piece 30`"──"`piece 31`"──"`piece 32`"──"`piece 33`"──"`piece 34`"──"`piece 35`"\e[0m"
-  echo -e "  \e[90;43m ║   │   │   │   │   │   │   │   ║ \e[0m\t$MESSAGE\e[0m"
+  echo -e "  \e[90;43m ║   │   │   │   │   │   │   │   ║ \e[0m\t$PLAYER \e[95m$ARENA_STATUS\e[0m"
   echo -e "３\e[90;43m "`piece 18`"──"`piece 19`"──"`piece 20`"──"`piece 21`"──"`piece 22`"──"`piece 23`"──"`piece 24`"──"`piece 25`"──"`piece 26`"\e[0m"
   echo -e "  \e[90;43m ║   │   │   │   │   │   │   │   ║ \e[0m\t▥ : \e[107;31m$REDDEAD\e[0m"
   echo -e "２\e[90;43m "`piece 9`"──"`piece 10`"──"`piece 11`"──"`piece 12`"──"`piece 13`"──"`piece 14`"──"`piece 15`"──"`piece 16`"──"`piece 17`"\e[0m\t    \e[107;30m$BLACKDEAD\e[0m"

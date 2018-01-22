@@ -14,7 +14,9 @@ Todos
 * matches/Connect6
 	* uis/Connect6/Text/main
 * matches/Go9
-	* uis/Go9/Text/main
+        * uis/Go9/Text/main
+* matches/Reversi
+	* uis/Reversi/Text/main
 * matches/Chess
 	* uis/Chess/Text/main
 * uis/*/Graph/main

@@ -49,40 +49,40 @@ PLAYER1="\e[31m⬤ \e[0m"
 PLAYER2="◯ "
 if [ $((ARENA_MOVENO%2)) -eq 1 ] ; then # check if player1's turn
   if [ -z "$ARENA_STATUS" ] ; then
-    MESSAGE=""
+    PLAYER=""
     PLAYER1=$PLAYER1"*"
   elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
-    MESSAGE="\e[95m$ARENA_STATUS"
+    PLAYER=""
     PLAYER1=$PLAYER1" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   elif  [ "$ARENA_STATUS" = "MIDDLE WINS !" ] ; then
-    MESSAGE="$ARENA_PLAYER2 $PLAYER2 \e[95m$ARENA_STATUS"
+    PLAYER="$ARENA_PLAYER2 $PLAYER2"
     PLAYER1=$PLAYER1" "
   elif [ "${ARENA_STATUS:0:7}" = INVALID -o "${ARENA_STATUS:0:7}" = ILLEGAL ] ; then
-    MESSAGE="$ARENA_PLAYER1 $PLAYER1 \e[95m$ARENA_STATUS"
+    PLAYER="$ARENA_PLAYER1 $PLAYER1"
     PLAYER1=$PLAYER1"*"
   else
-    MESSAGE="$ARENA_PLAYER2 $PLAYER2 \e[95m$ARENA_STATUS"
+    PLAYER="$ARENA_PLAYER2 $PLAYER2"
     PLAYER1=$PLAYER1" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   fi
   PLAYER2=$PLAYER2" "
 else
   if [ -z "$ARENA_STATUS" ] ; then
-    MESSAGE=""
+    PLAYER=""
     PLAYER2=$PLAYER2"*"
   elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
-    MESSAGE="\e[95m$ARENA_STATUS"
+    PLAYER=""
     PLAYER2=$PLAYER2" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   elif  [ "$ARENA_STATUS" = "MIDDLE WINS !" ] ; then
-    MESSAGE="$ARENA_PLAYER1 $PLAYER1 \e[95m$ARENA_STATUS"
+    PLAYER="$ARENA_PLAYER1 $PLAYER1"
     PLAYER2=$PLAYER2" "
   elif [ "${ARENA_STATUS:0:7}" = INVALID -o "${ARENA_STATUS:0:7}" = ILLEGAL ] ; then
-    MESSAGE="$ARENA_PLAYER2 $PLAYER2 \e[95m$ARENA_STATUS"
+    PLAYER="$ARENA_PLAYER2 $PLAYER2"
     PLAYER2=$PLAYER2"*"
   else
-    MESSAGE="$ARENA_PLAYER1 $PLAYER1 \e[95m$ARENA_STATUS"
+    PLAYER="$ARENA_PLAYER1 $PLAYER1"
     PLAYER2=$PLAYER2" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   fi
@@ -101,7 +101,7 @@ while [ $i -lt ${#DEADS} ] ; do
 done
 
 if [ "${ARENA_THEME,,}" = log ] ; then
-  [ -n "$ARENA_STATUS" ] && echo "$MESSAGE $ARENA_MOVENO Moves."
+  [ -n "$ARENA_STATUS" ] && echo "$PLAYER $ARENA_STATUS $ARENA_MOVENO Moves."
 else # default
   POSY="１２３４５６７８９"
   clear
@@ -115,7 +115,7 @@ else # default
     case $y in
       8) echo -e "\t\e[94mXiang Qi\e[0m" ;;
       6) echo -e "\t$ARENA_PLAYER1 $PLAYER1 vs. $ARENA_PLAYER2 $PLAYER2" ;;
-      4) echo -e "\t$MESSAGE\e[0m" ;;
+      4) echo -e "\t$PLAYER \e[95m$ARENA_STATUS\e[0m" ;;
       2) echo -e "\t▥ : \e[107;31m$REDDEAD\e[0m" ;;
       1) echo -e "\t    \e[107;30m$BLACKDEAD\e[0m" ;;
       *) echo ;;
