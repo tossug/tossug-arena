@@ -127,7 +127,12 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
       fi
     fi
   else
-    ARENA_STATUS="STALEMATE PASS !"
+    if [ "$ARENA_STATUS" = "STALEMATE PASS !" ] ; then
+      ARENA_STATUS="STALEMATE WINS !"
+      break
+    else
+      ARENA_STATUS="STALEMATE PASS !"
+    fi
   fi
   let ARENA_MOVENO++
 done

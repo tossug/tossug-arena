@@ -54,13 +54,16 @@ if [ $((ARENA_MOVENO%3)) -eq 1 ] ; then # check if player1's turn
   if [ -z "$ARENA_STATUS" ] ; then
     PLAYER=""
     PLAYER1=$PLAYER1"*"
-  elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
+  elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then # fix me
     PLAYER=""
     PLAYER1=$PLAYER1" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   elif  [ "$ARENA_STATUS" = "STALEMATE PASS !" ] ; then
     PLAYER="$ARENA_PLAYER3 $PLAYER3"
     PLAYER1=$PLAYER1"*"
+  elif  [ "$ARENA_STATUS" = "STALEMATE WINS !" ] ; then
+    PLAYER="$ARENA_PLAYER2 $PLAYER2"
+    PLAYER1=$PLAYER1" "
   elif [ "${ARENA_STATUS:0:7}" = INVALID -o "${ARENA_STATUS:0:7}" = ILLEGAL ] ; then
     PLAYER="$ARENA_PLAYER1 $PLAYER1"
     PLAYER1=$PLAYER1"*"
@@ -75,13 +78,16 @@ elif [ $((ARENA_MOVENO%3)) -eq 2 ] ; then
   if [ -z "$ARENA_STATUS" ] ; then
     PLAYER=""
     PLAYER2=$PLAYER2"*"
-  elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
+  elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then # fix me
     PLAYER=""
     PLAYER2=$PLAYER2" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   elif  [ "$ARENA_STATUS" = "STALEMATE PASS !" ] ; then
     PLAYER="$ARENA_PLAYER1 $PLAYER1"
     PLAYER2=$PLAYER2"*"
+  elif  [ "$ARENA_STATUS" = "STALEMATE WINS !" ] ; then
+    PLAYER="$ARENA_PLAYER3 $PLAYER3"
+    PLAYER2=$PLAYER2" "
   elif [ "${ARENA_STATUS:0:7}" = INVALID -o "${ARENA_STATUS:0:7}" = ILLEGAL ] ; then
     PLAYER="$ARENA_PLAYER2 $PLAYER2"
     PLAYER2=$PLAYER2"*"
@@ -96,13 +102,16 @@ else
   if [ -z "$ARENA_STATUS" ] ; then
     PLAYER=""
     PLAYER3=$PLAYER3"*"
-  elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then
+  elif  [ "$ARENA_STATUS" = "DRAW GAME !" ] ; then # fix me
     PLAYER=""
     PLAYER3=$PLAYER3" "
     ARENA_MOVENO=$((ARENA_MOVENO-1))
   elif  [ "${ARENA_STATUS}" = "STALEMATE PASS !" ] ; then
     PLAYER="$ARENA_PLAYER2 $PLAYER2"
     PLAYER3=$PLAYER3"*"
+  elif  [ "$ARENA_STATUS" = "STALEMATE WINS !" ] ; then
+    PLAYER="$ARENA_PLAYER1 $PLAYER1"
+    PLAYER3=$PLAYER3" "
   elif [ "${ARENA_STATUS:0:7}" = INVALID -o "${ARENA_STATUS:0:7}" = ILLEGAL ] ; then
     PLAYER="$ARENA_PLAYER3 $PLAYER3"
     PLAYER3=$PLAYER3"*"
