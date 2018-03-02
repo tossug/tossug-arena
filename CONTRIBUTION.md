@@ -13,10 +13,8 @@ Todos
 * players/*/AgentName/main
 * matches/Connect6
 	* uis/Connect6/Text/main
-* matches/Go9
+* matches/WeiQi9
         * uis/Go9/Text/main
 * matches/Reversi
 	* uis/Reversi/Text/main
-* matches/Chess
-	* uis/Chess/Text/main
 * uis/*/Graph/main

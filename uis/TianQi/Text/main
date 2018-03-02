@@ -1,5 +1,6 @@
 #!/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+echo -ne "\e[?1000h" # enable mouse
 DATADIR=`dirname "$0"`
 export ARENA_UI=`basename "$DATADIR"`
 DATADIR=`dirname "$DATADIR"`
@@ -69,4 +70,4 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
   let ARENA_MOVENO++
 done
 "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/show_the_game"
-[ "${ARENA_THEME,,}" != log ] && echo -e "THE END\e[0m"
+[ "${ARENA_THEME,,}" != log ] && echo -e "THE END\e[0m\e[?1000l"
