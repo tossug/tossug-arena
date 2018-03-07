@@ -1,5 +1,5 @@
 #!/bin/bash
-# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2018
 shopt -s extglob
 ARENA_MATCH=$1 # name of match file
 ARENA_PLAYER1=$2 # name of player1

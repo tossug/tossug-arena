@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# CC0, Kerwin Hui <kommodorekerz@gmail.com>, 2017
+# CC0, Kerwin Hui <kommodorekerz@gmail.com>, 2018
 # this AI is suicidal greedy
 # the logic says it is willing to sacrifice K for a p.
 

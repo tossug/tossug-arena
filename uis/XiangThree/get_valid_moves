@@ -1,5 +1,5 @@
 #!/bin/bash
-# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2018
 POSXS="ABCDEFGHJ"
 [ $((ARENA_MOVENO%3)) -eq 1 ] && TURN=$ARENA_COLOR1 # get color turn
 [ $((ARENA_MOVENO%3)) -eq 2 ] && TURN=$ARENA_COLOR2

@@ -1,5 +1,5 @@
 #!/bin/bash
-# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2018
 function piece {
   SEQ=$1
   PIECE=${ARENA_BOARD:SEQ:1}

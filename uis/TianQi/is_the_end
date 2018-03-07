@@ -1,5 +1,5 @@
 #!/bin/bash
-# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2018
 
 # let player2 choose color
 if [ $ARENA_MOVENO -eq 0 ] ; then

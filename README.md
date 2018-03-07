@@ -4,6 +4,8 @@ TOSSUG Arena runs as a platform for building gamelets.
 Contributors can add their scripts as agent to battle with other agents,
 human players or themselves. <https://github.com/tossug/tossug-arena>
 
+![animated](https://user-images.githubusercontent.com/6536345/35132167-d0d8b240-fd04-11e7-8eff-d83152d9a3d3.gif)
+
 Testing
 =======
 	./tossug-arena
@@ -18,7 +20,6 @@ Install & Usage
 	make install
 	tossug-arena TianQi Human Human
 	tossug-arena TianQi-log Random Random0
-![animated](https://user-images.githubusercontent.com/6536345/35132167-d0d8b240-fd04-11e7-8eff-d83152d9a3d3.gif)
 
 Chinese Description
 ===================
@@ -47,7 +48,7 @@ Next time you only need:
 	$ cd tossug-arena
 	$ ./tossug-arena ShuaiQi
 
-To update you may input:
+To update optionally you may input:
 
 	$ cd tossug-arena
 	$ make reverse

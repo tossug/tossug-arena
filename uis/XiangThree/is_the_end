@@ -1,5 +1,5 @@
 #!/bin/bash
-# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2018
 
 # store the game board
 if [ "${ARENA_STATUS:0:7}" != INVALID -a "${ARENA_STATUS:0:7}" != ILLEGAL ] ; then

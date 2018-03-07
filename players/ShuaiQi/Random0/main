@@ -1,5 +1,5 @@
 #!/bin/bash
-# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2018
 POSXS="ABCDEFGHJKX" # X positions of board
 DEADS="AERHCP"
 until "$DATADIR/uis/$ARENA_GAME/get_valid_board" &>/dev/null ; do

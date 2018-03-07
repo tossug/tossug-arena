@@ -1,6 +1,6 @@
 #!/bin/bash
-# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2017
-echo -ne "\e[?1000h" # enable mouse
+# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2018
+echo -ne "\e[?9h" # enable mouse
 DATADIR=`dirname "$0"`
 export ARENA_UI=`basename "$DATADIR"`
 DATADIR=`dirname "$DATADIR"`
@@ -26,9 +26,9 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
     ARENA_MOVE=`"$DATADIR/players/$ARENA_GAME/$ARENA_PLAYER/main"`
     [ "${ARENA_THEME,,}" != log ] && echo -e "$ARENA_MOVE\e[0m"
   else
-    read ARENA_MOVE
+    read -n 12 ARENA_MOVE
     echo -en "\e[0m"
-    ARENA_MOVE=${ARENA_MOVE^^}
+    [ ${#ARENA_MOVE} -eq 12 ] && ARENA_MOVE=`$DATADIR/uis/$ARENA_GAME/$ARENA_UI/mouse_to_move` || ARENA_MOVE=${ARENA_MOVE^^}
   fi
   if [ -n "$ARENA_MOVE" ] ; then
     if [ $ARENA_MOVENO -eq 0 ] ; then
@@ -70,4 +70,4 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
   let ARENA_MOVENO++
 done
 "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/show_the_game"
-[ "${ARENA_THEME,,}" != log ] && echo -e "THE END\e[0m\e[?1000l"
+[ "${ARENA_THEME,,}" != log ] && echo -e "THE END\e[0m\e[?9l"
