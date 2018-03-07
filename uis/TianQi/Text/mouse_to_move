@@ -1,16 +1,1 @@
-#!/bin/bash
-# CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2018
-POSXS="ABCDEFGH"
-
-MOVEX1=`printf "%d" "'${ARENA_MOVE:4:1}"`
-MOVEY1=`printf "%d" "'${ARENA_MOVE:5:1}"`
-MOVEX2=`printf "%d" "'${ARENA_MOVE:10:1}"`
-MOVEY2=`printf "%d" "'${ARENA_MOVE:11:1}"`
-
-MOVEX1=$(((MOVEX1-37)/4))
-MOVEY1=$(((MOVEY1-34)/2))
-MOVEX2=$(((MOVEX2-37)/4))
-MOVEY2=$(((MOVEY2-34)/2))
-
-MOVE=${POSXS:MOVEX1:1}$((4-MOVEY1))${POSXS:MOVEX2:1}$((4-MOVEY2))
-echo $MOVE
+../../XiangHalf/Text/mouse_to_move
