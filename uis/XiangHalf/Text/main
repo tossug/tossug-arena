@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2018
 echo -ne "\e[?9h" # enable mouse
 DATADIR=`dirname "$0"`
@@ -26,9 +26,9 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
     ARENA_MOVE=`"$DATADIR/players/$ARENA_GAME/$ARENA_PLAYER/main"`
     [ "${ARENA_THEME,,}" != log ] && echo -e "$ARENA_MOVE\e[0m"
   else
-    read -n 12 ARENA_MOVE
+    read -e -n 6 ARENA_MOVE
     echo -en "\e[0m"
-    [ ${#ARENA_MOVE} -eq 12 ] && ARENA_MOVE=`$DATADIR/uis/$ARENA_GAME/$ARENA_UI/mouse_to_move` || ARENA_MOVE=${ARENA_MOVE^^}
+    [ ${#ARENA_MOVE} -eq 5 ] && ARENA_MOVE=`$DATADIR/uis/$ARENA_GAME/$ARENA_UI/mouse_to_move` || ARENA_MOVE=${ARENA_MOVE^^}
   fi
   if [ -n "$ARENA_MOVE" ] ; then
     ARENA_BOARD_NEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_board"`

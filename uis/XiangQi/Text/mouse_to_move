@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/usr/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2018
 POSXS="ABCDEFGHJK"
 
-MOVEX1=`printf "%d" "'${ARENA_MOVE:4:1}"`
-MOVEY1=`printf "%d" "'${ARENA_MOVE:5:1}"`
-MOVEX2=`printf "%d" "'${ARENA_MOVE:10:1}"`
-MOVEY2=`printf "%d" "'${ARENA_MOVE:11:1}"`
+MOVEX1=`printf %d \'${ARENA_MOVE:0:1}`
+MOVEY1=`printf %d \'${ARENA_MOVE:1:1}`
+MOVEX2=`printf %d \'${ARENA_MOVE:3:1}`
+MOVEY2=`printf %d \'${ARENA_MOVE:4:1}`
 
 MOVEX1=$(((MOVEX1-36)/3))
 MOVEY1=$((MOVEY1-33))

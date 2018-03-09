@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2018
 if [ $ARENA_MOVENO -eq 0 ] ; then
   ARENA_BOARD=""

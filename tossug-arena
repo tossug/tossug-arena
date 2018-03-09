@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2018
 shopt -s extglob
 ARENA_MATCH=$1 # name of match file

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2018
 POSXS="ABCDEFGHJ" # X positions of board
 if [ -z "`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"`" ] ; then
