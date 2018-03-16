@@ -12,9 +12,9 @@ Todos
 =====
 * players/*/AgentName/main
 * matches/Connect6
-	* uis/Connect6/Text/main
+	* interfaces/Connect6/Text/main
 * matches/WeiQi9
-        * uis/WeiQi9/Text/main
+        * interfaces/WeiQi9/Text/main
 * matches/Reversi
-	* uis/Reversi/Text/main
-* uis/*/Graph/main
+	* interfaces/Reversi/Text/main
+* interfaces/*/Graph/main

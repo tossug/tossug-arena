@@ -47,7 +47,7 @@ if [ ${ARENA_MOVE:0:1} = X ] ; then
   fi
   ARENA_BOARD="${LIVES:0:SEQ2}${PIECE1~}${LIVES:SEQ2+1}/${DEADS/$PIECE1/}"
 else
-  ARENA_BOARD=`"$DATADIR/uis/XiangQi/get_valid_board"`
+  ARENA_BOARD=`"$DATADIR/interfaces/XiangQi/get_valid_board"`
   [ -z "$ARENA_BOARD" ] && exit 1
 fi
 

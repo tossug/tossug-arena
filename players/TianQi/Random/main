@@ -5,7 +5,7 @@ if [ $ARENA_MOVENO -eq 0 ] ; then
   exit
 fi
 
-MOVESNEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"` # next valid moves
+MOVESNEXT=`"$DATADIR/interfaces/$ARENA_GAME/get_valid_moves"` # next valid moves
 MOVESNO=$((${#MOVESNEXT}/5))
 MOVE=${MOVESNEXT:(RANDOM%MOVESNO)*5:4}
 echo "$MOVE"

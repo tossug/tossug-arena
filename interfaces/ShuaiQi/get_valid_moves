@@ -44,5 +44,5 @@ while [ $i -lt ${#DEADS} ] ; do
   let i++
 done
 
-MOVES="$MOVES"`"$DATADIR/uis/XiangQi/get_valid_moves"`
+MOVES="$MOVES"`"$DATADIR/interfaces/XiangQi/get_valid_moves"`
 echo "$MOVES" # need quote

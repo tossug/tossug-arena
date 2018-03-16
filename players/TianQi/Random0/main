@@ -6,7 +6,7 @@ if [ $ARENA_MOVENO -eq 0 ] ; then
 fi
 
 POSXS="ABCDEFGH" # X positions of board
-until "$DATADIR/uis/$ARENA_GAME/get_valid_board" &>/dev/null ; do
+until "$DATADIR/interfaces/$ARENA_GAME/get_valid_board" &>/dev/null ; do
   ARENA_MOVE=${POSXS:RANDOM%8:1}$((RANDOM%4+1))${POSXS:RANDOM%8:1}$((RANDOM%4+1))
 done
 echo "$ARENA_MOVE"

@@ -30,11 +30,11 @@ Variables Example
 
 Calling Flow
 ============
-* uis/XiangThree/Text/main default Random Human Random0
-	* uis/XiangThree/is_the_end
-		* uis/XiangThree/get_valid_moves
-	* uis/XiangThree/Text/show_the_game
+* interfaces/XiangThree/Text/main default Random Human Random0
+	* interfaces/XiangThree/is_the_end
+		* interfaces/XiangThree/get_valid_moves
+	* interfaces/XiangThree/Text/show_the_game
 	* players/XiangThree/Random/main
-		* uis/XiangThree/get_valid_moves
-		* uis/XiangThree/get_valid_board
-	* uis/XiangThree/get_valid_board
+		* interfaces/XiangThree/get_valid_moves
+		* interfaces/XiangThree/get_valid_board
+	* interfaces/XiangThree/get_valid_board

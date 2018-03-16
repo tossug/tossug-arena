@@ -1,8 +1,8 @@
-XiangQi
+ShuaiQi
 =======
-Xiang Qi (Elephant-Chess)
+Xiang Qi with Dropping rule
 
-![XiangQi](https://user-images.githubusercontent.com/6536345/35132169-d1371164-fd04-11e7-8f26-90368d032e10.png)
+![ShuaiQi](https://user-images.githubusercontent.com/6536345/35132165-d0810914-fd04-11e7-99d2-c7fb6b583482.png)
 
 Pieces Code
 ===========
@@ -27,11 +27,15 @@ Variables Example
 
 Calling Flow
 ============
-* uis/XiangQi/Text/main default Random Human
-	* uis/XiangQi/is_the_end
-		* uis/XiangQi/get_valid_moves
-	* uis/XiangQi/Text/show_the_game
-	* players/XiangQi/Random/main
-		* uis/XiangQi/get_valid_moves
-		* uis/XiangQi/get_valid_board
-	* uis/XiangQi/get_valid_board
+* interfaces/ShuaiQi/Text/main default Random Human
+	* interfaces/ShuaiQi/is_the_end
+		* interfaces/ShuaiQi/get_valid_moves
+			* interfaces/XiangQi/get_valid_moves
+	* interfaces/ShuaiQi/Text/show_the_game
+	* players/ShuaiQi/Random/main
+		* interfaces/ShuaiQi/get_valid_moves
+			* interfaces/XiangQi/get_valid_moves
+		* interfaces/ShuaiQi/get_valid_board
+			* interfaces/XiangQi/get_valid_board
+	* interfaces/ShuaiQi/get_valid_board
+		* interfaces/XiangQi/get_valid_board

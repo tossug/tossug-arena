@@ -28,11 +28,11 @@ Variables Example
 
 Calling Flow
 ============
-* uis/TianQi/Text/main default Random Human
-	* uis/TianQi/is_the_end
-		* uis/TianQi/get_valid_moves
-	* uis/TianQi/Text/show_the_game
+* interfaces/TianQi/Text/main default Random Human
+	* interfaces/TianQi/is_the_end
+		* interfaces/TianQi/get_valid_moves
+	* interfaces/TianQi/Text/show_the_game
 	* players/TianQi/Random/main
-		* uis/TianQi/get_valid_moves
-		* uis/TianQi/get_valid_board
-	* uis/TianQi/get_valid_board
+		* interfaces/TianQi/get_valid_moves
+		* interfaces/TianQi/get_valid_board
+	* interfaces/TianQi/get_valid_board

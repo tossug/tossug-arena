@@ -37,8 +37,8 @@ if ! [ -f "$DATADIR/matches/$ARENA_MATCH" ] ; then
   exit 1
 fi
 source "$DATADIR/matches/$ARENA_MATCH"
-if ! [ -x "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/main" ] ; then
-  echo "ui file: $DATADIR/uis/$ARENA_GAME/$ARENA_UI/main not found."
+if ! [ -x "$DATADIR/interfaces/$ARENA_GAME/$ARENA_UI/main" ] ; then
+  echo "ui file: $DATADIR/interfaces/$ARENA_GAME/$ARENA_UI/main not found."
   exit 1
 fi
 
@@ -52,4 +52,4 @@ if [ -z "$ARENA_PLAYER3" -o "${ARENA_PLAYER3,,}" = human ] ; then
   ARENA_PLAYER3=Human3
 fi
 
-exec "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/main" "$ARENA_THEME" "$ARENA_PLAYER1" "$ARENA_PLAYER2" "$ARENA_PLAYER3"
+exec "$DATADIR/interfaces/$ARENA_GAME/$ARENA_UI/main" "$ARENA_THEME" "$ARENA_PLAYER1" "$ARENA_PLAYER2" "$ARENA_PLAYER3"

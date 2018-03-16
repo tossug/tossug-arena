@@ -12,7 +12,7 @@ reverse:
 install:
 	install -Dm755 $(PACKAGE) $(DESTDIR)$(PREFIX)/bin/$(PACKAGE)
 	install -d $(DESTDIR)$(PREFIX)/share/$(PACKAGE)
-	cp -a matches players uis $(DESTDIR)$(PREFIX)/share/$(PACKAGE)
+	cp -a matches players interfaces $(DESTDIR)$(PREFIX)/share/$(PACKAGE)
 
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/$(PACKAGE)

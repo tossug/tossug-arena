@@ -19,8 +19,8 @@ export ARENA_STATUS=""
 export ARENA_TEMP=`mktemp`
 export ARENA_BOARD="@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@/"
 
-until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
-  "$DATADIR/uis/$ARENA_GAME/$ARENA_UI/show_the_game"
+until ARENA_STATUS=`"$DATADIR/interfaces/$ARENA_GAME/is_the_end"` ; do
+  "$DATADIR/interfaces/$ARENA_GAME/$ARENA_UI/show_the_game"
   [ $((ARENA_MOVENO%2)) -eq 1 ] && ARENA_PLAYER="$ARENA_PLAYER1" || ARENA_PLAYER="$ARENA_PLAYER2"
   if [ -x "$DATADIR/players/$ARENA_GAME/$ARENA_PLAYER/main" -a "${ARENA_PLAYER:0:5}" != Human ] ; then
     ARENA_MOVE=`"$DATADIR/players/$ARENA_GAME/$ARENA_PLAYER/main"`
@@ -28,10 +28,10 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
   else
     read -e -n 6 ARENA_MOVE
     echo -en "\e[0m"
-    [ ${#ARENA_MOVE} -eq 5 ] && ARENA_MOVE=`$DATADIR/uis/$ARENA_GAME/$ARENA_UI/mouse_to_move` || ARENA_MOVE=${ARENA_MOVE^^}
+    [ ${#ARENA_MOVE} -eq 5 ] && ARENA_MOVE=`$DATADIR/interfaces/$ARENA_GAME/$ARENA_UI/mouse_to_move` || ARENA_MOVE=${ARENA_MOVE^^}
   fi
   if [ -n "$ARENA_MOVE" ] ; then
-    ARENA_BOARD_NEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_board"`
+    ARENA_BOARD_NEXT=`"$DATADIR/interfaces/$ARENA_GAME/get_valid_board"`
     if [ -z "$ARENA_BOARD_NEXT" ] ; then
       if [ "${ARENA_STATUS:0:7}" = INVALID ] ; then
         ARENA_STATUS="MIDDLE WINS !"
@@ -67,5 +67,5 @@ until ARENA_STATUS=`"$DATADIR/uis/$ARENA_GAME/is_the_end"` ; do
   fi
   let ARENA_MOVENO++
 done
-"$DATADIR/uis/$ARENA_GAME/$ARENA_UI/show_the_game"
+"$DATADIR/interfaces/$ARENA_GAME/$ARENA_UI/show_the_game"
 [ "${ARENA_THEME,,}" != log ] && echo -e "THE END\e[0m\e[?9l"

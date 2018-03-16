@@ -6,18 +6,15 @@ if [ "${ARENA_STATUS:0:7}" != INVALID -a "${ARENA_STATUS:0:7}" != ILLEGAL ] ; th
   echo $ARENA_BOARD >> $ARENA_TEMP
 fi
 
-# if one king is dead
-BOARD=${ARENA_BOARD:91} # get dead pieces
-if [ "$BOARD" != "${BOARD/K/}" -o "$BOARD" != "${BOARD/k/}" ] ; then
-  echo "CHECKMATE WINS !"
-  exit 0
-fi
-
 # if no valid move
-MOVES=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"`
+MOVES=`"$DATADIR/interfaces/$ARENA_GAME/get_valid_moves"`
 if [ -z "$MOVES" ] ; then
-  echo "STALEMATE WINS !"
-  exit 0
+  let ARENA_MOVENO++
+  MOVES=`"$DATADIR/interfaces/$ARENA_GAME/get_valid_moves"`
+  if [ -z "$MOVES" ] ; then
+    echo "ELIMINATION WINS !"
+    exit 0
+  fi
 fi
 
 # not the end of game

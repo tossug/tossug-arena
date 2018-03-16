@@ -1,10 +1,10 @@
 #!/usr/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2018
 POSXS="ABCDEFGHJ" # X positions of board
-if [ -z "`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"`" ] ; then
+if [ -z "`"$DATADIR/interfaces/$ARENA_GAME/get_valid_moves"`" ] ; then
   ARENA_MOVE=""
 else
-  until "$DATADIR/uis/$ARENA_GAME/get_valid_board" &>/dev/null ; do
+  until "$DATADIR/interfaces/$ARENA_GAME/get_valid_board" &>/dev/null ; do
     ARENA_MOVE=${POSXS:RANDOM%9:1}$((RANDOM%5+1))${POSXS:RANDOM%9:1}$((RANDOM%5+1))
   done
 fi

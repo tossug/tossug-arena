@@ -29,11 +29,11 @@ Variables Example
 
 Calling Flow
 ============
-* uis/XiangHalf/Text/main default Random Human
-	* uis/XiangHalf/is_the_end
-		* uis/XiangHalf/get_valid_moves
-	* uis/XiangHalf/Text/show_the_game
+* interfaces/XiangHalf/Text/main default Random Human
+	* interfaces/XiangHalf/is_the_end
+		* interfaces/XiangHalf/get_valid_moves
+	* interfaces/XiangHalf/Text/show_the_game
 	* players/XiangHalf/Random/main
-		* uis/XiangHalf/get_valid_moves
-		* uis/XiangHalf/get_valid_board
-	* uis/XiangHalf/get_valid_board
+		* interfaces/XiangHalf/get_valid_moves
+		* interfaces/XiangHalf/get_valid_board
+	* interfaces/XiangHalf/get_valid_board

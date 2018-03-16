@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2018
-MOVESNEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"` # next valid moves
+MOVESNEXT=`"$DATADIR/interfaces/$ARENA_GAME/get_valid_moves"` # next valid moves
 if [ -z "$MOVESNEXT" ] ; then
   MOVE=""
 else

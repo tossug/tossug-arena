@@ -7,7 +7,7 @@
 # P=A=1, E=2, H=C=(4 to 5), R=9, K=infinity
 # we use 5 here for H and C.
 
-MOVESNEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"` # next valid moves
+MOVESNEXT=`"$DATADIR/interfaces/$ARENA_GAME/get_valid_moves"` # next valid moves
 
 POSXS="ABCDEFGHJK"
 FILTERED_MOVES=""

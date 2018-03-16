@@ -11,7 +11,7 @@
 # within capture, prefer capturing high value piece
 # within drop, prefer dropping high value piece
 
-MOVESNEXT=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"` # next valid moves
+MOVESNEXT=`"$DATADIR/interfaces/$ARENA_GAME/get_valid_moves"` # next valid moves
 
 POSXS="ABCDEFGHJK"
 FILTERED_MOVES=""

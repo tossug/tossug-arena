@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 # CC0, Wei-Lun Chao <bluebat@member.fsf.org>, 2018
 POSXS="ABCDEFGHJK" # X positions of board
-until "$DATADIR/uis/$ARENA_GAME/get_valid_board" &>/dev/null ; do
+until "$DATADIR/interfaces/$ARENA_GAME/get_valid_board" &>/dev/null ; do
   ARENA_MOVE=${POSXS:RANDOM%10:1}$((RANDOM%9+1))${POSXS:RANDOM%10:1}$((RANDOM%9+1))
 done
 echo "$ARENA_MOVE"

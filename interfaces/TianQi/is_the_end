@@ -20,7 +20,7 @@ if [ "$BOARD" = "${BOARD^^}" -o "$BOARD" = "${BOARD,,}" ] ; then
 fi
 
 # if no valid move
-MOVES=`"$DATADIR/uis/$ARENA_GAME/get_valid_moves"`
+MOVES=`"$DATADIR/interfaces/$ARENA_GAME/get_valid_moves"`
 if [ -z "$MOVES" ] ; then
   echo "STALEMATE WINS !"
   exit 0
