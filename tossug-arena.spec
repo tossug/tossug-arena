@@ -1,7 +1,7 @@
 Name:		tossug-arena
 Version:	2018.1
 Release:	1
-Summary:	Gamelets Arena for AI Players
+Summary:	Gamelets Arena for poor AI Players
 License:	CC0
 Group:		Games
 URL:		https://github.com/tossug/tossug-arena/
@@ -29,6 +29,5 @@ make DESTDIR=%{buildroot} install
 %changelog
 * Thu Jan 18 2018 Wei-Lun Chao <bluebat@member.fsf.org> - 2018.1
 - Update to 2018.1
-
 * Tue Oct 31 2017 Wei-Lun Chao <bluebat@member.fsf.org> - 2017.10
 - First release

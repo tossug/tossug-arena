@@ -1,8 +1,8 @@
 ![animated](https://user-images.githubusercontent.com/6536345/35132167-d0d8b240-fd04-11e7-8eff-d83152d9a3d3.gif)
 
-Gamelets Arena for AI Players
+Gamelets Arena for poor AI Players
 =============================
-TOSSUG Arena runs as a platform for building gamelets.
+TOSSUG Arena runs as a platform for building board-gamelets.
 Contributors can add their scripts as agent to battle with other agents,
 human players or themselves. <https://github.com/tossug/tossug-arena>
 
@@ -10,16 +10,15 @@ Testing
 =======
 	./tossug-arena
 	./tossug-arena XiangHalf Human Random
-	mkdir players/XiangHalf/AgentName
-	cp players/XiangHalf/Random/main players/XiangHalf/AgentName/main
-	${EDITOR:-vi} players/XiangHalf/AgentName/main
-	./tossug-arena XiangHalf Random AgentName
+	mkdir players/XiangHalf/MyAgent
+	cp players/XiangHalf/Random/main players/XiangHalf/MyAgent/main
+	${EDITOR:-vi} players/XiangHalf/MyAgent/main
+	./tossug-arena XiangHalf Random MyAgent
 
 Install & Usage
 ===============
 	make install
-	tossug-arena TianQi Human Human
-	tossug-arena TianQi-log Random Random0
+	tossug-arena [ShuaiQi|TianQi|XiangHalf|XiangQi|XiangThree] [Human|Random|AGENTNAME] [Human|Random|AGENTNAME]
 
 Chinese Description
 ===================

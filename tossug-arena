@@ -12,7 +12,7 @@ ARENA_THEME="" # ui theme from match file
 RANDOM=`date +%s` # set random seed
 
 if [ $# -eq 0 ] ; then
-  echo "TOSSUG Arena: Gamelets Arena for AI Players"
+  echo "TOSSUG Arena: Gamelets Arena for poor AI Players"
   echo "Usage:"
   echo -e "\ttossug-arena MATCH[-log] [ PLAYER1 [ PLAYER2 [ PLAYER3 ]]]"
   echo
